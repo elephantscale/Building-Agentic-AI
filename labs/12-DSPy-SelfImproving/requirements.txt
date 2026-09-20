@@ -1,0 +1,7 @@
+# Lab 12 — Self-Improving Agent with DSPy + Delta Analytics
+dspy-ai>=2.5
+openai>=1.40
+anthropic>=0.40
+pandas>=2.2
+pyarrow>=16.0
+python-dotenv>=1.0

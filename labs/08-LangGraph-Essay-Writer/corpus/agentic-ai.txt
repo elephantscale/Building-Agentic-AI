@@ -1,0 +1,19 @@
+Agentic AI — Overview (fictional grounding corpus for Lab 8)
+
+An agent is an LLM in a loop that can use tools to pursue a goal. Unlike a chatbot
+that only answers, an agent acts: it plans, calls tools, observes the results, and
+decides what to do next until the goal is met or a limit is reached.
+
+The core agent loop is: goal -> plan -> act (call a tool) -> observe -> reflect ->
+decide -> repeat -> answer. Every step is auditable, and every loop needs a hard cap
+so it terminates.
+
+Because agents act on the world, they need three safeguards that chatbots do not:
+least privilege (the fewest tools and permissions that work), human-in-the-loop
+approval for any action that sends, publishes, deletes, buys, or changes a record,
+and full logging of every plan, tool call, and result.
+
+Common agentic patterns include ReAct (interleaved reasoning and acting), reflection
+(the agent critiques and revises its own output), planning (decompose a goal into
+steps first), and multi-agent collaboration (specialized agents that hand work to
+each other).

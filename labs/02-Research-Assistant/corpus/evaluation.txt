@@ -1,0 +1,25 @@
+Evaluating Agents
+
+A demo that works once is not a pilot. Agents are non-deterministic and act in the
+world, so they must be evaluated before they are trusted. Evaluation rests on a
+structured, append-only run log: one JSON object per event, one event per line
+(JSONL). The log captures the goal, every plan, every tool call with its arguments,
+every tool result, and the final output with totals for tokens, cost, and latency.
+
+Common metrics. Task success measures whether the run achieved the goal against a
+checkable outcome. Tool-call accuracy measures whether the agent chose the right
+tool with the right arguments. Factuality checks whether claims are grounded in
+retrieved sources rather than invented. Cost and latency measure whether the run
+is affordable and fast enough for its use case.
+
+Error analysis looks for recurring failure modes. Three are common in agents. Tool
+errors happen when a tool is called with bad arguments or fails; a robust agent
+treats the error as an Observation and recovers rather than crashing. Plan drift
+happens when the agent wanders away from the goal across steps; a step cap and an
+explicit plan reduce it. Hallucination happens when the agent asserts facts with no
+supporting Observation; requiring citations and grounding answers in retrieved text
+is the main defense.
+
+Good logs are queryable. Because each event is a JSON line, the log loads directly
+into pandas, DuckDB, or a warehouse table for dashboards, lineage, and governance
+audits. This is the same log that later powers governance reviews of agent activity.

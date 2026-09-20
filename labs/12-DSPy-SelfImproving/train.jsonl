@@ -1,0 +1,16 @@
+{"ticket": "My credit card was charged twice for the same invoice this month.", "category": "billing"}
+{"ticket": "The dashboard won't load and I just get a spinning wheel on Chrome.", "category": "technical"}
+{"ticket": "Can you add three more seats to our team plan before Friday?", "category": "account"}
+{"ticket": "I'd like a quote for the enterprise tier for a 200-person org.", "category": "sales"}
+{"ticket": "Do you sign a BAA? We handle patient health records under HIPAA.", "category": "policy_compliance"}
+{"ticket": "Why did my monthly bill jump from $420 to $840?", "category": "billing"}
+{"ticket": "API calls are returning 500 errors since this morning's deploy.", "category": "technical"}
+{"ticket": "Please reset the password on the admin account for jane@acme.com.", "category": "account"}
+{"ticket": "We're comparing you to a competitor — can we get a demo next week?", "category": "sales"}
+{"ticket": "Where is your data stored, and is it SOC 2 compliant?", "category": "policy_compliance"}
+{"ticket": "I was billed after I cancelled my trial last week.", "category": "billing"}
+{"ticket": "The mobile app crashes every time I open the reports tab.", "category": "technical"}
+{"ticket": "Can you transfer ownership of our workspace to a new admin?", "category": "account"}
+{"ticket": "What discounts do you offer for annual prepay on the business plan?", "category": "sales"}
+{"ticket": "We need a signed DPA before we can send you any customer data.", "category": "policy_compliance"}
+{"ticket": "My refund from two weeks ago still hasn't shown up on my statement.", "category": "billing"}

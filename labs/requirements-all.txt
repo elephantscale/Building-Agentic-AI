@@ -1,0 +1,19 @@
+# Superset of all lab requirements for Building Agentic AI.
+# Prefer each lab's own requirements.txt; install this only if you want everything at once.
+openai>=1.40
+anthropic>=0.40
+tavily-python>=0.5
+python-dotenv>=1.0
+pydantic>=2.7
+requests>=2.31
+rich>=13.7
+pandas>=2.2
+tabulate>=0.9
+langgraph>=0.2
+langchain>=0.3
+langchain-openai>=0.2
+langchain-community>=0.3
+dspy-ai>=2.5
+boto3>=1.34
+pyarrow>=16.0
+duckdb>=1.0

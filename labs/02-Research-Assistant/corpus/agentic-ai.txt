@@ -1,0 +1,28 @@
+Agentic AI: Overview
+
+Agentic AI describes systems where a large language model runs inside a control
+loop and pursues a goal by taking actions, rather than producing a single answer
+to a single prompt. The three defining ingredients are a goal, a set of tools the
+model may call, and a loop that lets the model act, observe the result, and decide
+what to do next.
+
+An agent is not a bigger or smarter model. It is a control loop wrapped around a
+model. The same model that answers one question can, inside a loop with tools,
+plan a task, gather information, and revise its approach.
+
+When to use an agent. Agents fit tasks that are complex and branching, whose rules
+are too messy to hard-code, and that lean heavily on unstructured input such as
+natural language, documents, or support tickets. If a clean flowchart or a single
+prompt already solves the task, use that instead. Start at the lowest level of
+autonomy and climb only when the task forces you to.
+
+Levels of autonomy, from least to most: a single prompt; a prompt chain that you
+wire together by hand; tool use or function calling, where the model can request
+an action; a full agent loop, where the model drives its own loop; and multi-agent
+systems, where several specialized agents collaborate.
+
+Safety is part of the design, not an afterthought. Core habits: least privilege
+(the fewest tools and narrowest scopes that work), human-in-the-loop approval for
+any action that sends, buys, deletes, or changes records, logging every plan and
+tool call, evaluating before you trust, and treating all tool output and retrieved
+text as untrusted data rather than as instructions.

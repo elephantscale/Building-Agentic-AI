@@ -1,0 +1,10 @@
+{"ticket": "You charged me for 20 seats but we only have 12 users.", "category": "billing"}
+{"ticket": "Export to CSV has been failing with a timeout all afternoon.", "category": "technical"}
+{"ticket": "Please deactivate the account for our employee who just left.", "category": "account"}
+{"ticket": "Can someone walk our procurement team through pricing options?", "category": "sales"}
+{"ticket": "Do you support single-tenant hosting for regulated industries?", "category": "policy_compliance"}
+{"ticket": "I need a copy of last quarter's invoices for our accountant.", "category": "billing"}
+{"ticket": "SSO login redirects in a loop and never signs me in.", "category": "technical"}
+{"ticket": "How do I upgrade our team plan to the business plan?", "category": "account"}
+{"ticket": "We'd like to pilot the product with 50 users next month.", "category": "sales"}
+{"ticket": "Can you confirm you are GDPR compliant for EU customer data?", "category": "policy_compliance"}

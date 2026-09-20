@@ -1,0 +1,18 @@
+Reflection and Self-Critique in Agents (fictional grounding corpus for Lab 8)
+
+Reflection is the pattern where an agent evaluates its own output and revises it
+before returning a final answer. A first draft from an LLM is often plausible but
+shallow; a structured critique pass reliably improves factuality, completeness, and
+style.
+
+A reflection loop has two roles. The writer produces a draft. The critic reviews the
+draft against a rubric — is it grounded in the provided evidence, is it complete, is
+it clear, is it the right length — and returns concrete, actionable feedback. The
+writer then revises using that feedback.
+
+The loop must be bounded. Set a maximum number of revisions (typically one to three).
+Without a cap, writer and critic can ping-pong indefinitely, burning tokens for
+diminishing gains. In practice two revisions capture most of the benefit.
+
+Reflection is most valuable when the output is long-form (essays, reports, code) and
+when a rubric exists. It is wasted effort on trivial, one-shot answers.

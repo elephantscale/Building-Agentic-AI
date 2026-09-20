@@ -1,0 +1,9 @@
+# Lab 15 - HR Governance Agent (audit agent activity)
+pandas>=2.2
+pyarrow>=16.0          # writes findings.parquet (the "Delta-style" table)
+python-dotenv>=1.0
+
+# Optional: a natural-language audit summary for a non-technical reviewer.
+# Without a key the agent still writes the full report deterministically.
+openai>=1.40
+# anthropic>=0.40      # uncomment to narrate with claude-sonnet-5 instead

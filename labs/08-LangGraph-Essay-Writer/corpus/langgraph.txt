@@ -1,0 +1,21 @@
+LangGraph — Stateful Agent Graphs (fictional grounding corpus for Lab 8)
+
+LangGraph is a library for building stateful, cyclic agent workflows. Instead of a
+hand-written while-loop, you declare a graph and let the runtime drive it. Four ideas
+carry everything: State, Nodes, Edges, and Conditional Edges.
+
+State is the shared data for a run, usually a typed TypedDict. Each node receives the
+current State and returns a partial update; the runtime merges updates back in.
+Reducers control how updates merge — by default a field is replaced, but an annotated
+field (for example with operator.add) accumulates instead of overwriting.
+
+Nodes are plain functions from State to a partial State update. Edges wire nodes
+together. A static edge always goes to the same next node. A conditional edge runs a
+router function that reads State and returns the name of the next node, which is how
+branching and loops are expressed.
+
+A checkpointer saves State after every node, keyed by a thread_id. This enables
+persistence (resume a run later), streaming (observe progress after each node), and
+human-in-the-loop (compile with interrupt_before a sensitive node, review State, then
+resume by invoking with None). MemorySaver is the in-memory checkpointer used in
+development; SQLite or Postgres checkpointers are used in production.

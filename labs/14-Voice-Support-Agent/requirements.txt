@@ -1,0 +1,14 @@
+# Lab 14 - Live Voice Support Agent (ADK + OpenAI)
+# The LOCAL fallback (voice_agent_local.py) runs with just these:
+python-dotenv>=1.0
+rich>=13.7
+
+# Optional: a real LLM brain for the reply. Without a key the agent uses a
+# deterministic grounded responder, so the lab still runs fully offline.
+openai>=1.40
+
+# --- Real ADK voice path (optional; see README "Path A") --------------------
+# Uncomment to run the audio-in/audio-out agent on Google's ADK. Not required:
+# the objective is completable on the local text path with the packages above.
+# google-adk>=0.2
+# litellm>=1.40        # lets ADK drive an OpenAI model (openai/gpt-4.1)

@@ -1,0 +1,29 @@
+The ReAct Pattern
+
+ReAct stands for Reasoning and Acting. It interleaves the model's reasoning with
+its tool use in a single visible trace. The model repeats a fixed cycle until it
+can answer:
+
+    Thought: what do I know, and what do I need next?
+    Action: tool_name(arguments)
+    Observation: the result the runtime pastes back
+    ... repeat ...
+    Final Answer: the response to the goal
+
+The key property is transparency. Because the model writes its reasoning as
+Thought lines and its tool requests as Action lines, the entire decision process
+is legible and auditable. The runtime, not the model, produces each Observation.
+This separation is important: the model proposes an action, and the surrounding
+code decides whether and how to run it.
+
+A practical ReAct loop needs two safeguards. First, a stop condition on the token
+stream so the model cannot hallucinate its own Observation; it must stop after the
+Action and wait for the real tool result. Second, a maximum-steps cap so a loop
+that never converges still terminates. Without a cap, a stuck agent runs up cost
+and can become an incident.
+
+Multi-step reasoning. Many real tasks cannot be answered in one action. The agent
+may need to search, read a result, search again with a refined query, and only
+then synthesize an answer. A scratchpad, which is simply the accumulated Thought
+and Observation history in the context window, lets the agent remember what it has
+learned so far across steps.

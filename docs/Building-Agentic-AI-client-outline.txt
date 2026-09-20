@@ -1,0 +1,177 @@
+Course Outline
+
+ProTech Professional Technical Services, Inc.
+Building Agentic AI
+Course Summary
+Description
+This instructor-led program guides developers, data scientists, team leads, and project managers through designing,
+deploying, and governing AI agents that autonomously plan, reason, reflect, and execute tasks. The course combines
+50% lecture and 50% hands-on labs in a cloud-based, zero-install environment.
+Objectives
+After taking this course, students will be able to:
+•
+Understand design principles of Agentic AI systems
+•
+Build, evaluate, and govern autonomous AI agents
+•
+Integrate Agentic frameworks (LangGraph, LlamaIndex, Bedrock, DSPy, Claude)
+•
+Implement multi-agent collaboration and reflection mechanisms
+•
+Optimize deployments for latency, cost, and evaluation metrics
+Topics
+•
+•
+•
+•
+
+Foundations of Agentic AI
+Reflection, Tools, and Evaluation
+Frameworks, Deployment & Governance
+Final Capstone Project
+
+Audience
+This course is designed for Developers, Data Scientists, Team Leads, and Project Managers.
+Prerequisite
+•
+•
+•
+
+Basic understanding of machine learning concepts
+Familiarity with Python (preferred)
+Knowledge of API calls and JSON
+
+Duration
+Five days
+
+Due to the nature of this material, this document refers to numerous hardware and software products by their trade names. References to other
+companies and their products are for informational purposes only, and all trademarks are the properties of their respective companies. It is not the
+intent of ProTech Professional Technical Services, Inc. to use any of these names generically.
+
+Course Outline
+
+ProTech Professional Technical Services, Inc.
+Building Agentic AI
+Course Outline
+I.
+
+Foundations of Agentic AI
+A. What is Agentic AI?
+B. From prompt-based AI to autonomous
+agents
+C. OpenAI’s Agentic guidelines and best
+practices
+D. When and why to use Agentic AI
+E. Design principles: autonomy, reasoning,
+reflection, planning, safety
+F. Customer Support/Research Assistant
+Agentic system
+G. Lab 1: Lab environment setup and first
+“agent loop” using OpenAI & ReAct pattern
+H. Agentic AI workflow: Input → Plan → Act →
+Reflect → Output
+I. Single vs. multi-step reasoning and
+tool/memory usage
+J. Lab 2: Build a Research Assistant agent
+with multi-step reasoning and logging
+
+II.
+
+Reflection, Tools, and Evaluation
+A. Reflection and self-evaluation patterns
+B. Improving factuality/style; generating
+charts/reports reflectively
+C. Lab 3: Build and compare direct vs.
+reflective summarization agent workflows
+D. Tools in Agentic AI: function calling,
+schema validation, structured responses
+E. Example tools: email, CRM query, code
+execution
+F. Lab 4: Convert Python functions to agentic
+tools
+G. Lab 5: Create and test an “Email Assistant
+Workflow” (draft, summarize, send emails)
+H. Explore MCP protocol/code execution
+inside agents
+
+III.
+
+Advanced Agentic Patterns
+A. Evaluation metrics, error analysis,
+debugging (tool errors, plan drift,
+hallucination)
+B. Workflow optimization and next-step
+prioritization
+C. Lab 6: Evaluate and benchmark agentic
+workflows
+D. Multi-agent conversation flows and
+sequential chatbots
+E. Planning-driven agents for
+onboarding/blogpost generation
+F. Lab 7: Build an onboarding assistant agent
+(meeting scheduler, email generator,
+welcome messaging)
+
+IV.
+
+Frameworks, Deployment & Governance
+A. LangGraph & Tavily Integration
+B. LangGraph architecture
+(nodes/edges/state); agentic search via
+Tavily
+C. Persistence, streaming, human-in-the-loop
+feedback
+D. Labs 8: Build an Essay Writer agent with
+retrieval+reflection on LangGraph
+1. Low-Code Agentic Design
+E. Lab 9: Creating business automation
+agents: ChatGPT + Zapier, Custom GPTs
+1. Memory, chaining, and reflection
+in Zapier
+F. Lab 10: Build a no-code AI CRM agent with
+Zapier + Custom GPT
+G. Agentic on AWS Bedrock
+1. Using Bedrock APIs,
+CRM/database connection,
+latency/scalability patterns
+2. Guardrails, transactions,
+compliance
+H. Lab 11: Build a CRM assistant via Bedrock
+Agent Runtime & Titan Model
+I. Agentic with DSPy and Databricks
+1. Declarative agent design, selfimproving loops, Databricks
+enterprise integration
+J. Lab 12: Create a self-improving agent with
+DSPy, integrate Delta Table analytics
+K. Agentic with Claude
+1. Multi-tool coding assistants using
+Anthropic’s Claude;
+memory/context management
+L. Lab 13: Build Claude-based coding
+assistant with persistent memory
+M. Voice Agents with Google’s ADK
+1. Audio Developer Kit for speech
+input/output, context continuity
+N. Lab 14: Build a live Voice Support Agent
+(ADK + OpenAI)
+O. Governance with Databricks
+1. Tracking agent actions, data
+lineage, audit logs, HR analytics
+P. Lab 15: Build an HR Governance Agent
+that audits agent activity logs
+
+V.
+
+Final Capstone Project
+A. Enterprise AI Agent Challenge—teams
+design and demo a multi-agent system
+(domain: Finance, HR, Real Estate, or
+Customer Support), showcasing agent
+reasoning, tool-use, reflection, evaluation,
+and governance.
+
+Due to the nature of this material, this document refers to numerous hardware and software products by their trade names. References to other
+companies and their products are for informational purposes only, and all trademarks are the properties of their respective companies. It is not the
+intent of ProTech Professional Technical Services, Inc. to use any of these names generically.
+
+

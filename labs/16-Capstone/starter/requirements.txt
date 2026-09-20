@@ -1,0 +1,9 @@
+# Capstone starter scaffold - minimal deps so the skeleton runs offline.
+python-dotenv>=1.0
+
+# Optional brains. The scaffold runs deterministically without any key; add one
+# to make the workers reason with a real model.
+openai>=1.40
+# anthropic>=0.40      # or drive workers with claude-sonnet-5
+
+# Add YOUR project's deps below (pandas, pyarrow, requests, langgraph, ...).

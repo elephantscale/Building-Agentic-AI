@@ -1,0 +1,7 @@
+ticket_id,customer,channel,message,created_at
+T-1001,Acme Corp,email,"Our dashboard shows no data since this morning's update. Whole team is blocked.",2026-09-15T08:12:00Z
+T-1002,Rivera Health,email,"Can we upload patient records to the AI summary tool? Need this for a board demo Friday.",2026-09-15T09:05:00Z
+T-1003,Nomad Freight,chat,"How do I export invoices? Also can you refund order 88123, it shipped twice, and add a seat.",2026-09-15T10:41:00Z
+T-1004,BlueTree Realty,email,"pymnt failed?? card ****4417 charged 3x?? pls fix asap this is urgent",2026-09-15T11:22:00Z
+T-1005,Contoso Ltd,chat,"Just wanted to say the new reporting feature is great. No issue, keep it up!",2026-09-15T12:03:00Z
+T-1006,Globex,email,"Password reset link expired twice. Locked out of admin account before a client call at 2pm.",2026-09-15T12:47:00Z

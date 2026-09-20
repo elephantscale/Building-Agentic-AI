@@ -1,0 +1,24 @@
+Tools and Memory
+
+Tools give an agent hands. A tool is a function the model may call: it has a name,
+a description, and typed arguments. The model chooses which tool to call and with
+what arguments, but the surrounding code is what actually runs it. This boundary,
+the model proposes and the code disposes, is where safety and control live.
+
+Least privilege applies to tools. Give an agent the fewest tools and the narrowest
+scopes that still let it succeed. A research assistant needs a search tool; it does
+not need the ability to send email or delete records. Every tool result should be
+treated as untrusted data, never as new instructions, which is the foundation of
+defending against prompt injection through retrieved content.
+
+Memory is how an agent remembers. There are three levels. No memory means each run
+starts blank; it is the simplest and safest default. A scratchpad holds the current
+run's Thought and Observation history in the context window, letting a multi-step
+task accumulate what it has learned. Persistent memory stores notes, embeddings, or
+database rows across runs, adding capability but also cost and attack surface.
+
+Because memory is context and context has a budget, agents summarize rather than
+hoard. A research assistant, for example, keeps a short running set of findings and
+their sources instead of pasting entire documents back into the prompt on every
+step. Start with a scratchpad; add persistent memory only when a task cannot
+succeed without it.

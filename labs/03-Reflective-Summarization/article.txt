@@ -1,0 +1,42 @@
+Agentic AI in Customer Support: A Field Report
+Northwind Software — Internal Engineering Note, September 2026
+
+Over the past two quarters our support organization piloted an agentic assistant to help
+tier-1 agents triage and answer inbound tickets. This note summarizes what we built, what the
+numbers showed, and where the approach fell short. It is written for engineers considering a
+similar rollout, not as a marketing document.
+
+Background. Northwind handles roughly 4,200 support tickets per week across email and chat.
+Before the pilot, median first-response time was 5 hours and 12 minutes, and the reopen rate —
+tickets a customer had to escalate a second time — sat at 18 percent. Tier-1 agents spent an
+estimated 40 percent of their time on repetitive triage: reading the ticket, categorizing it,
+and finding the relevant help-center article. That triage work was the target.
+
+What we built. The assistant is an LLM in a loop with three tools: a read-only help-center
+search, a read-only CRM lookup keyed by account ID, and a draft-reply generator. Critically,
+the assistant never sends anything. It produces a draft, a category, a priority, and a set of
+cited sources, and a human agent approves or edits before the reply goes out. Every tool call
+and every draft is written to an append-only audit log. We treated all retrieved text as
+untrusted data rather than as instructions, after an early red-team test showed a ticket body
+could otherwise smuggle in commands.
+
+Results. Over an eight-week measured period, median first-response time fell from 5 hours 12
+minutes to 2 hours 48 minutes, a 46 percent reduction. The reopen rate improved modestly, from
+18 percent to 15 percent. Agent satisfaction with the tool was high: in an internal survey, 71
+percent of tier-1 agents said the drafts saved them time on a typical ticket. Cost was
+non-trivial — the assistant added roughly 0.11 US dollars per ticket in model spend, which at
+our volume is about 460 dollars per week.
+
+Where it fell short. Three failure modes recurred. First, on ambiguous tickets that bundled
+several requests, the assistant tended to answer the first ask and ignore the rest; we now flag
+multi-ask tickets for mandatory human review. Second, the draft quality on billing disputes was
+weaker than on technical questions, because our help-center billing content was thin. The model
+is only as grounded as the source it can cite. Third, and most important, agents occasionally
+approved a draft without reading it closely, trusting the tool too much. Automation bias is
+real, and a human gate only works if the human actually reviews.
+
+Recommendations. Start read-only. Keep a human approval step on anything that sends, refunds,
+or changes a record. Invest in the underlying knowledge base before investing in the model —
+grounding beats cleverness. Measure a frozen set of tickets before and after, not anecdotes.
+And design the human gate so that skipping the review is harder than doing it. The technology
+worked; the discipline around it is what made it safe.
