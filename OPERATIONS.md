@@ -35,8 +35,10 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Customers and revenue connections
 
-- Client outline sourced from **ProTech** (reseller). **Booked via ProTech; contacts: Mathew Caccavale; Celia Woronowicz (logistics/setup).** End client *behind* ProTech — **Needs CEO input** (confirm audience/level and lab-environment constraints — cf. the NNL ProTech engagement, where a restricted/secure network can break cloud-dependent labs).
-- **Philip** (end-client-side contact; role to confirm) — ask what **limitations the students and their organization place on which AI/models may be used** (drives provider/model choices and whether cloud-dependent labs fall back to local).
+- **ProTech** (reseller). Contacts: **Philip A. Anderson Jr. — CEO** (panderson@protechtraining.com); **Mathew Caccavale**; **Celia Woronowicz** (logistics/setup).
+- **End client (confirmed): Bank of America — 12 students** (ProTech contact **John**, cc'd) **+ Fluor — 2 students** (prior ES client, trained for **Dani**). **14 total.**
+- Philip confirmed (2026-10-05) the engagement is on and **Mark is teaching**.
+- **AI-usage limitations are the open question — and BofA is a highly regulated bank**, so expect strict rules on which providers/models and what data may touch a hosted model. Ask **John (BofA)** and the **Fluor/Dani** side what AI is permitted — this drives default model choices and whether cloud labs run live or fall back to local. cf. the NNL ProTech engagement, where a restricted/secure network broke cloud-dependent labs.
 
 ## Upcoming deadlines
 
@@ -45,7 +47,7 @@ led delivery; extends the ES agentic/AI-applications catalog.
 ## Important TODOs
 
 - **Reply to Celia (ProTech)** with the setup spec, and ask: (1) is the network restricted / is public LLM + GitHub access available, (2) who provides API keys/accounts.
-- **Ask Philip** what AI-usage limitations the students' organization imposes (allowed providers/models, data-handling rules) — before finalizing which models the labs default to.
+- **Ask John (BofA) and the Fluor/Dani side** what AI-usage limitations apply (allowed providers/models, data-handling rules, network/API access) — before finalizing which models the labs default to. **High likelihood of bank restrictions.**
 - Optional dry-run of each lab's starter code in the class VM with real API keys.
 - Add slide images to `images/` where decks would benefit (currently text-first).
 
@@ -60,6 +62,10 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 - Framework APIs (LangGraph, DSPy, ADK, Bedrock) move fast; lab code may need version pinning
   and a pre-delivery smoke test.
+- **Bank-of-America restrictions (elevated).** As a major bank, BofA likely restricts public
+  LLM API access, external GitHub, and what data may touch hosted models. If so, cloud labs
+  must run in local-fallback mode and model defaults may need to change. Confirm before
+  delivery; our local fallbacks are the mitigation but need a smoke test in that mode.
 
 ## Decisions needed from Mark
 
