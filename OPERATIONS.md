@@ -46,8 +46,9 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Important TODOs
 
-- **Reply to Celia (ProTech)** with the setup spec, and ask: (1) is the network restricted / is public LLM + GitHub access available, (2) who provides API keys/accounts.
-- **Ask John (BofA) and the Fluor/Dani side** what AI-usage limitations apply (allowed providers/models, data-handling rules, network/API access) — before finalizing which models the labs default to. **High likelihood of bank restrictions.**
+- **Reply to Celia (ProTech)** with the setup spec, and ask: (1) is the network restricted / is public LLM + GitHub access available, (2) who provides API keys/accounts. *Draft ready (2026-10-06), not yet sent.*
+- **Ask John (BofA) and the Fluor/Dani side** what AI-usage limitations apply (allowed providers/models, data-handling rules, network/API access) — before finalizing which models the labs default to. **High likelihood of bank restrictions.** *Draft ready (2026-10-06), not yet sent; states Claude as the default lab model.*
+- Both email drafts live in a Claude Doc: https://claude.ai/code/artifact/d121dfee-b406-430c-8a81-25a84ede1493
 - Optional dry-run of each lab's starter code in the class VM with real API keys.
 - Add slide images to `images/` where decks would benefit (currently text-first).
 
