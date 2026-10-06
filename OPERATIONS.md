@@ -35,7 +35,8 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Customers and revenue connections
 
-- Client outline sourced from **ProTech** (reseller). **Booked via ProTech; contact: Mathew Caccavale.** End client *behind* ProTech — **Needs CEO input** (confirm audience/level and lab-environment constraints — cf. the NNL ProTech engagement, where a restricted/secure network can break cloud-dependent labs).
+- Client outline sourced from **ProTech** (reseller). **Booked via ProTech; contacts: Mathew Caccavale; Celia Woronowicz (logistics/setup).** End client *behind* ProTech — **Needs CEO input** (confirm audience/level and lab-environment constraints — cf. the NNL ProTech engagement, where a restricted/secure network can break cloud-dependent labs).
+- **Philip** (end-client-side contact; role to confirm) — ask what **limitations the students and their organization place on which AI/models may be used** (drives provider/model choices and whether cloud-dependent labs fall back to local).
 
 ## Upcoming deadlines
 
@@ -43,6 +44,8 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Important TODOs
 
+- **Reply to Celia (ProTech)** with the setup spec, and ask: (1) is the network restricted / is public LLM + GitHub access available, (2) who provides API keys/accounts.
+- **Ask Philip** what AI-usage limitations the students' organization imposes (allowed providers/models, data-handling rules) — before finalizing which models the labs default to.
 - Optional dry-run of each lab's starter code in the class VM with real API keys.
 - Add slide images to `images/` where decks would benefit (currently text-first).
 
