@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-09-18
+**Last updated:** 2026-10-02
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -30,14 +30,16 @@ led delivery; extends the ES agentic/AI-applications catalog.
 - Mark to review technical accuracy of framework labs (LangGraph, Bedrock, DSPy, ADK) against
   current library versions before first delivery.
 - Mark builds the PPTX decks himself on the Mac (per house rules — Claude never builds PPTX).
+- **Work through DeepLearning.AI's “Agentic AI” Coursera course (Ng)** to align/refresh before delivery.
+- **Confirm the end client's lab environment with ProTech** (public-LLM + GitHub access, shared repo vs. ship-ahead) *before* finalizing labs — cloud-dependent agentic labs won't run in a restricted environment.
 
 ## Customers and revenue connections
 
-- Client outline sourced from ProTech. Delivery customer: `Needs CEO input`.
+- Client outline sourced from **ProTech** (reseller). **Booked via ProTech; contact: Mathew Caccavale.** End client *behind* ProTech — **Needs CEO input** (confirm audience/level and lab-environment constraints — cf. the NNL ProTech engagement, where a restricted/secure network can break cloud-dependent labs).
 
 ## Upcoming deadlines
 
-- First delivery date: `Needs CEO input`.
+- **First delivery: 2026-10-19 → 10-23** (5-day), via ProTech (Mathew Caccavale). ~2.5-week prep runway from 2026-10-02.
 
 ## Important TODOs
 
