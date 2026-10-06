@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-10-02
+**Last updated:** 2026-10-06
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -50,6 +50,8 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 - Cloud labs depend on class-provided accounts (OpenAI, Anthropic, Tavily, AWS, Databricks,
   Zapier, Google ADK); mitigated by local fallbacks in every cloud lab.
+- **Repo is private.** Will be opened (made accessible to students) for the delivery window
+  **2026-10-19 → 10-23**. Re-privatize or decide access policy after delivery.
 
 ## Risks
 
