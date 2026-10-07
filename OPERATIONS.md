@@ -19,6 +19,15 @@ led delivery; extends the ES agentic/AI-applications catalog.
 - House style borrowed from sibling ES courses `ai-automation-essentials` and
   `Building-AI-Applications`.
 
+## Course positioning (decision, 2026-10-07)
+
+- **Teach durable agentic fundamentals, not specific targeted tools.** This is the client's
+  first agentic AI course; the goal is a solid conceptual foundation they can expand later.
+  Frameworks/tools appear as illustrations of transferable concepts, not as the subject.
+- Implication: do **not** chase tool-specific coverage seen in competitor curricula (e.g.
+  Edureka's CrewAI, LangSmith, N8N, GraphRAG, guardrails-library modules). Keep the course
+  concept-first and provider-honest.
+
 ## Recent accomplishments
 
 - 2026-09-18: Full initial build of slides + labs across all five days (foundations;
