@@ -80,9 +80,15 @@ led delivery; extends the ES agentic/AI-applications catalog.
   Bedrock CRM gained a true offline deterministic stub (runs with no key/network); DSPy now exits
   cleanly with a "needs an LLM key" message (it has no LLM-free mode — prompt optimization needs a
   model). Both verified keyless.
-- **Freeze a dependency lockfile** (`pip freeze` of the known-good set) before delivery — all
-  pins are unbounded `>=` and the class VM floated to newest majors (openai 2.x, langchain 1.x,
-  dspy 3.4, pandas 3.0). Validate DSPy Lab end-to-end on 3.x or pin to 2.6.x.
+- ~~Freeze a dependency lockfile before delivery~~ **DONE 2026-10-08.** `labs/requirements-lock.txt`
+  (114 exact pins) + `requirements-lock.in` (editable target). Policy: **six-month-lag** — a
+  coherent ~2026-04 snapshot (openai 2.31.0, anthropic 0.92.0, langchain/langgraph 1.x, dspy 3.1.3,
+  numpy 2.4.4, pandas 3.0.2), seasoned and mutually compatible, deliberately avoiding the brand-new
+  openai 3.x / anthropic 1.x majors. Smoke-tested on this exact set: all 16 labs import clean, Lab 06
+  RAG + guard correct, Lab 12 keyless stub OK, Lab 13 keyless guard OK (dspy 3.x API surface intact),
+  Lab 09 LangGraph imports resolve. SETUP.md points the class VM at the lock.
+  **Still needs a keyed end-to-end dry-run** (esp. Lab 13 DSPy *lift* on 3.x) on the class VM — the
+  offline smoke test here had no API keys.
 - Optional dry-run of each lab's starter code in the class VM with real API keys.
 - Add slide images to `images/` where decks would benefit (currently text-first).
 
@@ -95,8 +101,8 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Risks
 
-- Framework APIs (LangGraph, DSPy, ADK, Bedrock) move fast; lab code may need version pinning
-  and a pre-delivery smoke test.
+- ~~Framework APIs move fast; lab code may need version pinning~~ **Mitigated 2026-10-08** by the
+  frozen lockfile (six-month-lag). Residual: Lab 13 DSPy *lift* still unverified on 3.x without a key.
 - **Bank-of-America environment (now a managed assumption, not a blocker).** Per Mark, we assume
   ProTech/BofA will provision public LLM + GitHub access + keys as requested. Residual risk if
   they don't: 7 labs need live LLM egress (01-05, 13-DSPy, 14-Claude). Mitigation already in
@@ -117,11 +123,12 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Decisions needed from Mark
 
-- Whether to freeze a dependency lockfile before delivery (recommended — see TODOs).
+- ~~Whether to freeze a dependency lockfile~~ **Decided 2026-10-08: yes, frozen (six-month-lag).**
 - (Customer/date confirmed: BofA + Fluor, 2026-10-19 → 10-23.)
 
 ## Next three highest-value actions
 
-1. **Freeze a pinned dependency lockfile** so the class VM is reproducible (stops version float).
+1. **Keyed end-to-end dry-run on the class VM** from `requirements-lock.txt` — esp. Lab 13 DSPy
+   lift on dspy 3.x (the one thing the keyless smoke test couldn't verify).
 2. Keep Claude as the default lab model (assume it's approved); build PPTX decks (Mark, on Mac).
 3. Add slide imagery where decks would benefit.
