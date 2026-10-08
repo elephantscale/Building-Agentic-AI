@@ -15,7 +15,7 @@ Elephant Scale
 
 > RAG is how an agent stops guessing from memory and starts answering from evidence.
 
-Notes: Most of this module is at the whiteboard. These slides are beats, not the explanation.
+Notes:
 
 ---
 
