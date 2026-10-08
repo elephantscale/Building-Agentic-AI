@@ -1,0 +1,5 @@
+# Lab 6 - RAG & Vector Databases
+# The lab runs fully offline with just NumPy. openai is optional: only needed if
+# you set EMBEDDINGS=openai or RAG_GENERATE=1.
+numpy>=1.26
+openai>=1.40  # optional - hosted embeddings / LLM answer; not required for the offline path

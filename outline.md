@@ -68,41 +68,46 @@ Five days.
 - **Lab 4:** Convert Python functions to agentic tools.
 - **Lab 5:** Create and test an "Email Assistant Workflow" (draft, summarize, send emails).
 - Explore the MCP protocol / code execution inside agents.
+- **Retrieval-Augmented Generation (RAG) and vector databases** — embeddings, chunking,
+  similarity search, grounding and citation; retrieval as an agent tool. (Major ideas taught at
+  the whiteboard; the lab makes them concrete.)
+- **Lab 6:** Build a RAG pipeline over a local vector store — chunk, embed, retrieve, and ground
+  answers with citations (runs fully offline; optional hosted embeddings).
 
 ### III. Advanced Agentic Patterns
 
 - Evaluation metrics, error analysis, debugging (tool errors, plan drift, hallucination).
 - Workflow optimization and next-step prioritization.
-- **Lab 6:** Evaluate and benchmark agentic workflows.
+- **Lab 7:** Evaluate and benchmark agentic workflows.
 - Multi-agent conversation flows and sequential chatbots.
 - Planning-driven agents for onboarding / blog-post generation.
-- **Lab 7:** Build an onboarding assistant agent (meeting scheduler, email generator, welcome
+- **Lab 8:** Build an onboarding assistant agent (meeting scheduler, email generator, welcome
   messaging).
 
 ### IV. Frameworks, Deployment & Governance
 
 - **LangGraph & Tavily integration** — LangGraph architecture (nodes/edges/state); agentic
   search via Tavily; persistence, streaming, human-in-the-loop feedback.
-- **Lab 8:** Build an Essay Writer agent with retrieval + reflection on LangGraph.
+- **Lab 9:** Build an Essay Writer agent with retrieval + reflection on LangGraph.
 - **Low-code agentic design.**
-- **Lab 9:** Create business automation agents: ChatGPT + Zapier, Custom GPTs (memory,
+- **Lab 10:** Create business automation agents: ChatGPT + Zapier, Custom GPTs (memory,
   chaining, and reflection in Zapier).
-- **Lab 10:** Build a no-code AI CRM agent with Zapier + Custom GPT.
+- **Lab 11:** Build a no-code AI CRM agent with Zapier + Custom GPT.
 - **Agentic on AWS Bedrock** — Bedrock APIs, CRM/database connection, latency/scalability
   patterns; guardrails, transactions, compliance.
-- **Lab 11:** Build a CRM assistant via Bedrock Agent Runtime & a Titan/Nova model.
+- **Lab 12:** Build a CRM assistant via Bedrock Agent Runtime & a Titan/Nova model.
 - **Agentic with DSPy and Databricks** — declarative agent design, self-improving loops,
   Databricks enterprise integration.
-- **Lab 12:** Create a self-improving agent with DSPy; integrate Delta Table analytics.
+- **Lab 13:** Create a self-improving agent with DSPy; integrate Delta Table analytics.
 - **Agentic with Claude** — multi-tool coding assistants using Anthropic's Claude; memory /
   context management.
-- **Lab 13:** Build a Claude-based coding assistant with persistent memory.
+- **Lab 14:** Build a Claude-based coding assistant with persistent memory.
 - **Voice Agents with Google's ADK** — Agent Development Kit for speech input/output, context
   continuity.
-- **Lab 14:** Build a live Voice Support Agent (ADK + OpenAI).
+- **Lab 15:** Build a live Voice Support Agent (ADK + OpenAI).
 - **Governance with Databricks** — tracking agent actions, data lineage, audit logs, HR
   analytics.
-- **Lab 15:** Build an HR Governance Agent that audits agent activity logs.
+- **Lab 16:** Build an HR Governance Agent that audits agent activity logs.
 
 ### V. Final Capstone Project
 
@@ -115,7 +120,7 @@ Five days.
 | Day | Focus | Modules | Labs |
 |-----|-------|---------|------|
 | 1 | Foundations of Agentic AI | 01 | 1, 2 |
-| 2 | Reflection, Tools & Evaluation | 02, 03 | 3, 4, 5 |
-| 3 | Advanced Agentic Patterns | 04, 05 | 6, 7 |
-| 4 | Frameworks & Deployment | 06, 07, 08, 09, 10 | 8, 9, 10, 11, 12, 13 |
-| 5 | Voice, Governance & Capstone | 11, 12, 13 | 14, 15, Capstone |
+| 2 | Reflection, Tools, RAG & Vector DBs | 02, 03, 04 | 3, 4, 5, 6 |
+| 3 | Advanced Agentic Patterns | 05, 06 | 7, 8 |
+| 4 | Frameworks & Deployment | 07, 08, 09, 10, 11 | 9, 10, 11, 12, 13, 14 |
+| 5 | Voice, Governance & Capstone | 12, 13, 14 | 15, 16, Capstone |

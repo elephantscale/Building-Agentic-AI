@@ -32,11 +32,11 @@ done < "$ROOT_DIR/slides/slide-list.txt"
 printf "\n${B}Labs${N}\n"
 expected_labs=(
   01-Agent-Loop-Setup 02-Research-Assistant 03-Reflective-Summarization
-  04-Python-Functions-to-Tools 05-Email-Assistant 06-Evaluate-Benchmark
-  07-Onboarding-Assistant 08-LangGraph-Essay-Writer 09-Zapier-CustomGPT
-  10-NoCode-CRM-Agent 11-Bedrock-CRM-Assistant 12-DSPy-SelfImproving
-  13-Claude-Coding-Assistant 14-Voice-Support-Agent 15-HR-Governance-Agent
-  16-Capstone
+  04-Python-Functions-to-Tools 05-Email-Assistant 06-RAG-Vector-DB
+  07-Evaluate-Benchmark 08-Onboarding-Assistant 09-LangGraph-Essay-Writer
+  10-Zapier-CustomGPT 11-NoCode-CRM-Agent 12-Bedrock-CRM-Assistant
+  13-DSPy-SelfImproving 14-Claude-Coding-Assistant 15-Voice-Support-Agent
+  16-HR-Governance-Agent 17-Capstone
 )
 for lab in "${expected_labs[@]}"; do
   [ -f "$ROOT_DIR/labs/$lab/README.md" ] && ok "$lab README" || bad "$lab README missing"
@@ -45,7 +45,7 @@ done
 printf "\n${B}Content checks${N}\n"
 grep -qi "Building Agentic AI" "$ROOT_DIR/README.md" && ok "README course title" || bad "README course title missing"
 grep -qi "Course Outline" "$ROOT_DIR/outline.md" && ok "outline has course outline" || bad "outline course outline missing"
-grep -qi "Capstone" "$ROOT_DIR/labs/16-Capstone/README.md" && ok "capstone lab present" || bad "capstone lab missing"
+grep -qi "Capstone" "$ROOT_DIR/labs/17-Capstone/README.md" && ok "capstone lab present" || bad "capstone lab missing"
 
 printf "\n"
 if [ "$FAIL" -eq 0 ]; then printf "${G}${B}Course repo structure is valid.${N}\n"; exit 0

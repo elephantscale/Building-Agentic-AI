@@ -218,8 +218,8 @@ run_end{success:true}`.
 1. Run the default question offline. Narrate the **plan** appearing before any search — *"the
    agent decided its approach first."*
 2. `cat run-log.jsonl` and walk the event sequence against `audit-log-schema.md`. Emphasize:
-   append-only, bounded payloads, totals belong on `run_end`. *"This exact log powers Lab 6
-   evaluation and Lab 15 governance."*
+   append-only, bounded payloads, totals belong on `run_end`. *"This exact log powers Lab 7
+   evaluation and Lab 16 governance."*
 3. Ask a one-fact question ("What is a scratchpad?") — one search, one step. Then the two-part
    default — several steps. This is single- vs multi-step reasoning made visible.
 4. Set `MAX_STEPS=1`, ask something broad, show the clean stop and `success:false` in the log.

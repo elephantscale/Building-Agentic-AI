@@ -48,16 +48,17 @@ autonomous agents. Basic Python and comfort with API calls and JSON are assumed.
 | 1 | 01 | Foundations of Agentic AI | `labs/01-Agent-Loop-Setup`, `labs/02-Research-Assistant` |
 | 2 | 02 | Reflection & Self-Evaluation | `labs/03-Reflective-Summarization` |
 | 2 | 03 | Tools, Structured Output & MCP | `labs/04-Python-Functions-to-Tools`, `labs/05-Email-Assistant` |
-| 3 | 04 | Evaluation, Error Analysis & Debugging | `labs/06-Evaluate-Benchmark` |
-| 3 | 05 | Multi-Agent Systems & Planning | `labs/07-Onboarding-Assistant` |
-| 4 | 06 | LangGraph & Tavily | `labs/08-LangGraph-Essay-Writer` |
-| 4 | 07 | Low-Code Agentic Design | `labs/09-Zapier-CustomGPT`, `labs/10-NoCode-CRM-Agent` |
-| 4 | 08 | Agentic on AWS Bedrock | `labs/11-Bedrock-CRM-Assistant` |
-| 4 | 09 | DSPy & Databricks | `labs/12-DSPy-SelfImproving` |
-| 4 | 10 | Agentic with Claude | `labs/13-Claude-Coding-Assistant` |
-| 5 | 11 | Voice Agents with Google ADK | `labs/14-Voice-Support-Agent` |
-| 5 | 12 | Governance with Databricks | `labs/15-HR-Governance-Agent` |
-| 5 | 13 | Capstone: Enterprise AI Agent Challenge | `labs/16-Capstone` |
+| 2 | 04 | RAG & Vector Databases | `labs/06-RAG-Vector-DB` |
+| 3 | 05 | Evaluation, Error Analysis & Debugging | `labs/07-Evaluate-Benchmark` |
+| 3 | 06 | Multi-Agent Systems & Planning | `labs/08-Onboarding-Assistant` |
+| 4 | 07 | LangGraph & Tavily | `labs/09-LangGraph-Essay-Writer` |
+| 4 | 08 | Low-Code Agentic Design | `labs/10-Zapier-CustomGPT`, `labs/11-NoCode-CRM-Agent` |
+| 4 | 09 | Agentic on AWS Bedrock | `labs/12-Bedrock-CRM-Assistant` |
+| 4 | 10 | DSPy & Databricks | `labs/13-DSPy-SelfImproving` |
+| 4 | 11 | Agentic with Claude | `labs/14-Claude-Coding-Assistant` |
+| 5 | 12 | Voice Agents with Google ADK | `labs/15-Voice-Support-Agent` |
+| 5 | 13 | Governance with Databricks | `labs/16-HR-Governance-Agent` |
+| 5 | 14 | Capstone: Enterprise AI Agent Challenge | `labs/17-Capstone` |
 
 ## Lab Environment
 
