@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# PPTX build output from slides/gen.sh (Mark builds decks locally; artifacts are not source)
+slides/assembly.out/
+slides/assembly.out.*/
