@@ -36,6 +36,11 @@ led delivery; extends the ES agentic/AI-applications catalog.
 - 2026-10-07: Keyless smoke test of all 16 labs in an isolated venv. `requirements-all.txt`
   installs clean, zero resolver conflicts. **8 labs run fully offline** (06, 07, 08, 09, 10,
   14, 15, 16). Found two real fallback bugs (Lab 11 Bedrock, Lab 12 DSPy — see Risks).
+- 2026-10-07: Added a **Day-2 RAG & Vector DBs module** (thin deck 04 + new Lab 06, offline
+  NumPy vector store with grounding/citations). Renumbered later decks/labs; validators green.
+- 2026-10-07: Reviewed against Ng's DeepLearning.AI "Agentic AI" course + Edureka's cert.
+  Conclusion: our spine maps 1:1 to Ng and is appropriately concept-first; **no slide/lab
+  changes needed** — Mark delivers the extra framings (e.g. degrees-of-autonomy spectrum) live.
 
 ## Current priorities
 
