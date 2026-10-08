@@ -30,6 +30,17 @@ pip install -r requirements.txt
 
 A convenience superset lives at `labs/requirements-all.txt` if you prefer to install once.
 
+**For the delivered class VM, install the frozen lockfile instead** — exact, smoke-tested,
+reproducible versions (so every machine matches what was tested):
+
+```sh
+pip install -r labs/requirements-lock.txt
+```
+
+The lock pins a coherent, seasoned set (openai 2.x, anthropic 0.9x, langchain/langgraph 1.x,
+dspy 3.1.x, numpy 2.4.x) — deliberately a few months behind the bleeding edge so nothing shifts
+under the class. Regenerate it only after a fresh smoke test.
+
 ## Keys
 
 Copy the template and fill in the keys handed out in class:
