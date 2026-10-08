@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-10-07
+**Last updated:** 2026-10-08
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -41,6 +41,10 @@ led delivery; extends the ES agentic/AI-applications catalog.
 - 2026-10-07: Reviewed against Ng's DeepLearning.AI "Agentic AI" course + Edureka's cert.
   Conclusion: our spine maps 1:1 to Ng and is appropriately concept-first; **no slide/lab
   changes needed** — Mark delivers the extra framings (e.g. degrees-of-autonomy spectrum) live.
+- 2026-10-08: Fixed the two keyless-crash labs from the smoke test (Bedrock → offline stub;
+  DSPy → graceful needs-key exit). After the RAG renumber, **7 of 17 labs still require live
+  LLM egress** (01-05, 13-DSPy, 14-Claude); the rest run fully offline. This is the key fact for
+  the BofA network question.
 
 ## Current priorities
 
@@ -66,9 +70,10 @@ led delivery; extends the ES agentic/AI-applications catalog.
 - **Awaiting Celia (ProTech)** reply re: setup — is the network restricted / public LLM + GitHub access available, and who provides API keys/accounts. *Sent 2026-10-07.*
 - **Awaiting John (BofA) / Fluor-Dani side** reply re: AI-usage limitations (allowed providers/models, data-handling rules, network/API access) — gates which models the labs default to. **High likelihood of bank restrictions.** *Sent 2026-10-07; stated Claude as the default lab model.*
 - Email drafts archived in a Claude Doc: https://claude.ai/code/artifact/d121dfee-b406-430c-8a81-25a84ede1493
-- **Fix Lab 11 (Bedrock) and Lab 12 (DSPy) fallbacks** — their "local" paths crash with an
-  uncaught exception when no LLM key is present. Make them run offline, or at minimum fail with
-  a clear "needs key" message. *(Lab numbers are pre-RAG-insertion; will shift after renumber.)*
+- ~~Fix Lab 11/12 (Bedrock/DSPy) fallbacks~~ **DONE 2026-10-08** (now Lab 12/13 after renumber):
+  Bedrock CRM gained a true offline deterministic stub (runs with no key/network); DSPy now exits
+  cleanly with a "needs an LLM key" message (it has no LLM-free mode — prompt optimization needs a
+  model). Both verified keyless.
 - **Freeze a dependency lockfile** (`pip freeze` of the known-good set) before delivery — all
   pins are unbounded `>=` and the class VM floated to newest majors (openai 2.x, langchain 1.x,
   dspy 3.4, pandas 3.0). Validate DSPy Lab end-to-end on 3.x or pin to 2.6.x.
