@@ -52,14 +52,19 @@ led delivery; extends the ES agentic/AI-applications catalog.
   current library versions before first delivery.
 - Mark builds the PPTX decks himself on the Mac (per house rules — Claude never builds PPTX).
 - **Work through DeepLearning.AI's “Agentic AI” Coursera course (Ng)** to align/refresh before delivery.
-- **Confirm the end client's lab environment with ProTech** (public-LLM + GitHub access, shared repo vs. ship-ahead) *before* finalizing labs — cloud-dependent agentic labs won't run in a restricted environment.
+- **Lab environment: requirements sent to ProTech (2026-10-07); proceeding on the assumption
+  they'll provision** public-LLM + GitHub access + keys (see Working assumption). Not treated as
+  a blocker.
 
 ## Customers and revenue connections
 
 - **ProTech** (reseller). Contacts: **Philip A. Anderson Jr. — CEO** (panderson@protechtraining.com); **Mathew Caccavale**; **Celia Woronowicz** (logistics/setup).
 - **End client (confirmed): Bank of America — 12 students** (ProTech contact **John**, cc'd) **+ Fluor — 2 students** (prior ES client, trained for **Dani**). **14 total.**
 - Philip confirmed (2026-10-05) the engagement is on and **Mark is teaching**.
-- **AI-usage limitations are the open question — and BofA is a highly regulated bank**, so expect strict rules on which providers/models and what data may touch a hosted model. Ask **John (BofA)** and the **Fluor/Dani** side what AI is permitted — this drives default model choices and whether cloud labs run live or fall back to local. cf. the NNL ProTech engagement, where a restricted/secure network broke cloud-dependent labs.
+- **AI-usage / environment: requirements sent to John (BofA) and Celia (ProTech) 2026-10-07.**
+  Per Mark, assume they'll provision per spec (public LLM + GitHub + keys), with Claude as the
+  default model. Fallbacks remain as insurance. Will adjust only if they come back with a
+  specific restriction. (Prior NNL ProTech engagement is the cautionary precedent.)
 
 ## Upcoming deadlines
 
@@ -67,8 +72,9 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 ## Important TODOs
 
-- **Awaiting Celia (ProTech)** reply re: setup — is the network restricted / public LLM + GitHub access available, and who provides API keys/accounts. *Sent 2026-10-07.*
-- **Awaiting John (BofA) / Fluor-Dani side** reply re: AI-usage limitations (allowed providers/models, data-handling rules, network/API access) — gates which models the labs default to. **High likelihood of bank restrictions.** *Sent 2026-10-07; stated Claude as the default lab model.*
+- **Celia (ProTech) + John (BofA): setup/AI-usage requests sent 2026-10-07.** Proceeding on the
+  assumption they'll provision per spec (public LLM + GitHub + keys, Claude as default). Chase
+  only if we hit the week without confirmation; adjust if they flag a restriction.
 - Email drafts archived in a Claude Doc: https://claude.ai/code/artifact/d121dfee-b406-430c-8a81-25a84ede1493
 - ~~Fix Lab 11/12 (Bedrock/DSPy) fallbacks~~ **DONE 2026-10-08** (now Lab 12/13 after renumber):
   Bedrock CRM gained a true offline deterministic stub (runs with no key/network); DSPy now exits
@@ -91,19 +97,31 @@ led delivery; extends the ES agentic/AI-applications catalog.
 
 - Framework APIs (LangGraph, DSPy, ADK, Bedrock) move fast; lab code may need version pinning
   and a pre-delivery smoke test.
-- **Bank-of-America restrictions (elevated).** As a major bank, BofA likely restricts public
-  LLM API access, external GitHub, and what data may touch hosted models. If so, cloud labs
-  must run in local-fallback mode and model defaults may need to change. Confirm before
-  delivery; our local fallbacks are the mitigation but need a smoke test in that mode.
+- **Bank-of-America environment (now a managed assumption, not a blocker).** Per Mark, we assume
+  ProTech/BofA will provision public LLM + GitHub access + keys as requested. Residual risk if
+  they don't: 7 labs need live LLM egress (01-05, 13-DSPy, 14-Claude). Mitigation already in
+  place — 10/17 labs run fully offline, and the fallbacks were smoke-tested keyless.
+
+## Related initiatives
+
+- **Recorded practice on sealearning.ca** (adjacent to this delivery). Mark + partner **Moshe
+  Shamy** plan to record pieces of the course as self-paced practice content. Early-stage
+  experiment; the offline, self-contained labs are the best candidates for short segments.
+
+## Working assumption (set by Mark, 2026-10-08)
+
+- **Assume John (BofA) and Celia (ProTech) will provision what we ask for** — public LLM API
+  access (OpenAI/Anthropic), GitHub access, and class API keys. Plan the delivery on that
+  assumption; do **not** design around a worst-case locked-down network. The local fallbacks
+  stay as insurance, not the base plan. Requirements were sent to both on 2026-10-07.
 
 ## Decisions needed from Mark
 
-- Confirm delivery customer and date.
-- Confirm which cloud accounts will be available in the class VM (drives cloud-vs-fallback
-  emphasis).
+- Whether to freeze a dependency lockfile before delivery (recommended — see TODOs).
+- (Customer/date confirmed: BofA + Fluor, 2026-10-19 → 10-23.)
 
 ## Next three highest-value actions
 
-1. Review + smoke-test the six framework labs against pinned library versions.
-2. Confirm delivery logistics (customer, date, available cloud accounts).
-3. Add slide imagery and build PPTX (Mark, on Mac).
+1. **Freeze a pinned dependency lockfile** so the class VM is reproducible (stops version float).
+2. Keep Claude as the default lab model (assume it's approved); build PPTX decks (Mark, on Mac).
+3. Add slide imagery where decks would benefit.
