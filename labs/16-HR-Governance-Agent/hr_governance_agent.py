@@ -1,5 +1,5 @@
 """
-Lab 15 - HR Governance Agent (audits agent activity logs).
+Lab 16 - HR Governance Agent (audits agent activity logs).
 
 This agent does NOT act on HR data. It AUDITS other agents' behavior. It ingests
 an append-only activity log (JSONL, per course-materials/audit-log-schema.md),

@@ -13,7 +13,13 @@ is blocked by an AWS account**. You flip one environment variable to switch:
 ```text
 CRM_BACKEND=BEDROCK   ->  boto3 converse() against Bedrock (cloud)
 CRM_BACKEND=LOCAL     ->  anthropic/openai direct + SQLite CRM (works offline of AWS)
+                         with NO LLM key, LOCAL auto-uses an offline deterministic
+                         stub (no model, no network) — same tools, gate, and audit log
 ```
+
+> **Fully offline option.** On a locked-down network with no model access, just run the
+> `LOCAL` backend without a key: it falls back to a rule-based stub so the governed
+> workflow (tools → human gate → audit log) still runs end to end.
 
 Only the transport changes. The tool definitions, the human gate, the max-steps cap, and the
 JSONL audit log are shared code — that is the whole lesson: **the agent pattern is portable.**

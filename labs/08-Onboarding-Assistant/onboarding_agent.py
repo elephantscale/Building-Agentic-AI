@@ -1,5 +1,5 @@
 """
-Lab 7 - A planning-driven onboarding assistant (plan-then-execute + supervisor).
+Lab 8 - A planning-driven onboarding assistant (plan-then-execute + supervisor).
 
 A new hire arrives. This agent:
 

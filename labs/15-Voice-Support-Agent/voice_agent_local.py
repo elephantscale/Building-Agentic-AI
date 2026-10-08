@@ -1,5 +1,5 @@
 """
-Lab 14 - Live Voice Support Agent (local text fallback).
+Lab 15 - Live Voice Support Agent (local text fallback).
 
 This is the SAME support agent you would run over Google ADK's audio path
 (README "Path A"), driven here over a TEXT transcript so nobody is blocked by
@@ -351,7 +351,7 @@ def try_run_adk() -> bool:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Lab 14 voice support agent (local).")
+    ap = argparse.ArgumentParser(description="Lab 15 voice support agent (local).")
     ap.add_argument("--once", action="store_true", help="read one line from stdin and exit")
     ap.add_argument("--script", help="path to a text file, one caller turn per line")
     args = ap.parse_args()

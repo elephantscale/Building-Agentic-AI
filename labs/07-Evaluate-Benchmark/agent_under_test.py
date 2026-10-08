@@ -1,5 +1,5 @@
 """
-Lab 6 - The agent under test: a small tool-using QA agent.
+Lab 7 - The agent under test: a small tool-using QA agent.
 
 This is the *thing we evaluate*, not the evaluator. It answers questions about a
 fictional company (Northwind) using two tools:

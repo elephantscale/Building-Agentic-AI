@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Lab 12 — Self-Improving Agent with DSPy + Delta-style analytics.
+Lab 13 — Self-Improving Agent with DSPy + Delta-style analytics.
 
 We build a support-ticket classifier as a DSPy program (Signature + ChainOfThought),
 define a metric, measure a BASELINE on a held-out dev set, then run the BootstrapFewShot
@@ -17,6 +17,7 @@ Run:
 """
 
 import os
+import sys
 import json
 import datetime
 from pathlib import Path
@@ -117,7 +118,35 @@ def write_runs(rows):
     return df
 
 
+def _has_llm_key(model: str) -> bool:
+    provider = model.split("/", 1)[0].lower()
+    if provider == "anthropic":
+        return bool(os.getenv("ANTHROPIC_API_KEY"))
+    if provider == "openai":
+        return bool(os.getenv("OPENAI_API_KEY"))
+    # Unknown provider prefix: accept if either common key is present.
+    return bool(os.getenv("OPENAI_API_KEY") or os.getenv("ANTHROPIC_API_KEY"))
+
+
 def main():
+    # This lab OPTIMIZES an LLM program, so it genuinely needs model access - the
+    # "local fallback" here is the Parquet/Delta analytics swap, not an LLM-free mode.
+    # Fail clearly instead of deep in a litellm traceback when no key is configured.
+    if not _has_llm_key(MODEL):
+        provider = MODEL.split("/", 1)[0].lower()
+        key = "ANTHROPIC_API_KEY" if provider == "anthropic" else "OPENAI_API_KEY"
+        print(
+            f"This lab needs an LLM key to run (DSPy bootstraps and scores real model calls).\n"
+            f"  - Set {key} in labs/.env, or\n"
+            f"  - choose another provider with DSPY_MODEL, e.g. "
+            f"DSPY_MODEL=anthropic/claude-haiku-4-5-20251001\n"
+            f"Unlike the other cloud labs, there is no offline mode: optimizing prompts "
+            f"requires a model. The Databricks part already runs locally (Parquet stands in "
+            f"for Delta).",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
     dspy.configure(lm=dspy.LM(MODEL, temperature=0.0))
     print(f"Model: {MODEL}")
 

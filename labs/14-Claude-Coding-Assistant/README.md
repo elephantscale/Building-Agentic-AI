@@ -21,7 +21,7 @@ it. Then it **remembers** the decision so the next session starts smarter.
 - Python 3.11+, `pip`
 - `labs/.env` with `ANTHROPIC_API_KEY`
 - `anthropic`, `python-dotenv`
-- Concept deck: `slides/10-claude-agents.md`; safety: `course-materials/agent-safety-checklist.md`
+- Concept deck: `slides/11-claude-agents.md`; safety: `course-materials/agent-safety-checklist.md`
 
 ## Files in this lab
 

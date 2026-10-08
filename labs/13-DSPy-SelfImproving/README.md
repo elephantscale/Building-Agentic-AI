@@ -20,7 +20,11 @@ local stand-in for a Databricks **Delta table** (the one-line Delta equivalent i
 - Python 3.11+, `pip`
 - `labs/.env` with `OPENAI_API_KEY` (default), or set `DSPY_MODEL=anthropic/claude-haiku-4-5-20251001`
 - `dspy-ai`, `pandas`, `pyarrow`
-- Concept deck: `slides/09-dspy-databricks.md`
+- Concept deck: `slides/10-dspy-databricks.md`
+
+> **This lab needs an LLM key.** Unlike the other cloud labs, there is no LLM-free fallback —
+> optimizing prompts requires real model calls. The "local" part is only the Databricks → Parquet
+> swap. With no key the lab exits immediately with a clear message (not a traceback).
 
 ## Files in this lab
 

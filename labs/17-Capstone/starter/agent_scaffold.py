@@ -65,7 +65,7 @@ class AuditLog:
 class ToolRegistry:
     """Holds tools with a safety class and enforces the human gate on dangerous
     ones. `approver` is a callable(tool, args) -> bool; swap the default for a
-    real UI, a Slack approval, or a spoken confirmation (Lab 14)."""
+    real UI, a Slack approval, or a spoken confirmation (Lab 15)."""
 
     def __init__(self, audit: AuditLog, approver=None):
         self.tools = {}                          # name -> (fn, safety_class)

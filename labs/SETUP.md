@@ -72,8 +72,8 @@ load_dotenv()  # reads labs/.env
 | Lab | Cloud | Local Fallback |
 |-----|-------|----------------|
 | 10, 11 — Zapier + Custom GPT | Zapier / ChatGPT | Documented flow + a Python simulator of the same steps |
-| 12 — Bedrock CRM | AWS Bedrock Agent Runtime | Same agent against OpenAI/Anthropic + a local SQLite CRM |
-| 13 — DSPy self-improving | Databricks + Delta | DSPy locally + a Parquet/CSV "Delta" table |
+| 12 — Bedrock CRM | AWS Bedrock Agent Runtime | OpenAI/Anthropic + local SQLite CRM, **or an offline deterministic stub with no key** |
+| 13 — DSPy self-improving | Databricks + Delta | DSPy locally + a Parquet/CSV "Delta" table. **Needs an LLM key** — optimizing prompts requires a model (no LLM-free mode) |
 | 15 — Voice ADK | Google ADK | Local STT/TTS stub + text transcript path |
 | 16 — Governance | Databricks Unity Catalog | Local JSONL audit log + Python audit queries |
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Lab 13 — Claude Coding Assistant with Persistent Memory.
+Lab 14 — Claude Coding Assistant with Persistent Memory.
 
 A multi-tool coding assistant on Anthropic's Messages API. It can:
 

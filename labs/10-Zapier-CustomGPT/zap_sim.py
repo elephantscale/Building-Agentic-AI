@@ -1,5 +1,5 @@
 """
-Lab 9 - Local simulator of a ChatGPT + Zapier business-automation workflow.
+Lab 10 - Local simulator of a ChatGPT + Zapier business-automation workflow.
 
 If you don't have a Zapier or ChatGPT account, this script models the EXACT same
 four-box pipeline the SaaS version builds, so you complete the same learning

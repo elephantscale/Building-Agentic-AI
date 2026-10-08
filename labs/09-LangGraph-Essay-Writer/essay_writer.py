@@ -1,5 +1,5 @@
 """
-Lab 8 - An Essay Writer agent on LangGraph: retrieval + reflection.
+Lab 9 - An Essay Writer agent on LangGraph: retrieval + reflection.
 
 We turn the reflect/revise loop we built by hand into a proper state graph. The
 graph has five nodes wired into a cycle:

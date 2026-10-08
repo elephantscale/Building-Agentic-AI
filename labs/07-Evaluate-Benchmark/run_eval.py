@@ -1,5 +1,5 @@
 """
-Lab 6 - The evaluator.
+Lab 7 - The evaluator.
 
 Runs the agent under test over a FROZEN eval set, scores each run with
 DETERMINISTIC checks plus an LLM-as-JUDGE, benchmarks two variants

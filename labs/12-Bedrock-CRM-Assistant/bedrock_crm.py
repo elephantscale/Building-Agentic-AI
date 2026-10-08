@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Lab 11 — CRM Assistant on AWS Bedrock (with a local fallback).
+Lab 12 — CRM Assistant on AWS Bedrock (with a local fallback).
 
 The SAME agent logic — same tools, same human gate, same audit log — runs against:
 
@@ -22,6 +22,7 @@ Run:
 """
 
 import os
+import re
 import sys
 import json
 import uuid
@@ -364,6 +365,69 @@ def run_local_openai(task: str):
 
 
 # ---------------------------------------------------------------------------
+# Backend C (local) — deterministic STUB (no LLM, no key, no network)
+# ---------------------------------------------------------------------------
+# For a locked-down network with no model access, this parses the task and drives
+# the SAME tools through the SAME human gate + audit log. It is not an LLM - it is a
+# rule-based planner so the governed workflow is demonstrable fully offline.
+_ACCT_RE = re.compile(r"[A-Z][A-Z0-9]*-\d+")
+_FIELD_SYNONYMS = {
+    "plan": "plan", "seats": "seats", "mrr": "mrr_usd", "mrr_usd": "mrr_usd",
+    "status": "status", "owner": "owner_email", "owner_email": "owner_email",
+}
+_SET_RE = re.compile(
+    r"\b(?:set|change|update|make)\b.*?\b(plan|seats|mrr_usd|mrr|status|owner_email|owner)\b"
+    r"\s+(?:to|=|:)?\s+([A-Za-z0-9_.@-]+)", re.I)
+
+
+def run_local_stub(task: str):
+    """Deterministic offline backend. No model, no key - parses + calls tools."""
+    log("plan", mode="stub", note="deterministic offline backend (no LLM)")
+    parts = []
+
+    # 1) Identify the account: exact id if present, else search.
+    m_acct = _ACCT_RE.search(task)
+    acct = None
+    if m_acct:
+        acct = m_acct.group(0)
+        cust = dispatch("get_customer", {"account_id": acct})
+    else:
+        cust = dispatch("search_customers", {"query": task})
+        if cust.get("ok") and cust.get("results"):
+            acct = cust["results"][0]["account_id"]
+            cust = dispatch("get_customer", {"account_id": acct})
+
+    if acct and cust.get("ok") and cust.get("customer"):
+        c = cust["customer"]
+        parts.append(f"{c['account_id']} ({c['name']}): plan={c['plan']}, "
+                     f"seats={c['seats']}, status={c['status']}.")
+    else:
+        parts.append("No matching account found.")
+
+    # 2) Detect an update intent and route the write through the human gate.
+    m_set = _SET_RE.search(task)
+    if m_set and acct:
+        field = _FIELD_SYNONYMS[m_set.group(1).lower()]
+        value = m_set.group(2)
+        upd = dispatch("update_customer",
+                       {"account_id": acct, "field": field, "value": value})
+        if upd.get("ok"):
+            parts.append(f"Updated {acct}: {field} -> {value}.")
+        else:
+            parts.append(f"Update not applied ({upd.get('error')}).")
+
+    return " ".join(parts)
+
+
+def _has_key(provider: str) -> bool:
+    if provider == "openai":
+        return bool(os.getenv("OPENAI_API_KEY"))
+    if provider == "anthropic":
+        return bool(os.getenv("ANTHROPIC_API_KEY"))
+    return True  # stub needs nothing
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 BACKEND = os.getenv("CRM_BACKEND", "LOCAL").upper()
@@ -377,15 +441,26 @@ def main():
         or "Look up account ACME-1042, then change its plan to business."
     )
     init_db()
-    print(f"Backend: {BACKEND}"
-          + (f" ({LOCAL_PROVIDER})" if BACKEND == "LOCAL" else f" ({BEDROCK_MODEL})"))
+
+    # Pick the LOCAL provider, and fall back to the offline stub if its key is missing
+    # so the lab never crashes on a restricted network.
+    provider = LOCAL_PROVIDER
+    if BACKEND == "LOCAL" and provider in ("anthropic", "openai") and not _has_key(provider):
+        print(f"[note] LOCAL_PROVIDER={provider} but no API key found "
+              f"-> using the offline deterministic stub (no LLM).")
+        provider = "stub"
+
+    label = BEDROCK_MODEL if BACKEND == "BEDROCK" else provider
+    print(f"Backend: {BACKEND} ({label})")
     print(f"Task:    {task}\n")
     log("run_start", task=task)
 
     if BACKEND == "BEDROCK":
         answer = run_bedrock(task)
-    elif LOCAL_PROVIDER == "openai":
+    elif provider == "openai":
         answer = run_local_openai(task)
+    elif provider == "stub":
+        answer = run_local_stub(task)
     else:
         answer = run_local_anthropic(task)
 

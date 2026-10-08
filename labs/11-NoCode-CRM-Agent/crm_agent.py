@@ -1,5 +1,5 @@
 """
-Lab 10 - A no-code-style AI CRM agent, run locally against SQLite.
+Lab 11 - A no-code-style AI CRM agent, run locally against SQLite.
 
 The no-code version (Zapier + Custom GPT) classifies an inbound lead/ticket and
 drafts a CRM update, then puts EVERY write behind a human-approval step. This
