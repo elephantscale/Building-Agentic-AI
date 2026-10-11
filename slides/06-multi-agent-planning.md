@@ -11,6 +11,7 @@ Elephant Scale
 * Multi-agent conversation flows and sequential chatbots
 * Orchestration patterns: **supervisor/worker**, **pipeline**, **debate**
 * Handoffs and **shared state** — how agents pass work without losing it
+* **Agent interop across systems** — MCP vs **A2A** (Agent2Agent)
 * **Planning-driven agents** — plan-then-execute for onboarding and blog generation
 * The real risks: **compounding errors** and **cost**
 * Lab 8: a planning-driven onboarding assistant
@@ -210,6 +211,51 @@ Notes:
 
 ---
 
+## Agents Across System Boundaries — A2A
+
+* Everything so far: agents **you built**, in **one process**, sharing one state object
+* Real orgs also run agents **they didn't build** — another team's, another vendor's, behind an API
+* Two 2025 protocols, one per axis — and they **compose**:
+  - **MCP** (Module 3) — connects an agent to **tools & data** (vertical)
+  - **A2A** (Agent2Agent) — connects an agent to **other agents** (horizontal)
+
+```text
+        tools / data                    another team's agent
+             ^                                    ^
+             | MCP                                | A2A
+             |                                    |
+        [ your agent ] <-------- A2A --------> [ peer agent ]
+```
+
+* Your agent uses **MCP** to reach its own tools and **A2A** to delegate to a peer
+
+> MCP is how an agent reaches its tools. A2A is how an agent reaches another agent. A real system needs both.
+
+Notes:
+
+---
+
+## A2A — The Task / Artifact Model
+
+* A peer agent publishes an **Agent Card** — its skills, endpoint, and auth (the "menu")
+* You delegate by opening a **task**; the remote agent runs its *own* loop and reports back
+* The task moves through a **lifecycle** you can poll or stream:
+
+```text
+discover (Agent Card) -> submit task -> [ working | input-required ] -> completed
+                                              |
+                         messages (the conversation) + artifacts (the deliverables)
+```
+
+* The peer is **opaque** — you see its card and its outputs, never its prompt or tools
+* So it's a **trust boundary you don't control**: its messages and artifacts are **untrusted data** — validate, ground, and gate before acting, exactly as with any tool output
+
+> A2A treats a remote agent like a contractor: you get its menu and its deliverables, not the keys to its shop.
+
+Notes:
+
+---
+
 ## Planning-Driven Agents (Plan-Then-Execute)
 
 * Two phases instead of one improvised loop:
@@ -328,6 +374,7 @@ Notes:
 * **Supervisor/worker** for flexibility, **pipeline** for predictability, **debate** for robustness
 * **Plan-then-execute** turns open-ended loops into testable, checklist-style deliverables
 * Keep one **shared state**; treat every handoff as untrusted and log it
+* **Across systems**, reach your tools with **MCP** and peer agents with **A2A** — a peer is a trust boundary you don't control
 * Watch **compounding errors** and **cost** — gate the joints, budget the whole team
 
 > A multi-agent system is a small org. Give it clear roles, a coordinator, a budget, and an audit trail.
