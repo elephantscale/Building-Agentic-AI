@@ -149,10 +149,10 @@ A row in `results.jsonl`:
 
 ## Explore it interactively (VSCode)
 
-Prefer stepping through the harness one piece at a time? Open **`explore.py`** in VSCode and run it
-cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as `run_eval.py`,
-driven in `# %%` cells so you can inspect one case's full trace, its deterministic-vs-judged scores,
-and the base-vs-reflection benchmark. Runs **offline** (deterministic), or with a key for real models.
+Step through the harness one piece at a time — open **`explore.ipynb`** (notebook, ships with saved
+outputs) or **`explore.py`** (VSCode `# %%` cells, Shift+Enter). Same code as `run_eval.py`; inspect
+one case's full trace, its deterministic-vs-judged scores, and the base-vs-reflection benchmark. Runs
+**offline** (deterministic), or with a key for real models. (Needs the Python + Jupyter extensions.)
 
 ## Deliverable
 

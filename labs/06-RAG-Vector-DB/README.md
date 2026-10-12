@@ -139,12 +139,18 @@ Grounded answer:
 I couldn't find that in the knowledge base, so I won't guess. A human should follow up.
 ```
 
-## Explore it interactively (VSCode)
+## Explore it interactively
 
-Prefer stepping through the pipeline one stage at a time? Open **`explore.py`** in VSCode and run
-it cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as `rag.py`,
-driven in `# %%` cells so you can inspect each intermediate value — the chunks, the embeddings, the
-retrieval scores, and the off-topic guard collapsing to ~0. Runs **fully offline**, like the CLI.
+Step through the pipeline one stage at a time — two equivalent ways, same content:
+
+- **Notebook:** open **`explore.ipynb`** (ships with outputs already saved, so you can see what a
+  correct run looks like before you run it). Needs the VSCode Python + Jupyter extensions.
+- **VSCode cells:** open **`explore.py`** and run it with **Shift+Enter** (`# %%` cells). This is
+  the source of truth; regenerate the notebook with `python scripts/py-to-ipynb.py <file>`.
+
+It drives the same code as `rag.py` and runs **fully offline**. Work the three beats:
+**🔮 Predict** before each retrieval cell, **🛠️ Your turn** on the abstain-threshold cell, and
+**🗣️ Explain** why the off-topic question scores near zero.
 
 ## Deliverable
 
@@ -173,6 +179,24 @@ question where a bad chunk boundary hurts the answer.
   falls back to local on purpose so it never blocks.
 
 ## Teacher's Playbook
+
+**Companion exercise — reference answer (`explore.ipynb` / `explore.py`).**
+- **🔮 Predict (§3):** top passage comes from `returns.md` (the only doc about return windows). The
+  score is **modest — ~0.14**, not ~0.5: the toy embedder only counts shared content words, so even
+  a good match isn't close to 1.0. Students who guessed "high" learn that absolute cosine values
+  here are small; what matters is the *gap* over off-topic. **(§4):** "capital of France" scores
+  **~0.057 — below `MIN_SCORE` (0.08)** — so the agent must answer *"not in the knowledge base."*
+- **🛠️ Your turn (§6):** the four probes score about: return window **0.14**, refund shipping
+  **0.45** (both on-topic), capital of France **0.057**, price match **0.00** (both off-topic). So
+  **any threshold in the window ~0.06–0.14 separates them cleanly**; the default **0.08** sits right
+  in it. Push `THRESHOLD` **above ~0.14** and the real return-window question wrongly **ABSTAINS**
+  (false refusals); drop it **below ~0.057** and "capital of France" wrongly **ANSWERS**
+  (hallucination). The teaching point: **recall vs. caution is one tunable number**, and in
+  production you pick it from a labeled eval set — not by eye.
+- **🗣️ Explain:** similarity is driven by **shared content words** — `_tokens` lowercases, drops
+  `_STOPWORDS`, and hashes each remaining word to a dimension. Questions about returns collide with
+  the returns doc on "return/refund/shipping/days"; "capital/France/Paris" hit dimensions nothing
+  in the corpus uses, so the dot product is ~0. No learned language — just vocabulary overlap.
 
 **Worked answer / what good looks like.** A complete submission retrieves the right source for
 in-corpus questions, cites it, and **refuses** out-of-corpus ones. The strongest students can

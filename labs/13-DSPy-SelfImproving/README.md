@@ -124,10 +124,10 @@ scores higher without you editing a single prompt string.
 
 ## Explore it interactively (VSCode)
 
-Prefer watching self-improvement happen one stage at a time? Open **`explore.py`** in VSCode and run
-it cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as
-`self_improving.py`, driven in `# %%` cells so you can inspect the Signature, the baseline score, the
-BootstrapFewShot run, and the few-shot demos the optimizer taught itself. Needs an LLM key, like the CLI.
+Watch self-improvement happen one stage at a time — open **`explore.ipynb`** (notebook) or
+**`explore.py`** (VSCode `# %%` cells, Shift+Enter). Same code as `self_improving.py`; inspect the
+Signature, the baseline score, the BootstrapFewShot run, and the few-shot demos the optimizer taught
+itself. Needs an LLM key (outputs fill in live when you run it), like the CLI. (Python + Jupyter extensions.)
 
 ## Deliverable
 

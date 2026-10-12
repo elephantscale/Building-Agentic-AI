@@ -1,14 +1,17 @@
 # %% [markdown]
-# # Lab 6 — RAG, step by step (VSCode Interactive)
+# # Lab 6 — RAG, step by step (interactive)
 #
-# Run each cell with **Shift+Enter** to watch retrieval happen one stage at a time:
+# Open this as a **notebook** (`explore.ipynb`) or run the `.py` cell-by-cell in VSCode with
+# **Shift+Enter** — same content either way. It walks retrieval one stage at a time:
 # corpus → chunks → embeddings → vector store → retrieve → grounded answer.
-# Fully **offline** (local hashing embeddings) — no API key or network needed.
+# **Fully offline** (local hashing embeddings) — no API key or network needed.
 #
-# This is the same code as `rag.py`, just driven cell-by-cell so you can inspect the
-# intermediate values. The command-line version is `python rag.py "your question"`.
+# This drives the same code as `rag.py`; the command line is `python rag.py "your question"`.
 #
-# *Needs the VSCode Python + Jupyter extensions. Open this file and click "Run Cell".*
+# **How to work through it** — three beats:
+# - 🔮 **Predict** — before you run a cell, say what you expect. Then run and compare.
+# - 🛠️ **Your turn** — one cell is yours to change; the reference answer is in the README Playbook.
+# - 🗣️ **Explain** — end by answering the question in your own words.
 
 # %%
 import os
@@ -44,7 +47,12 @@ print(f"embeddings: {used} | chunks indexed: {len(store.meta)} | "
       f"vector dim: {store.matrix.shape[1]}")
 
 # %% [markdown]
-# ## 3. Retrieve for an on-topic question — inspect the similarity scores
+# ## 3. Retrieve for an on-topic question
+#
+# 🔮 **Predict first:** the question below is *"how long do I have to return something?"*
+# Which document do you think the top passage will come from — `returns.md`, `shipping.md`,
+# or `accounts.md`? And will the top score be large (~0.5) or modest (~0.1)? Run and check — the
+# number is smaller than people expect, because this toy embedder only counts shared words.
 
 # %%
 hits = retrieve(store, embedder, "how long do I have to return something?", k=4)
@@ -55,8 +63,9 @@ for s, m in hits:
 # %% [markdown]
 # ## 4. The off-topic guard — scores collapse toward 0
 #
-# A question the corpus can't answer scores below `MIN_SCORE`, so the agent says
-# "not in the knowledge base" instead of guessing. This is the anti-hallucination gate.
+# 🔮 **Predict first:** *"what is the capital of France?"* shares almost no content words with a
+# returns-and-shipping corpus. Will its top score clear `MIN_SCORE`, or fall below it? What should
+# the agent answer when nothing clears the bar?
 
 # %%
 off = retrieve(store, embedder, "what is the capital of France?", k=4)
@@ -73,8 +82,39 @@ print(answer)
 print("\nCitations:", cites)
 
 # %% [markdown]
-# ## 6. (optional) Swap in hosted embeddings and compare
+# ## 6. 🛠️ Your turn — find the abstain threshold
 #
+# The anti-hallucination gate lives in **one number**: a question whose top score is below
+# `THRESHOLD` gets *"not in the knowledge base"* instead of a guess. Below are two on-topic and two
+# off-topic questions. Change `THRESHOLD` and find the value that **answers both on-topic questions
+# and abstains on both off-topic ones**. Then push it too high and too low to see what breaks.
+#
+# *Reference answer + discussion in the README Teacher's Playbook.*
+
+# %%
+THRESHOLD = MIN_SCORE   # 🛠️ try values between 0.04 and 0.25 and watch the line move
+
+probe = [
+    ("how long do I have to return something?", "on-topic"),
+    ("do you refund shipping?",                 "on-topic"),
+    ("what is the capital of France?",          "off-topic"),
+    ("do you price match a competitor?",        "off-topic"),
+]
+for q, label in probe:
+    top = retrieve(store, embedder, q, k=4)[0][0]
+    decision = "ANSWER " if top >= THRESHOLD else "ABSTAIN"
+    print(f"{top:.3f}  {decision}  ({label:<9}) {q}")
+print(f"\nthreshold = {THRESHOLD}")
+
+# %% [markdown]
+# ## 7. 🗣️ Explain
+#
+# In one or two sentences: **why** does *"capital of France"* score near zero while
+# *"return policy"* scores high, even though this toy embedder never learned any language?
+# (Hint: look at `_tokens` and `_STOPWORDS` in `rag.py` — what actually drives the similarity?)
+#
+# ---
+# ### (optional) Swap in hosted embeddings and compare
 # Set `OPENAI_API_KEY`, then uncomment to see how learned embeddings change retrieval:
 
 # %%

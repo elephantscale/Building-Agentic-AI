@@ -132,10 +132,10 @@ critic caught both and the revision corrected them against the source.
 
 ## Explore it interactively (VSCode)
 
-Prefer watching the reflection loop one step at a time? Open **`explore.py`** in VSCode and run it
-cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as
-`reflective_summarizer.py`, driven in `# %%` cells so you can inspect the draft, the critic's
-itemized issues, each revision, and the quality-vs-cost scores. Needs `OPENAI_API_KEY`, like the CLI.
+Watch the reflection loop one step at a time — open **`explore.ipynb`** (notebook) or **`explore.py`**
+(VSCode `# %%` cells, Shift+Enter). Same code as `reflective_summarizer.py`; inspect the draft, the
+critic's itemized issues, each revision, and the quality-vs-cost scores. Needs `OPENAI_API_KEY` (so
+outputs fill in live when you run it), like the CLI. (Needs the Python + Jupyter extensions.)
 
 ## Deliverable
 
