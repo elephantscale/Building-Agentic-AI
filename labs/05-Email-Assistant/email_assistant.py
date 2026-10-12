@@ -171,14 +171,14 @@ def send_email(to: str, subject: str, body: str) -> dict:
 
 # --- Orchestration -----------------------------------------------------------
 
-def run(ticket_id, mode):
+def run(ticket_id, mode, custom_ticket=None):
     if not os.getenv("OPENAI_API_KEY"):
         console.print("[red]OPENAI_API_KEY not set.[/red] Copy labs/.env.example to "
                       "labs/.env and add your key (see labs/SETUP.md).")
         sys.exit(1)
 
     client = OpenAI()
-    ticket = load_ticket(ticket_id)
+    ticket = custom_ticket if custom_ticket else load_ticket(ticket_id)
     audit("run_start", ticket_id=ticket["ticket_id"], customer=ticket["customer"], mode=mode)
 
     console.rule(f"[bold]Ticket {ticket['ticket_id']} - {ticket['customer']}[/bold]")
@@ -215,6 +215,11 @@ def run(ticket_id, mode):
 def main():
     ap = argparse.ArgumentParser(description="Email assistant: summarize -> draft -> gate -> send-stub.")
     ap.add_argument("--ticket", help="ticket_id, e.g. T-1004 (default: first ticket)")
+    ap.add_argument("--text", help="author your OWN ticket inline instead of using the CSV")
+    ap.add_argument("--from", dest="sender", default="Test Customer",
+                    help="customer name for --text (default: Test Customer)")
+    ap.add_argument("--channel", default="email",
+                    help="channel for --text (default: email)")
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--auto-approve", action="store_const", const="auto-approve", dest="mode",
                    help="skip the prompt and approve (demo/CI only)")
@@ -222,7 +227,12 @@ def main():
                    help="skip the prompt and reject (demo/CI only)")
     ap.set_defaults(mode="interactive")
     args = ap.parse_args()
-    run(args.ticket, args.mode)
+
+    custom = None
+    if args.text:
+        custom = {"ticket_id": "T-CUSTOM", "customer": args.sender,
+                  "channel": args.channel, "message": args.text, "created_at": "(custom)"}
+    run(args.ticket, args.mode, custom)
 
 
 if __name__ == "__main__":

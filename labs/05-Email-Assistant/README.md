@@ -47,8 +47,9 @@ that actually touches the outside world.
    python email_assistant.py
    ```
    At the prompt, try `a` (approve), `e` (edit), and `r` (reject) on separate runs.
-3. Run the **sensitive** ticket (patient records) and confirm the draft **escalates** instead
-   of answering, and that the gate flags it:
+3. **🔮 Predict, then run the sensitive ticket.** Before running `T-1002` (patient records),
+   predict its triage JSON: will `sensitive` be true? what `category` and `priority`? Then run it
+   and confirm the draft **escalates** instead of answering, and that the gate flags it:
    ```sh
    python email_assistant.py --ticket T-1002
    ```
@@ -65,6 +66,22 @@ that actually touches the outside world.
    cat outbox.jsonl        # only approved messages appear here
    cat audit_log.jsonl     # every step, approved or not
    ```
+
+7. **🛠️ Your turn — author your own ticket and predict its triage.** Use `--text` to write a brand-new
+   ticket (no CSV editing). **First predict the triage JSON** (`sensitive`, `category`, `priority`,
+   `multiple_asks`) and whether the draft will answer or escalate — *then* run and compare:
+   ```sh
+   # one that SHOULD force escalation (asks something the help center can't ground):
+   python email_assistant.py --text "Can you delete all of a customer's data under GDPR by Friday?" --from "Acme Legal"
+   # one that SHOULD be answerable from the help center (e.g. a refund-window question):
+   python email_assistant.py --text "How many days do I have to return an item?" --from "Dana R."
+   ```
+   Try to write one that *looks* safe but should escalate (hidden PII, a legal ask, two questions at
+   once). *Reference answer in the Teacher's Playbook.*
+
+8. **🗣️ Explain.** In one or two sentences: why does the workflow **triage (summarize) before it
+   drafts and gates**? What does the structured triage give the human at the gate that the raw ticket
+   wouldn't?
 
 ## Starter Code
 
@@ -197,6 +214,24 @@ rejected one never queued.
   called only inside the `if approved:` branch. Check the orchestration order.
 
 ## Teacher's Playbook
+
+**Three-beat reference answers (Steps 3, 7, 8).**
+- **🔮 Predict (§3):** `T-1002` triages to roughly `{"category":"policy_compliance","priority":
+  "normal","sensitive":true,"multiple_asks":false}` and the draft **escalates** (patient records need
+  a BAA/DPA) rather than answering.
+- **🛠️ Your turn (§7):** the GDPR-deletion `--text` ticket should come back **sensitive:true**
+  (legal/PII), `category:policy_compliance`, and **escalate** — the help center can't ground a legal
+  deletion deadline. The refund-window ticket should be **sensitive:false**, `category:billing`,
+  **answerable** from `help_center.md` (the 30-day window). A good "looks safe but should escalate"
+  case hides PII (a name + account/SSN), makes a legal/compliance ask, or stacks two asks
+  (`multiple_asks:true`). What good looks like: the student **wrote the triage down first**, then
+  explains any gap between their prediction and the model's triage — that gap *is* the lesson about
+  where triage is reliable.
+- **🗣️ Explain (§8):** triage-first gives the gate **structured, reviewable context** — the approver
+  sees `sensitive`/`priority`/`category` at a glance and can judge in seconds, and the
+  escalate-vs-answer decision is driven by triage *fields*, not buried in prose. Separation of
+  concerns: summarize **classifies**, draft **grounds**, the gate **decides** — each step auditable on
+  its own.
 
 **Worked answer / what good looks like.** A complete submission shows the send step is
 *structurally* unreachable without approval (not just discouraged by a prompt), grounds drafts
