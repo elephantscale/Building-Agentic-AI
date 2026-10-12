@@ -122,6 +122,13 @@ Compiled program saved -> optimized_program.json
 The exact percentages matter less than the **direction and the method**: the optimized program
 scores higher without you editing a single prompt string.
 
+## Explore it interactively (VSCode)
+
+Prefer watching self-improvement happen one stage at a time? Open **`explore.py`** in VSCode and run
+it cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as
+`self_improving.py`, driven in `# %%` cells so you can inspect the Signature, the baseline score, the
+BootstrapFewShot run, and the few-shot demos the optimizer taught itself. Needs an LLM key, like the CLI.
+
 ## Deliverable
 
 - Terminal output showing **baseline**, **optimized**, and the **lift** in points.

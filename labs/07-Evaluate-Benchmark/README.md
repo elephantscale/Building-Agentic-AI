@@ -147,6 +147,13 @@ A row in `results.jsonl`:
  "task_success": 1, "tool_use": 3, "factuality": 2, "efficiency": 3, "safety": 3, "total": 12}
 ```
 
+## Explore it interactively (VSCode)
+
+Prefer stepping through the harness one piece at a time? Open **`explore.py`** in VSCode and run it
+cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as `run_eval.py`,
+driven in `# %%` cells so you can inspect one case's full trace, its deterministic-vs-judged scores,
+and the base-vs-reflection benchmark. Runs **offline** (deterministic), or with a key for real models.
+
 ## Deliverable
 
 - A `results.jsonl` from your run (16 rows: 8 cases × 2 variants).

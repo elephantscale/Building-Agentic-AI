@@ -130,6 +130,13 @@ Verdict: worth it here.
 Notice the direct summary made two **unsupported** claims ("dramatically", "negligible"); the
 critic caught both and the revision corrected them against the source.
 
+## Explore it interactively (VSCode)
+
+Prefer watching the reflection loop one step at a time? Open **`explore.py`** in VSCode and run it
+cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as
+`reflective_summarizer.py`, driven in `# %%` cells so you can inspect the draft, the critic's
+itemized issues, each revision, and the quality-vs-cost scores. Needs `OPENAI_API_KEY`, like the CLI.
+
 ## Deliverable
 
 A runnable `reflective_summarizer.py` that, on one run, prints:

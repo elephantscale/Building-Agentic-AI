@@ -139,6 +139,13 @@ Grounded answer:
 I couldn't find that in the knowledge base, so I won't guess. A human should follow up.
 ```
 
+## Explore it interactively (VSCode)
+
+Prefer stepping through the pipeline one stage at a time? Open **`explore.py`** in VSCode and run
+it cell-by-cell with **Shift+Enter** (needs the Python + Jupyter extensions). Same code as `rag.py`,
+driven in `# %%` cells so you can inspect each intermediate value — the chunks, the embeddings, the
+retrieval scores, and the off-topic guard collapsing to ~0. Runs **fully offline**, like the CLI.
+
 ## Deliverable
 
 A runnable `rag.py` that, for a question:
