@@ -29,7 +29,7 @@ Notes:
   - a **goal** (what "done" means)
   - **tools** (search, code, APIs, databases)
   - a **loop** (act, observe, decide, repeat)
-
+![](../images/Agentic_Loop.jpeg)
 ```text
 goal -> plan -> act (call a tool) -> observe -> reflect -> decide -> repeat -> answer
 ```
@@ -83,7 +83,7 @@ Notes:
   - **Rules too messy to hard-code** — brittle or ever-changing logic
   - **Heavy reliance on unstructured input** — language, documents, tickets
 * Good fits: triage, research, multi-step support, document workflows
-
+![](../images/pexels-thisisengineering-3861462.jpg)
 > If a flowchart would capture it cleanly, write the flowchart — not an agent.
 
 Notes:
@@ -201,7 +201,7 @@ Final Answer: The total cost is $714 (17 x $42).
 
 * Notice: **one action per step**, and the model **stops** once it has enough.
 * The runtime — not the model — produces each `Observation`.
-
+![](../images/pexels-karola-g-7681199.jpg)
 > The loop is dumb and reliable; the intelligence lives in Thought and in the tools.
 
 Notes:
@@ -243,7 +243,7 @@ model reads:  Observation: <bounded summary of result>
 
 * **Least privilege**: give the fewest tools, narrowest scopes, that still work.
 * **Untrusted output**: a tool result is *data*, never new instructions.
-
+![](../images/pexels-shvetsa-4586890.jpg)
 > The model proposes; your code disposes. That boundary is where safety lives.
 
 Notes:

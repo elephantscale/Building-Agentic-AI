@@ -50,17 +50,33 @@ running code.
    `critique_node` takes State and returns a *partial* update dict. Nothing else.
 5. **Find the loop.** Read `should_continue` and the `add_conditional_edges("critique",
    ...)` call. This is the reflect/revise cycle, declared as a router + mapping.
-6. **Run it.**
+6. **🔮 Predict, then run.** Before you run: with the default `--revisions 2`, how many times
+   will **write** fire, and how many times **critique**? And what finally stops the loop — the
+   cap, or the critic deciding the draft is good enough? Commit to an answer, then:
    ```sh
    python essay_writer.py "Why reflection improves agents"
    ```
-7. **Watch it stream.** The run prints after every node (that is `graph.stream`).
-8. **Change the loop cap** and see the difference:
+7. **Watch it stream.** The run prints after every node (that is `graph.stream`). Check your
+   prediction against the `write: drafting (revision N)` lines.
+8. **Change the loop cap** and confirm the pattern:
    ```sh
    python essay_writer.py --revisions 1 "Why reflection improves agents"
    ```
 9. **Force the fallback.** Temporarily comment out `TAVILY_API_KEY` in `labs/.env`
    (or leave it unset) and confirm the research node uses `./corpus`.
+10. **🛠️ Your turn — let the critic stop the loop early.** Right now the loop *only* ends at the
+    cap: even a draft the critic is happy with gets revised again. Make the critic able to end it.
+    Two small, coordinated edits:
+    - In `CRITIQUE_SYS`, add a line: *if the draft already meets the rubric, reply with exactly
+      `LGTM` and no bullets.*
+    - In `should_continue`, after the cap check, return `"done"` when the critique says `LGTM`
+      (or contains no bullet lines).
+
+    Re-run with a generous cap (`--revisions 4`) and a simple topic; a good draft should now stop
+    **before** hitting the cap. *Reference answer in the Teacher's Playbook.*
+11. **🗣️ Explain.** In one or two sentences: why is this stop decision a **conditional edge** (a
+    router function) instead of an `if` buried inside `critique_node`? What do you gain by keeping
+    it on the edge?
 
 ## Starter Code
 
@@ -180,6 +196,35 @@ the research line reads `source: Tavily (live search)` and `notes` cite live URL
   you invoked with; State lives per thread in the checkpointer.
 
 ## Teacher's Playbook
+
+**Three-beat companion — reference answers (Steps 6, 10, 11).**
+- **🔮 Predict (§6):** at `--revisions 2` the loop runs **write ×2, critique ×2** —
+  write(1)→critique(1)→[revise]→write(2)→critique(2)→[done]. It stops on the **cap**, not because
+  the critic was satisfied. Students who predict "it stops when the essay is good" have found the
+  exact gap Step 10 fixes.
+- **🛠️ Your turn (§10):** working early-stop —
+  ```python
+  CRITIQUE_SYS = (
+      "You are a demanding essay critic. Score the draft against this rubric: grounded in "
+      "evidence, complete, clear, right length. Return 2-4 specific, actionable revision "
+      "instructions as bullets. Be concise. If the draft already meets the rubric, reply with "
+      "exactly 'LGTM' and no bullets."
+  )
+
+  def should_continue(state: EssayState) -> str:
+      if state["revisions"] >= state["max_revisions"]:
+          return "done"                                  # hard cap always wins
+      crit = state.get("critique", "")
+      has_bullets = any(ln.strip().startswith(("-", "*", "•")) for ln in crit.splitlines())
+      if "LGTM" in crit or not has_bullets:
+          return "done"                                  # critic satisfied -> stop early
+      return "revise"
+  ```
+  Note the cap check stays **first** — the critic can end the loop early but can never override the
+  safety cap. That ordering is the teaching point.
+- **🗣️ Explain (§11):** keeping the decision on the **edge** means the graph diagram stays honest —
+  the control flow (loop vs. end) is visible in the topology, not hidden inside a node. You can swap
+  the router, add a human-approval interrupt, or visualize the graph without touching `critique_node`.
 
 **The one-sentence framing.** "We already built this loop by hand in Lab 1 with a
 `while` and an `if`. Today the `while` becomes the graph and the `if` becomes a

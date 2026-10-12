@@ -62,7 +62,10 @@ JSONL audit log are shared code — that is the whole lesson: **the agent patter
    CRM_BACKEND=LOCAL python bedrock_crm.py "Who is account GLOBEX-207?"
    ```
 
-3. Run a task that triggers the **dangerous write** and approve it at the gate:
+3. **🔮 Predict, then run.** Of these three tasks, which will pause at the human gate, and which
+   runs with no gate at all? *(a)* "Who is on the enterprise plan?" *(b)* "Set ACME-1042's plan to
+   business." *(c)* "Change ACME-1042's `signup_date` to today." Commit to an answer, then run the
+   write task and approve it at the gate:
 
    ```sh
    CRM_BACKEND=LOCAL python bedrock_crm.py \
@@ -80,6 +83,21 @@ JSONL audit log are shared code — that is the whole lesson: **the agent patter
 
 6. Prove the gate works: run a write task and answer `n` at the prompt. Confirm the record is
    **unchanged** and the log shows `decision: "denied"`.
+
+7. **🛠️ Your turn — probe and tune the field whitelist (the *second* line of defense).** The human
+   gate isn't the only control: `update_customer` refuses any field not in `UPDATABLE`
+   (`{"plan", "seats", "mrr_usd", "status", "owner_email"}`). Explore both tiers:
+   - Ask the agent to change a field that *isn't* whitelisted (e.g. *"set ACME-1042's signup_date to
+     2020-01-01"*). What does the tool return — and does it even reach the gate?
+   - Decide `owner_email` is too sensitive to let the agent touch. **Remove it from `UPDATABLE`**,
+     re-run a task that tries to change it, and confirm it's now refused *even if a human approves*.
+   - Then write one task that the gate must **block** (deny it) and one the whitelist must **reject**
+     — two different failure modes, two different controls.
+
+   *Reference answer in the Teacher's Playbook.*
+
+8. **🗣️ Explain.** In one or two sentences: why keep **both** a human gate *and* a field whitelist?
+   What can each stop that the other can't?
 
 ## Starter Code
 
@@ -192,6 +210,24 @@ A slice of `run-log.jsonl`:
   model can only *request* the tool; your code decides whether to run it.
 
 ## Teacher's Playbook
+
+**Three-beat reference answers (Steps 3, 7, 8).**
+- **🔮 Predict (§3):** *(a)* is a pure **read** → no gate. *(b)* and *(c)* are **both** `update_customer`
+  requests, so **both pause at the gate**. The twist: *(b)* writes a whitelisted field and succeeds on
+  approval; *(c)* targets `signup_date`, which isn't in `UPDATABLE`, so **even after a human says yes**
+  the tool returns `field_not_updatable`. "Passed the gate" ≠ "allowed." (Offline-stub caveat: the
+  rule-based parser may not emit a write for an unknown field at all; in LLM mode the model does
+  request it and the whitelist catches it — that's the case to demo.)
+- **🛠️ Your turn (§7):** a non-whitelisted field returns `{"ok": false, "error":
+  "field_not_updatable"}`. Removing `owner_email` from `UPDATABLE` makes that field unwritable **by
+  anyone through the agent, approval or not** — the whitelist is a hard cap on blast radius, the gate
+  is per-write human judgment. A gate-**blocked** task = approve→`n`; a whitelist-**rejected** task =
+  any write to a field you removed. Two controls, two distinct failure modes in the log.
+- **🗣️ Explain (§8):** keep both because they stop different things. The **gate** stops an
+  *unexpected* or wrong write a human notices in the moment (right field, wrong value/record). The
+  **whitelist** stops an *entire class* of writes the agent should never make — it holds even when the
+  human is tired, rushed, or socially engineered into clicking yes. Defense in depth: judgment + a
+  hard limit.
 
 **The one big idea.** The tool registry, the safety gate, the step cap, and the audit log are
 **backend-independent**. Bedrock's Converse, Anthropic's Messages, and OpenAI's Chat

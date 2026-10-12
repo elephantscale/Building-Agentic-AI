@@ -46,7 +46,10 @@ it. Then it **remembers** the decision so the next session starts smarter.
    cp ../.env.example ../.env         # fill in ANTHROPIC_API_KEY
    ```
 
-2. **Session 1** — one-shot task. Approve the write and the runs at the gate:
+2. **🔮 Predict, then run Session 1.** First open `workspace/mathutils.py` and
+   `workspace/test_mathutils.py` yourself and **predict the bug and the one-line fix** before the
+   agent runs. Then give it the one-shot task and approve the write and the runs at the gate — did it
+   find what you found?
 
    ```sh
    python coding_assistant.py \
@@ -67,6 +70,21 @@ it. Then it **remembers** the decision so the next session starts smarter.
    `[context] summarized older turns` message fire once the transcript grows.
 
 6. Prove the gate: give a fix task and answer `n`. Confirm `mathutils.py` is **unchanged**.
+
+7. **🛠️ Your turn — design a failing case and watch the loop catch it.**
+   - **(a)** Plant a *second* bug the tests already cover: change `is_even` to `return n % 2 == 1`.
+     Re-run the Session-1 task. Confirm the agent **reproduces** (test fails), **fixes**, and
+     **re-runs green** — you designed the case, the read→run→fix→re-run loop caught it.
+   - **(b) Stretch:** the tests never check `average([])`. Add `assert average([]) == 0` (or decide it
+     should raise) to `test_mathutils.py` and re-run. Notice the agent only fixes **what the tests
+     exercise** — a bug with no test slips straight through. This is the Lab 7 lesson in miniature:
+     *your eval set is your safety net; grow it when you find a gap.*
+
+   Reset afterward: `git checkout workspace/` and delete `memory.json`.
+
+8. **🗣️ Explain.** In one or two sentences: why does a good agent **run the tests to see the failure
+   before editing**, instead of fixing straight from reading the code? What does the failing test give
+   you that the model's inspection alone does not?
 
 ## Starter Code
 
@@ -185,6 +203,22 @@ Memory saved -> memory.json
   use interactive mode and give several tasks.
 
 ## Teacher's Playbook
+
+**Three-beat reference answers (Steps 2, 7, 8).**
+- **🔮 Predict (§2):** the bug is `average` dividing by `len(nums) - 1`; the one-line fix is
+  `return sum(nums) / len(nums)`. A good agent reads both files, **runs the test to see the failure
+  first**, changes only that line, and re-runs to `ALL TESTS PASSED`.
+- **🛠️ Your turn (§7):** *(a)* breaking `is_even` to `n % 2 == 1` makes the existing `is_even`
+  assertion fail; the agent reproduces, flips it back to `== 0`, and re-runs green — a clean
+  design-a-case → loop-catches-it. *(b)* adding `average([])` exposes a `ZeroDivisionError` the
+  original tests never triggered: the agent will now have to handle the empty case (e.g.
+  `return 0 if not nums else sum(nums) / len(nums)`). The point for the room: **the agent is only as
+  safe as the tests you give it** — untested paths are invisible to the loop. Ties directly to Lab 7's
+  frozen eval set.
+- **🗣️ Explain (§8):** running the test first **reproduces the failure as ground truth** — it proves
+  the bug exists, pins down exactly what "fixed" means, and lets the re-run *prove* the fix. Editing
+  from inspection alone risks "fixing" the wrong thing or introducing a new break with nothing to
+  catch it (the "editing before reproducing" mistake below).
 
 **The one big idea.** A coding agent is the most dangerous kind — it edits files and runs code.
 The value of this lab is watching capability and control grow together: four tools, but two of
