@@ -191,7 +191,7 @@ That only works if the upstream agents logged honestly (tie back to Labs 1, 5,
 - *Where does Databricks fit?* Delta stores the findings table (ACID, history);
   Unity Catalog governs who reads it and tracks lineage; MLflow tracing produces
   the upstream log; a dashboard runs these same checks as SQL.
-- *Retention?* Map to policy (Module 12): e.g., audit findings retained 13
+- *Retention?* Map to policy (Module 13 — Governance): e.g., audit findings retained 13
   months, then archived — who owns review, who can read the table.
 - *How would you run this continuously?* Stream new JSONL into the table (Auto
   Loader), run the checks on a schedule, alert on any `critical`.
