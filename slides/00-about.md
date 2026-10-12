@@ -6,22 +6,22 @@
 
 ## Agenda
 
-| Module | Topic |
-|--------|-------|
-| 1 | Foundations of Agentic AI |
-| 2 | Reflection & Self-Evaluation |
-| 3 | Tools, Structured Output & MCP |
-| 4 | RAG & Vector Databases |
-| 5 | Evaluation, Error Analysis & Debugging |
-| 6 | Multi-Agent Systems & Planning |
-| 7 | LangGraph & Tavily |
-| 8 | Low-Code Agentic Design |
-| 9 | Agentic on AWS Bedrock |
-| 10 | DSPy & Databricks |
-| 11 | Agentic with Claude |
-| 12 | Voice Agents with Google ADK |
-| 13 | Governance with Databricks |
-| 14 | Capstone: Enterprise AI Agent Challenge |
+| Module | Topic | Lab(s) |
+|--------|-------|--------|
+| 1 | Foundations of Agentic AI | 1, 2 |
+| 2 | Reflection & Self-Evaluation | 3 |
+| 3 | Tools, Structured Output & MCP | 4, 5 |
+| 4 | RAG & Vector Databases | 6 |
+| 5 | Evaluation, Error Analysis & Debugging | 7 |
+| 6 | Multi-Agent Systems & Planning | 8 |
+| 7 | LangGraph & Tavily | 9 |
+| 8 | Low-Code Agentic Design | 10, 11 |
+| 9 | Agentic on AWS Bedrock | 12 |
+| 10 | DSPy & Databricks | 13 |
+| 11 | Agentic with Claude | 14 |
+| 12 | Voice Agents with Google ADK | 15 |
+| 13 | Governance with Databricks | 16 |
+| 14 | Capstone: Enterprise AI Agent Challenge | 17 |
 
 Notes:
 
