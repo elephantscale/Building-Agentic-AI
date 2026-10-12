@@ -136,6 +136,8 @@ Watch the reflection loop one step at a time — open **`explore.ipynb`** (noteb
 (VSCode `# %%` cells, Shift+Enter). Same code as `reflective_summarizer.py`; inspect the draft, the
 critic's itemized issues, each revision, and the quality-vs-cost scores. Needs `OPENAI_API_KEY` (so
 outputs fill in live when you run it), like the CLI. (Needs the Python + Jupyter extensions.)
+Work the three beats: **🔮 predict** the critic's issues, **🛠️ tighten the spec** and re-run, and
+**🗣️ explain** when reflection is worth the extra cost.
 
 ## Deliverable
 
@@ -164,6 +166,23 @@ not* pay off — that finding is as valuable as the win.
   source while iterating.
 
 ## Teacher's Playbook
+
+**Companion exercise — reference answer (`explore.ipynb` / `explore.py`).**
+- **🔮 Predict (§2):** on a clean article the critic usually raises **1–2** issues, most often
+  **style/length** (over the word cap, buries the lead) rather than factuality — the direct summary
+  is rarely *wrong*, just loose. A summary with **0** issues means the critic prompt is too soft;
+  push it to be itemized and specific.
+- **🔮 Predict (§5):** expect a **small quality lift (0–2 pts / 9)** for roughly **2–3× the tokens**
+  (draft + critique + revise + two judge calls). On a short, factual article reflection may add
+  *zero* — that's the honest result, and the point: measure before you adopt it.
+- **🛠️ Your turn (§6):** tightening `TARGET` to "EXACTLY 3 bullets, ≤60 words" makes the critic flag
+  length/structure it previously let slide, and the final summary should now obey the limit (check
+  the printed `words:`). The lesson: **reflection enforces whatever spec you give it — a vague
+  target yields vague gains.** If nothing changes, the spec wasn't actually stricter.
+- **🗣️ Explain:** reflection pays off when the task is **long, high-stakes, or has a checkable spec**
+  (legal/exec summaries, code, structured extraction) where a second pass catches real errors. It's
+  waste on **short, low-stakes, already-easy** tasks where the direct answer is fine — you'd be
+  paying 2–3× for a point you don't need.
 
 **Worked answer / what good looks like.** A strong submission shows a *measured* lift on the
 bundled article (typically +2 to +3 rubric points for ~3x tokens) AND a run on `help_center.md`
