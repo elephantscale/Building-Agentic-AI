@@ -31,8 +31,16 @@ concretely, what every agent framework in this course is doing under the hood.
 1. **Create the environment** (once for the whole course). From the repo root:
 
    ```sh
+   # macOS / Linux
    python3 -m venv .venv
-   source .venv/bin/activate            # Windows: .venv\Scripts\activate
+   source .venv/bin/activate
+   python -m pip install --upgrade pip
+   ```
+
+   ```powershell
+   # Windows (PowerShell — the default VSCode terminal on the class VM)
+   python -m venv .venv
+   .venv\Scripts\Activate.ps1
    python -m pip install --upgrade pip
    ```
 
@@ -47,10 +55,11 @@ concretely, what every agent framework in this course is doing under the hood.
 3. **Verify the machine:**
 
    ```sh
-   ./labs/verify-setup.sh
+   ./labs/verify-setup.sh        # macOS / Linux
+   ./labs/verify-setup.ps1       # Windows (PowerShell)
    ```
 
-   You want `PASS python3 3.11+`, `PASS pip present`, and `OPENAI_API_KEY looks set`.
+   You want `PASS python 3.11+`, `PASS pip present`, and `OPENAI_API_KEY looks set`.
 
 4. **Install this lab's requirements:**
 

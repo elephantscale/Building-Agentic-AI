@@ -17,10 +17,22 @@ From the repo root, create and activate a virtual environment, then install per-
 requirements as you reach each lab:
 
 ```sh
+# macOS / Linux
 python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 python -m pip install --upgrade pip
 ```
+
+```powershell
+# Windows (PowerShell — the default VSCode terminal on the class VM)
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+```
+
+> On the Windows class VM the terminal is **PowerShell**, where `cp`, `rm`, and `cat` work as
+> aliases — so the lab commands copy-paste as-is. The two differences from macOS/Linux are above:
+> use `python` (not `python3`) and activate with `.venv\Scripts\Activate.ps1` (not `source`).
 
 Each lab folder has its own `requirements.txt`. Inside a lab:
 
@@ -148,5 +160,6 @@ load_dotenv()  # reads labs/.env
 ## Verify Your Machine
 
 ```sh
-./labs/verify-setup.sh
+./labs/verify-setup.sh        # macOS / Linux
+./labs/verify-setup.ps1       # Windows (PowerShell)
 ```
