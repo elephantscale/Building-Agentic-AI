@@ -35,6 +35,7 @@ model: call get_order_status(order_id="88123")
 code:  result = TOOLS["get_order_status"]("88123")
 model: reads the result, decides what's next
 ```
+![](../images/pexels-andreas-naslund-92380530-30562825.jpg)
 
 > The model never touches your systems directly. Every action goes through your code.
 
@@ -133,7 +134,7 @@ except ValidationError as e:
 ```
 
 * Never **silently coerce** — that hides bugs and invites injection
-
+![](../images/pexels-realtoughcandy-11035363.jpg)
 > Trust the schema, not the model. Reject bad args; don't paper over them.
 
 Notes:
@@ -171,7 +172,7 @@ Notes:
 | **dangerous** | irreversible: send, delete, pay | `send_email` | **human approval** |
 
 * Least privilege: give the fewest, lowest-class tools that do the job
-
+![](../images/pexels-tizzy-34965713.jpg)
 > The safety class decides the gate. `dangerous` never runs without a human saying yes.
 
 Notes:
@@ -238,7 +239,7 @@ Notes:
   - CPU, memory, and **time limits**
   - a **whitelist** of libraries, a bounded output size
 * Return structured results: `{ "ok": ..., "stdout": ..., "error": ... }`
-
+![](../images/pexels-eduardo-romero-817034-5104823.jpg)
 > Code exec is a superpower with a blast radius. Sandbox it or don't ship it.
 
 Notes:
@@ -323,7 +324,7 @@ Notes:
 * **Separation** — tool authors and agent authors work independently
 * **Governance** — a server is one place to enforce auth, scopes, and logging
 * **Ecosystem** — a growing catalog of ready-made servers to plug in
-
+![](../images/pexels-brett-sayles-1597776.jpg)
 > Don't hand-wire every integration. If a good MCP server exists, connect to it.
 
 Notes:
