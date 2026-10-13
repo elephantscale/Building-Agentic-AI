@@ -41,6 +41,56 @@ The lock pins a coherent, seasoned set (openai 2.x, anthropic 0.9x, langchain/la
 dspy 3.1.x, numpy 2.4.x) — deliberately a few months behind the bleeding edge so nothing shifts
 under the class. Regenerate it only after a fresh smoke test.
 
+## Working in VSCode (your class VM)
+
+Your VM already has **VSCode, Python, and Jupyter** installed. VSCode is where you'll spend the
+class — it runs both kinds of lab file (the plain `.py` programs **and** the exploratory
+notebooks/cells) in one window, next to a terminal. You won't need any other tool.
+
+**First 5 minutes — do this once:**
+
+1. **Open the repo as a folder.** `File → Open Folder…` → the `Building-Agentic-AI` folder (or
+   `code .` from a terminal already in it). Open the *folder*, not a single file, so the editor
+   finds the venv and the labs.
+2. **Pick the Python interpreter.** `Ctrl+Shift+P` → **Python: Select Interpreter** → choose the
+   one ending in `.venv` (the class venv). Do this once and VSCode remembers it. If you skip it,
+   the first time you run a cell VSCode will ask you to "Select Kernel" — pick the same `.venv`.
+3. **Open the integrated terminal.** `` Ctrl+` `` (Ctrl + backtick). This is where you run the
+   lab programs and `pip install`. It opens at the repo root and shares the interpreter you just
+   picked.
+
+**Running a lab — the two shapes you'll see:**
+
+- **A program (`.py` CLI lab)** — run it in the terminal, e.g.:
+
+  ```sh
+  cd labs/05-Email-Assistant
+  pip install -r requirements.txt
+  python email_assistant.py --ticket T-1004
+  ```
+
+- **An explorer (`explore.py` with `# %%` cells)** — these labs ship an `explore.py` full of
+  `# %%` markers. Each marker is a **cell**. Click inside one and press **`Shift+Enter`** to run
+  just that cell; output appears in a Python Interactive pane to the side. It's the notebook
+  feel, but it's a normal `.py` file (so it reads cleanly and lives in git). The matching
+  `explore.ipynb` is the same thing as a classic notebook if you prefer that view — double-click
+  it and run cells with `Shift+Enter`.
+
+> **In class:** the instructor drives an `explore.py` cell-by-cell on screen (🔮 *predict* what a
+> cell will print before running it), then you do the same in your own VM, then we re-run and
+> recap (🗣️). Watch for the **🛠️ Your turn** cell — that's the one scoped change you make
+> yourself; the reference answer is in each lab's README **Teacher's Playbook**.
+
+**Handy VSCode moves:**
+
+- `` Ctrl+` `` — toggle the terminal · `Ctrl+Shift+P` — command palette (every command lives here)
+- `Shift+Enter` — run the current `# %%` cell (or notebook cell) · `Ctrl+Enter` — run without
+  advancing
+- `F5` — run a program under the debugger (set a breakpoint by clicking left of a line number)
+
+If a cell ever hangs or the kernel acts up: command palette → **Jupyter: Restart Kernel**, then
+re-run from the top cell.
+
 ## Keys
 
 Copy the template and fill in the keys handed out in class:
