@@ -29,7 +29,7 @@ Notes:
   - wrong tone, length, or format
 * Humans don't ship first drafts — they **review and revise**
 * Reflection gives the agent the same second look
-
+![](../images/pexels-damir-19720056.jpg)
 > The cheapest reviewer you have is the model itself. Use it before a human does.
 
 Notes:
@@ -70,7 +70,7 @@ Notes:
 
 * Generator drafts -> Critic lists concrete issues -> Generator revises
 * Loop **stops** on "no material issues" **or** a max-rounds cap
-
+![](../images/pexels-willfotografia-33715997.jpg)
 > Same loop shape as Day 1: act, observe, decide, repeat — the observation is now *self-critique*.
 
 Notes:
@@ -132,7 +132,7 @@ attempt -> evaluator (pass/fail + why) -> reflection note -> retry with note
 
 * Differs from plain generator–critic: it **accumulates** lessons across attempts
 * Great fit for code, math, or anything with an automatic check
-
+![](../images/pexels-ketut-subiyanto-4719935.jpg)
 > Reflexion turns a failure into a note the agent reads before trying again.
 
 Notes:
