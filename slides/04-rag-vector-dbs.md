@@ -45,7 +45,7 @@ Notes:
                                                         │
                                    grounded answer  +  citations   (or "not in the sources")
 ```
-
+![](../images/pexels-vika-glitter-392079-4552518.jpg)
 > Same embedder on both sides. The store is just "find the nearest vectors, fast."
 
 Notes:
