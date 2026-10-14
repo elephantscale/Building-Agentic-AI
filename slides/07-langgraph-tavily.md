@@ -122,7 +122,7 @@ def write_node(state: AgentState) -> dict:
     draft = llm.invoke(prompt).content
     return {"draft": draft, "revisions": state["revisions"] + 1}
 ```
-
+![](../images/pexels-brett-sayles-4985154.jpg)
 > A node returns only what it changed. The runtime merges it into State.
 
 ---
@@ -169,7 +169,7 @@ builder.add_conditional_edges(
     {"revise": "write", "done": END},
 )
 ```
-
+![](../images/pexels-brett-sayles-4330787.jpg)
 > The router returns a label; the mapping turns the label into the next node.
 
 ---
@@ -275,7 +275,7 @@ for chunk in graph.stream(initial_state, config):
 [write]    ['draft', 'revisions']
 [critique] ['critique']
 ```
-
+![](../images/pexels-cengizhan-ozturk-2162859554-38527875.jpg)
 > Streaming is how a demo feels alive — and how you debug a stuck run.
 
 ---
