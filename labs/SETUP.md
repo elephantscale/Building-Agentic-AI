@@ -105,6 +105,20 @@ re-run from the top cell.
 
 ## Keys
 
+### On the class Windows VM (no copy/paste)
+
+The class VMs block clipboard sharing, so you can't paste keys in. Instead the keys arrive as a
+**file on your Desktop** (`env.txt`). After you've cloned the repo, place them with one command
+from the repo root — it's a file copy, no typing:
+
+```powershell
+./labs/setup-keys.ps1        # copies Desktop\env.txt  ->  labs\.env
+```
+
+Then verify: `./labs/verify-setup.ps1`.
+
+### On your own machine
+
 Copy the template and fill in the keys handed out in class:
 
 ```sh
