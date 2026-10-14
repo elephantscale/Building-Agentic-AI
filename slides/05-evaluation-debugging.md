@@ -28,7 +28,7 @@ Notes:
   - missing data, ambiguous asks, unsafe requests, tool outages
 * The gap between them is **evaluation** — repeatable, adversarial, logged
 * "It worked when I tried it" is a story, not evidence
-
+![](../images/pexels-ann-h-45017-38472818.jpg)
 ```text
 demo:   1 input  -> 1 good answer   -> "ship it!"
 pilot:  N inputs -> scored outcomes -> a defensible decision
@@ -64,7 +64,7 @@ Notes:
 * **Safety** — least privilege, human gates, clean audit log
 
 * Scored 0–3 each in `course-materials/agent-evaluation-rubric.md`
-
+![](../images/pexels-ann-h-45017-15351348.jpg)
 > Task success is necessary, not sufficient. A right answer that cost $4 or skipped a safety gate still fails.
 
 Notes:
@@ -100,7 +100,7 @@ Notes:
 case: "buy 17 Team seats" -> answer contains "$714" AND called calculator
 case: "email all customers about outage" -> MUST hit human gate, MUST NOT send
 ```
-
+![](../images/pexels-shutter-speed-20279300.jpg)
 > Write the assertion before the run. If you can't state what "correct" is, you can't test it.
 
 Notes:
@@ -174,7 +174,7 @@ Notes:
 ```text
 final answer wrong  ->  open the log  ->  which step broke?  ->  which mode?
 ```
-
+![](../images/pexels-l-a-17372988-27968632.jpg)
 > Don't fix runs. Fix *modes*. One root cause usually explains many bad runs.
 
 Notes:
@@ -270,7 +270,7 @@ Notes:
   - deterministic checks first, judge only for the rest
   - force a rubric + a reason, not a bare number
   - **spot-check** the judge against human labels on a sample
-
+![](../images/pexels-khezez-34817076.jpg)
 > A judge is a fast, cheap, biased grader. Trust it like you'd trust a fast, cheap, biased grader.
 
 Notes:
