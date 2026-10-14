@@ -29,6 +29,7 @@ Notes:
 * **Least privilege** — the agent that *sends email* need not hold the *delete* tool
 * **Parallelism** — independent sub-tasks can run at once
 * **Testability** — you can evaluate and swap one specialist in isolation
+![](../images/pexels-iamirinaax-64831523-8194310.jpg)
 
 > Multi-agent is modular design for agents. The win is smaller, sharper, safer parts.
 
@@ -135,7 +136,7 @@ Notes:
               +----------+----------+
                 results back to supervisor
 ```
-
+![](../images/pexels-mikael-blomkvist-8961034.jpg)
 > The supervisor is the loop; the workers are the tools. It's the ReAct pattern, one level up.
 
 Notes:
@@ -180,7 +181,7 @@ Judge:    "Skeptic wins. Ship Monday with a load test."
 ```
 
 * **Cost warning**: debate multiplies LLM calls fast — bound the rounds
-
+![](../images/pexels-karola-g-7876100.jpg)
 > Debate buys robustness with tokens. Cap the rounds and make the judge cite the winning point.
 
 Notes:
@@ -287,7 +288,7 @@ Notes:
 | Cost | can wander | bounded by the plan |
 
 * Many real systems **combine** them: a plan of steps, each executed ReAct-style
-
+![](../images/pexels-ivan-s-8962799.jpg)
 > Use ReAct to explore; use a plan to *deliver*. Onboarding and blog posts are deliverables.
 
 Notes:
