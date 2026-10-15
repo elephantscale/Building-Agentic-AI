@@ -117,10 +117,10 @@ in. So the whole setup is **one short command you type** (not paste). After clon
 
    ```powershell
    cd Building-Agentic-AI
-   ./labs/setup.ps1
+   ./labs/start-here.ps1
    ```
 
-`setup.ps1` does everything: creates the virtualenv, installs the pinned packages, copies your keys
+`start-here.ps1` does everything: creates the virtualenv, installs the pinned packages, copies your keys
 from `Desktop\env.txt` into `labs/.env`, confirms the libraries import, and runs the environment
 check. If it's blocked with *"running scripts is disabled"*, run once:
 `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, then re-run.

@@ -1,8 +1,8 @@
-# setup.ps1 - one-command class setup for the Windows VM (no copy/paste needed).
+# start-here.ps1 - one-command class setup for the Windows VM (no copy/paste needed).
 #
 # After cloning the repo, run ONE short command from the repo root:
 #
-#     ./labs/setup.ps1
+#     ./labs/start-here.ps1
 #
 # It does everything: create the virtualenv, install the pinned packages, copy the
 # keys from Desktop\env.txt into labs/.env, prove the libraries import, and run the
