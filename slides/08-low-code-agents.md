@@ -30,7 +30,7 @@ Elephant Scale
   - logic is complex or heavily branching
   - you need tests, version control, custom tools
   - latency, cost, or scale are tight
-
+![](../images/pexels-silverkblack-36697339.jpg)
 > Pick the lightest tool that does the job — then graduate when it hurts.
 
 ---
@@ -163,7 +163,7 @@ GPT draft  ->  GPT critique ("is this grounded? complete? safe?")
 ```
 
 * Cap the loop — Zapier has no infinite loops by design
-
+![](../images/pexels-damir-19720056.jpg)
 > Reflection is just a second opinion wired in. Same pattern as LangGraph, fewer lines.
 
 ---
@@ -195,7 +195,7 @@ New lead -> GPT: {segment, intent, next_action, draft_note}
   - **Least privilege** — scope the connector to one object
   - **Logging** — every run to a table / sheet
   - Treat inbound text as **untrusted data**
-
+![](../images/pexels-sora-shimazaki-5668484.jpg)
 > A Zap that auto-sends is not a pilot. It is an incident waiting for a trigger.
 
 ---
@@ -224,7 +224,7 @@ Run ID | Source | Category | Priority | Risk | Route | Draft | Status
 * Status stays `NEEDS_REVIEW` until a human acts
 
 * Mirrors `course-materials/audit-log-schema.md`
-
+![](../images/pexels-birgitboellinger-32207367.jpg)
 > If you can't see what the agent did, you can't govern it. Log first.
 
 ---
