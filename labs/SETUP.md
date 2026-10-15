@@ -105,17 +105,28 @@ re-run from the top cell.
 
 ## Keys
 
-### On the class Windows VM (no copy/paste)
+### On the class Windows VM — one-command setup (no copy/paste)
 
-The class VMs block clipboard sharing, so you can't paste keys in. Instead the keys arrive as a
-**file on your Desktop** (`env.txt`). After you've cloned the repo, place them with one command
-from the repo root — it's a file copy, no typing:
+The class VMs block clipboard sharing with your own machine, so you can't paste commands or keys
+in. So the whole setup is **one short command you type** (not paste). After cloning the repo:
 
-```powershell
-./labs/setup-keys.ps1        # copies Desktop\env.txt  ->  labs\.env
-```
+1. Open the terminal from the menu — **Terminal → New Terminal** (the `` Ctrl+` `` shortcut is
+   eaten by the browser remote client). If the terminal opens as **cmd**, click the **⌄** next to
+   the `+` and pick **PowerShell**.
+2. From the repo root, run:
 
-Then verify: `./labs/verify-setup.ps1`.
+   ```powershell
+   cd Building-Agentic-AI
+   ./labs/setup.ps1
+   ```
+
+`setup.ps1` does everything: creates the virtualenv, installs the pinned packages, copies your keys
+from `Desktop\env.txt` into `labs/.env`, confirms the libraries import, and runs the environment
+check. If it's blocked with *"running scripts is disabled"*, run once:
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, then re-run.
+
+To do just the keys step by itself: `./labs/setup-keys.ps1` (copies `Desktop\env.txt` → `labs\.env`).
+To re-check the environment anytime: `./labs/verify-setup.ps1`.
 
 ### On your own machine
 
