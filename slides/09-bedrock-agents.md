@@ -29,6 +29,7 @@ Notes:
 * Data is **not used to train** the base models
 * Enterprises pick it for **governance**, not because the models are unique
 
+![](images/pexels-dephshot-13599309.jpg)
 > Bedrock's product is not a model. It's models plus AWS's security and billing perimeter.
 
 Notes:
@@ -66,7 +67,7 @@ Notes:
 A: your code  -> converse() -> tool -> converse() -> answer   (you hold the loop)
 B: Bedrock Agent -> orchestrates action groups + KB          (AWS holds the loop)
 ```
-
+![](../images/pexels-zafer-erdogan-49915050-8464640.jpg)
 > Learn the loop by hand (A). Reach for managed Agents (B) when the wiring is standard.
 
 Notes:
@@ -215,7 +216,7 @@ you:    toolResult -> {"name":"ACME","plan":"team","seats":14}
 ```
 
 * Least privilege: the agent's DB role is **read-only** until a write is truly needed.
-
+![](../images/pexels-pavel-danilyuk-7658197.jpg)
 > Never let the model write SQL. It names the intent; your code owns the query and the schema.
 
 Notes:
