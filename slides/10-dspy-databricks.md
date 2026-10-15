@@ -72,7 +72,7 @@ class Triage(dspy.Signature):
     category: str = dspy.OutputField(desc="billing | technical | account | other")
     priority: str = dspy.OutputField(desc="urgent | normal | low")
 ```
-
+![](../images/pexels-muhammed-shafiqul-islam-546638747-30705879.jpg)
 > A signature is *what you want*. DSPy writes the prompt words for you.
 
 Notes:
@@ -116,7 +116,7 @@ triage = dspy.ChainOfThought(Triage)
 out = triage(ticket="My invoice doubled and the app won't load.")
 print(out.category, out.priority)
 ```
-
+![](../images/pexels-field-engineer-147254-442151.jpg)
 > One line swaps the model. The program — signatures and modules — stays put.
 
 Notes:
@@ -135,7 +135,7 @@ def category_match(example, pred, trace=None):
 ```
 
 * Good metrics are **cheap, deterministic, and aligned** with what you actually want.
-
+![](../images/pexels-wwarby-19585984.jpg)
 > No metric, no optimization. "Looks good" cannot be compiled.
 
 Notes:
@@ -216,7 +216,7 @@ Notes:
   - A **one-off** prompt already works
   - You have **no examples and no metric**
   - The team can't maintain the extra abstraction
-
+![](../images/pexels-vika-glitter-392079-9440826.jpg)
 > DSPy pays off where prompts are assets you maintain — not for a throwaway one-liner.
 
 Notes:
