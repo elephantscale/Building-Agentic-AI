@@ -1,0 +1,57 @@
+INTERNAL FIELD REPORT — "Project Harbor" agentic rollout, Meridian Logistics (draft, lightly edited)
+
+Some background first, because people keep asking. Meridian Logistics started in 1998 as a
+regional trucking broker in Ohio, went through two private-equity owners, and only spun up a
+real software group after the 2019 warehouse-management rewrite. The dispatch team still jokes
+about the old green-screen terminals, which is relevant mostly because it explains why half the
+operations data lived in CSV exports nobody trusted. Anyway. The Project Harbor pilot ran for
+eleven weeks across the Columbus and Memphis hubs, and this note is the rough internal writeup
+before the steering review.
+
+The pilot put an LLM-based assistant in front of the exception-handling desk — the people who
+deal with late shipments, mis-scans, and customs holds. Before Harbor, an exception took an
+agent a median of 19 minutes to resolve end to end. With the assistant drafting the resolution
+and pulling the relevant tracking and contract data, the median dropped to 7 minutes, a 63%
+reduction. The mean fell less dramatically, from 26 to 14 minutes, because a long tail of nasty
+customs cases didn't improve at all — the assistant was basically useless on anything involving
+international paperwork, and a couple of agents said it made those cases slower because they
+felt obliged to read its wrong suggestion first.
+
+Volume context: the two hubs handle roughly 3,100 exceptions a week between them, about 1,900 in
+Memphis and 1,200 in Columbus. During the pilot the assistant was offered on 71% of eligible
+exceptions (the rest were routed to specialty desks it wasn't cleared for). Agents accepted its
+draft resolution as-is 38% of the time, edited it before sending 44% of the time, and threw it
+away entirely 18% of the time. That 18% discard rate is the number the steering committee will
+fixate on, and honestly they should.
+
+Cost. This is where it gets muddy and I want to be careful. The model API itself came to about
+$0.14 per exception handled. But the real number people should quote is the fully-loaded figure
+— including the vector search infrastructure, the data-sync jobs, and the on-call engineer we
+had to keep during the pilot — which works out closer to $0.41 per exception. Someone in finance
+has been quoting the $0.14 and it's going to cause a fight. For scale: at 3,100 exceptions a week
+the fully-loaded cost is roughly $66,000 a year per hub, before any enterprise discount.
+
+A tangent that came up: the same platform team also demoed a warehouse slotting optimizer last
+quarter that saved an estimated 4% on pick travel time. It has nothing to do with Harbor, but
+executives keep bundling them in the same breath, so expect that to surface in the review and try
+to keep it separate.
+
+The failure modes worth naming. First, the assistant confidently fabricated a carrier contract
+clause in three documented cases — it invented a penalty cap that wasn't in the contract. Nobody
+sent those out, but only because an agent happened to catch it. Second, automation bias: in the
+edited-44% bucket, spot checks suggest agents were rubber-stamping the assistant's framing even
+when they changed the wording, so the "edit" was cosmetic. Third, the assistant's performance
+degraded noticeably in the last two weeks, which we traced to a stale data-sync job, not the
+model — a good reminder that these systems fail from the plumbing, not just the prompt.
+
+On governance: every resolution still required a human to click send; nothing auto-dispatched.
+We logged all 14,200-odd assistant interactions to an audit table, though the schema was
+inconsistent for the first week and that data is partly unusable. Legal wants a hard rule that any
+assistant output touching a contract clause gets a second human reviewer before it goes out, and
+I agree.
+
+Recommendation, tentative: expand to the Dallas hub but gate it — keep the assistant off
+international/customs exceptions entirely, fix the data-sync monitoring before anything else, quote
+the $0.41 fully-loaded number not the $0.14, and put the contract-clause two-reviewer rule in
+before expansion, not after. The 63% median improvement is real and worth having. The 18% discard
+rate and the fabricated-clause incidents are why this is a gated expansion and not a victory lap.
