@@ -55,7 +55,7 @@ Notes:
 
 * Same API and tool-use shape across all three — swap the `model` string.
 * Common pattern: **Haiku routes / triages**, **Sonnet does the work**, **Opus for the hard 5%**.
-
+![](../images/The_Claude_Van_Damme_Family.png)
 > Default to Sonnet. Drop to Haiku for volume, reach for Opus only when Sonnet stalls.
 
 Notes:
@@ -142,7 +142,7 @@ Notes:
 ```text
 "fix the failing test" -> read_file -> run_python(pytest) -> write_file[GATE] -> run_python -> done
 ```
-
+![](../images/pexels-andreas-naslund-92380530-30562825.jpg)
 > A coding agent is dangerous by definition — it edits files and runs code. Gate accordingly.
 
 Notes:
@@ -223,7 +223,7 @@ system=[{
 ```
 
 * Order matters: put the **stable** stuff first, the **changing** stuff last.
-
+![](../images/pexels-dash-cryptocurrency-48865747-7584362.jpg)
 > Your tool specs don't change every turn — stop paying to re-read them. Cache the prefix.
 
 Notes:
