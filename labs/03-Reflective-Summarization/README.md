@@ -134,7 +134,8 @@ critic caught both and the revision corrected them against the source.
 
 Watch the reflection loop one step at a time — open **`explore.ipynb`** (notebook) or **`explore.py`**
 (VSCode `# %%` cells, Shift+Enter). Same code as `reflective_summarizer.py`; inspect the draft, the
-critic's itemized issues, each revision, and the quality-vs-cost scores. Needs `OPENAI_API_KEY` (so
+critic's verdict (often `accept` with no issues on a clean draft), each revision, and the
+quality-vs-cost scores. Needs `OPENAI_API_KEY` (so
 outputs fill in live when you run it), like the CLI. (Needs the Python + Jupyter extensions.)
 Work the three beats: **🔮 predict** the critic's issues, **🛠️ tighten the spec** and re-run, and
 **🗣️ explain** when reflection is worth the extra cost.
@@ -144,7 +145,7 @@ Work the three beats: **🔮 predict** the critic's issues, **🛠️ tighten th
 A runnable `reflective_summarizer.py` that, on one run, prints:
 
 1. both summaries (direct and reflective),
-2. the critic's itemized issues for each reflection round,
+2. the critic's verdict and any itemized issues for each reflection round (often `accept` with none),
 3. a comparison table of quality (rubric) vs. cost (tokens, calls, latency), and
 4. a one-line verdict on whether reflection paid off.
 
@@ -168,47 +169,61 @@ not* pay off — that finding is as valuable as the win.
 ## Teacher's Playbook
 
 **Companion exercise — reference answer (`explore.ipynb` / `explore.py`).**
-- **🔮 Predict (§2):** on a clean article the critic usually raises **1–2** issues, most often
-  **style/length** (over the word cap, buries the lead) rather than factuality — the direct summary
-  is rarely *wrong*, just loose. A summary with **0** issues means the critic prompt is too soft;
-  push it to be itemized and specific.
-- **🔮 Predict (§5):** expect a **small quality lift (0–2 pts / 9)** for roughly **2–3× the tokens**
-  (draft + critique + revise + two judge calls). On a short, factual article reflection may add
-  *zero* — that's the honest result, and the point: measure before you adopt it.
-- **🛠️ Your turn (§6):** tightening `TARGET` to "EXACTLY 3 bullets, ≤60 words" makes the critic flag
-  length/structure it previously let slide, and the final summary should now obey the limit (check
-  the printed `words:`). The lesson: **reflection enforces whatever spec you give it — a vague
-  target yields vague gains.** If nothing changes, the spec wasn't actually stricter.
-- **🗣️ Explain:** reflection pays off when the task is **long, high-stakes, or has a checkable spec**
-  (legal/exec summaries, code, structured extraction) where a second pass catches real errors. It's
-  waste on **short, low-stakes, already-easy** tasks where the direct answer is fine — you'd be
-  paying 2–3× for a point you don't need.
+- **🔮 Predict (§2):** on a clean, well-formed article the critic will usually **accept the direct
+  draft as-is (0 issues)**. That is the *correct* result, not a broken prompt: `summarize_direct`
+  already produces a grounded summary within spec, so an honest grounded critic has nothing material
+  to flag. You may see the occasional 1–2 style notes on a given run (LLM nondeterminism), but
+  **"accept, 0 issues" is the common case** — resist the urge to "fix" it by making the critic
+  manufacture complaints.
+- **🔮 Predict (§5):** expect **~0 quality lift** on the bundled sources for roughly **2× the tokens**
+  (draft + critique + revise + two judge calls). `reflective_summarizer.py` prints this honestly:
+  `Lift: +0 quality points … not worth it on this task.` That is the point — **measure before you
+  adopt reflection**, don't assume it helps.
+- **🛠️ Your turn (§6):** tightening `TARGET` (e.g. "EXACTLY 3 bullets, ≤60 words") **does not** make
+  the critic start complaining — `summarize_direct` simply obeys the stricter spec, so the critic
+  still accepts. The real lesson: **a competent first pass leaves nothing to reflect on.** To actually
+  *see* reflection work you must weaken the *first pass*, not just tighten the spec — which is exactly
+  what the `demo-reflection.py` companion does (a deliberately rushed 2-bullet draft).
+- **🗣️ Explain:** reflection pays off when the **first pass is weak, rushed, or cheap**, or when the
+  task is **long / high-stakes with checkable facts** where a second pass catches real errors. On a
+  **short, already-good** draft it is pure cost — you pay ~2× for a point you don't need. The skill is
+  matching the effort to the stakes *and to the quality of the first attempt.*
 
-**Worked answer / what good looks like.** A strong submission shows a *measured* lift on the
-bundled article (typically +2 to +3 rubric points for ~3x tokens) AND a run on `help_center.md`
-where reflection barely moves the needle. The best students articulate *why*: the article has
-checkable facts and an easy-to-overstate result, so a grounded critic helps; the help-center
-file is already short and factual, so there's little to fix. The learning objective is the
-judgment call, not "reflection = good."
+**Worked answer / what good looks like.** A strong submission **measures** rather than assumes: it
+runs `reflective_summarizer.py`, reports the honest **+0 lift for ~2× tokens** on the bundled article,
+and concludes reflection **wasn't worth it here** — the direct summary was already grounded and within
+spec, so the critic correctly *accepted* it (and `help_center.md` is the same story). The best students
+then show *where* reflection does earn its keep by running the `demo-reflection.py` companion — a
+deliberately rushed 2-bullet first pass on a messy field report, where the critic catches **3–5 real
+omissions** (dropped numbers, the buried $0.41-vs-$0.14 cost, the fabricated-clause risk) and the
+revision puts them back. The learning objective is the **judgment call** — *is the first pass already
+good enough?* — not "reflection = good."
 
-**Live-demo script (5–7 min).**
-1. Run `python reflective_summarizer.py` and narrate the round-1 critique out loud — point at
-   one *specific* issue ("look, it flagged 'dramatically' as unsupported").
-2. Show the comparison table. Ask the room: "Is +3 quality worth 3.3x tokens?" (For a customer-
-   facing summary, usually yes; for an internal scratch note, no.)
-3. Re-run on `help_center.md`. Show the tiny/zero lift. "Same code, different task, opposite
-   verdict. *That's* the lesson."
-4. Open `reflective_summarizer.py`, show the `break` on `verdict == "accept"` — "this is the
-   brake; without it the loop reflects forever and bills forever."
+**Live-demo script (5–7 min).** The lesson lives in the *contrast* between two runs, so do both:
+1. Run `python reflective_summarizer.py`. Point at the comparison table: the critic **accepted** the
+   direct draft (0 issues), and reflection delivered **+0 quality for ~2× the tokens**. "A good first
+   draft needs no second opinion — and an honest grounded critic says so instead of inventing problems."
+2. Now run `python demo-reflection.py` (the webinar demo on the messy field report). Its first pass is
+   a rushed 2-bullet summary; the critic flags **several concrete omissions**, and the revision puts the
+   dropped facts back. "*Same pattern, weak first pass — now reflection earns its tokens.*"
+3. The contrast **is** the lesson: reflection pays when the first attempt is weak or the stakes are
+   high, and wastes money when the draft is already good. **Match effort to stakes.**
+4. Open `reflective_summarizer.py`, show the `break` on `verdict == "accept"` — "this is the brake;
+   without it the loop reflects forever and bills forever. It's also why a good draft costs you *one*
+   extra critique call, not five."
 
 **Common mistakes + fixes.**
-- *Critic with no "accept" path* -> loop always runs to the cap. Fix: allow and instruct
-  "accept".
+- *Expecting reflection to always lift quality* -> disappointment at the +0 run. Fix: reframe +0 as
+  the honest, valuable result — reflection is a cost/quality tradeoff, not a free upgrade.
+- *"Fixing" a 0-issue critic by making it stricter* -> it starts inventing problems and the revision
+  drifts from the source. Fix: trust the accept path; a grounded critic *should* accept a good draft.
+- *Critic with no "accept" path* -> loop always runs to the cap. Fix: allow and instruct "accept".
 - *Ungrounded critic* -> it "improves" style but invents new facts. Fix: point the critic at
   the SOURCE and check every claim against it.
 - *Comparing anecdotes, not numbers* -> "the second one reads nicer." Fix: make them read the
   rubric totals and token counts; opinions don't ship.
-- *Reflecting on a trivial task* -> pure waste. Fix: the `help_center.md` run makes this land.
+- *Concluding "reflection is useless" from the +0 run* -> overcorrection. Fix: the `demo-reflection.py`
+  run shows the case where it clearly pays — weak first pass, real omissions caught.
 - *No cap* -> reintroduce `MAX_ROUNDS`; tie it back to Day 1's "no cap, no ship."
 
 **Debrief Q&A.**
