@@ -28,6 +28,10 @@ concretely, what every agent framework in this course is doing under the hood.
 
 ## Steps
 
+> **On the class VM, you already did steps 1–4.** Running `./labs/start-here.ps1` built the
+> environment, copied your keys, and installed everything. **Skip to step 5.** Steps 1–4 below
+> are the manual path for your own machine.
+
 1. **Create the environment** (once for the whole course). From the repo root:
 
    ```sh
