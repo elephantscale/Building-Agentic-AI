@@ -76,9 +76,11 @@ concretely, what every agent framework in this course is doing under the hood.
    **parse** the model's `Action`, **dispatch** it to a tool, **paste back** the `Observation`.
    Find the `MAX_STEPS` cap and the `stop=["Observation:"]` guard.
 
-6. **Run the default question** (a two-step problem: look up the price, then multiply):
+6. **Run the default question** (a two-step problem: look up the price, then multiply).
+   From the repo root, move into this lab first, then run:
 
    ```sh
+   cd labs/01-Agent-Loop-Setup
    python agent_loop.py
    ```
 
