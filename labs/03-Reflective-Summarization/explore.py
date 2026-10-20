@@ -113,6 +113,49 @@ print(f"\nrounds used: {len(strict_trace)}  tokens: {m.total_tokens}  "
 rs.TARGET = TARGET               # restore so re-running earlier cells behaves
 
 # %% [markdown]
+# ## 6b. 🔮 The flip side — a *weak first pass* is what makes reflection bite
+#
+# §6 showed that a **stricter spec** does **not** make the critic complain — `summarize_direct`
+# just obeys it, so the critic still accepts. So what *does* trigger a revision? A **bad first
+# draft.** Below we force a rushed, shallow draft (2 bullets, no detail), then critique it against
+# the proper spec. Watch the critic find real omissions and the revision put them back — the exact
+# opposite of §6.
+#
+# 🔮 **Predict:** how many issues will the critic raise on a deliberately lazy 2-bullet draft — and
+# what kind (factuality, coverage, style)?
+
+# %%
+import reflective_summarizer as rs  # noqa: E402
+rs.TARGET = TARGET                   # critique against the PROPER spec, not §6's tightened one
+
+
+def weak_draft(src):
+    """A deliberately rushed first pass — high-level, drops facts (cheap, not comprehensive)."""
+    resp = client.chat.completions.create(
+        model=rs.MODEL, temperature=0,
+        messages=[
+            {"role": "system", "content": "Summarize in EXACTLY 2 short bullets, under 30 words "
+             "total. Keep it extremely high-level; don't try to be comprehensive."},
+            {"role": "user", "content": f"Summarize this:\n\n{src}"},
+        ],
+    )
+    return resp.choices[0].message.content.strip()
+
+
+bad = weak_draft(source)
+print("WEAK FIRST PASS:\n", bad, "\n")
+
+m_bad = Meter()
+v = critique(client, source, bad, m_bad)
+print("verdict:", v["verdict"], "| issues:", len(v["issues"]))
+for i, issue in enumerate(v["issues"], 1):
+    print(f"  {i}. {issue}")
+
+if v["issues"]:
+    fixed = revise(client, source, bad, v["issues"], m_bad)
+    print("\nAFTER REVISION (facts restored):\n", fixed)
+
+# %% [markdown]
 # ## 7. 🗣️ Explain
 #
 # In two or three sentences: **when is the extra cost of reflection worth it, and when is a direct
