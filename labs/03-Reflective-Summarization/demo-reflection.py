@@ -35,21 +35,21 @@ print(f"\nSource: {len(source)} characters of messy, fact-dense prose — number
 
 
 # %%
-def quick_draft(source):
+m_draft = Meter()        # tallies the first pass: tokens, calls, seconds
+
+
+def quick_draft(source, meter):
     """A deliberately fast, high-level first pass — cheap tokens, not comprehensive."""
-    resp = client.chat.completions.create(
-        model=rs.MODEL, temperature=0,
-        messages=[
-            {"role": "system", "content": "Summarize in EXACTLY 2 short bullets, under 30 words "
-             "total. Keep it extremely high-level; don't try to be comprehensive."},
-            {"role": "user", "content": f"Summarize this:\n\n{source}"},
-        ],
-    )
-    return resp.choices[0].message.content.strip()
+    return rs.call(client, [
+        {"role": "system", "content": "Summarize in EXACTLY 2 short bullets, under 30 words "
+         "total. Keep it extremely high-level; don't try to be comprehensive."},
+        {"role": "user", "content": f"Summarize this:\n\n{source}"},
+    ], meter)                # rs.call = the metered chokepoint every model call goes through
 
 
-draft = quick_draft(source)
+draft = quick_draft(source, m_draft)
 print(draft)
+print(f"\n[first pass: {m_draft.total_tokens} tokens in {m_draft.calls} call]")
 
 # %% [markdown]
 # ## 2. The agent critiques its own draft
@@ -59,7 +59,9 @@ print(draft)
 # returns a structured list of concrete issues.
 
 # %%
-verdict = critique(client, source, draft, Meter())
+m_reflect = Meter()      # one meter reused across critique + revise = the cost OF reflection
+
+verdict = critique(client, source, draft, m_reflect)
 print("verdict:", verdict["verdict"])
 print(f"\nthe critic found {len(verdict['issues'])} issue(s) in its own first pass:\n")
 for i, issue in enumerate(verdict["issues"], 1):
@@ -72,8 +74,10 @@ for i, issue in enumerate(verdict["issues"], 1):
 # source, now hitting the spec.
 
 # %%
-revised = revise(client, source, draft, verdict["issues"], Meter())
+revised = revise(client, source, draft, verdict["issues"], m_reflect)
 print(revised)
+print(f"\n[reflection: {m_reflect.total_tokens} tokens in {m_reflect.calls} calls, "
+      f"{m_reflect.seconds:.1f}s]")
 
 # %% [markdown]
 # ## 4. Before and after
@@ -90,6 +94,11 @@ print("\n" + "=" * 72)
 print("AFTER REFLECTION  (critiqued + revised by the same model)")
 print("=" * 72)
 print(revised)
+
+total = m_draft.total_tokens + m_reflect.total_tokens
+print("\n" + "-" * 72)
+print(f"cost: draft {m_draft.total_tokens} tokens + reflection {m_reflect.total_tokens} tokens "
+      f"= {total} ({total / max(m_draft.total_tokens, 1):.1f}x the draft alone)")
 
 # %% [markdown]
 # ## The takeaway
