@@ -124,7 +124,7 @@ Grounded answer:
 Based on the knowledge base:
 ... You may return most items within **30 days** of delivery for a full refund ...
 
-Citations: returns.md#chunk1, returns.md#chunk0, warranty.md#chunk0, accounts.md#chunk0
+Citations: returns.md#chunk1, returns.md#chunk0, warranty.md#chunk0, shipping.md#chunk0
 ```
 
 An out-of-corpus question is **refused**, not guessed:
