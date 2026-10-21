@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-10-08
+**Last updated:** 2026-10-20
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -10,6 +10,26 @@ Elephant Scale instructor-led course **Building Agentic AI** — a 5-day, develo
 hands-on course (~50% labs) on designing, building, evaluating, and governing autonomous AI
 agents. Built to a client outline (ProTech, "Building Agentic AI"). Revenue: paid instructor-
 led delivery; extends the ES agentic/AI-applications catalog.
+
+## Delivery in progress (first delivery, 2026-10-19 → 10-23)
+
+- **Day 1 (10-19) and Day 2 (10-20) delivered; both ran fine** (Mark's assessment). Teaching
+  from Ubuntu with a bigger screen + keyboard, switching to the Mac in Zoom for live segments.
+- Day 2 included an **unplanned live segment not in any deck**: AI APIs across the three
+  providers, local models, and open-weight models. Taught from the Mac, no slides.
+- **Consequence: RAG (module 04 + Lab 06) slipped to Day 3 morning (10-21)** and now opens the
+  day, whiteboard-led. Decision (Mark, 2026-10-20): **do not deepen deck 04** to compensate —
+  the thin deck is correct; instructor-side whiteboard notes carry the depth.
+- Mid-delivery fixes committed from real classroom experience: Lab 01 (VM-student skip banner,
+  stranded `cd`), Lab 03 (Playbook rewritten to match actual critic behavior, explore §6b, demo
+  meters), Lab 06 (citation line in the expected run).
+- Day 3 material verified offline on the Ubuntu box 2026-10-20: **Lab 07** reproduces its
+  README table exactly (base 7/8 → reflect 8/8 on `ambiguous-01`); **Lab 08** clean on all four
+  paths (gate denied, `--approve`, role switch, `a2a_peer.py`); **Lab 06** matches its expected
+  scores. New: `course-materials/whiteboard-rag.md`.
+- Known gap, not blocking: **Lab 08 has no `explore.py`/notebook** (03, 06, 07, 13 do), so Day 3
+  afternoon drops the predict/your-turn/explain rhythm. Labs 07/08 also carry `LAB6_OFFLINE` /
+  `LAB7_OFFLINE` env-var names left over from the RAG renumber.
 
 ## Current status
 
