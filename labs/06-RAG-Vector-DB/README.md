@@ -56,16 +56,27 @@ framework labs (LangGraph retrieval, agentic RAG).
    ```
 4. Tune retrieval: change `--k`, then open `rag.py` and change `max_chars`/`overlap` in
    `chunk_text` and the `MIN_SCORE` threshold. Re-run and watch what changes.
-5. (Optional, needs a key) Swap in hosted embeddings and/or an LLM answer:
+5. (Optional, needs a key) Swap in hosted embeddings and/or an LLM answer. **On the class VM
+   (PowerShell)** an env var is set with `$env:NAME="value"`, not with a `NAME=value` prefix:
+   ```powershell
+   $env:EMBEDDINGS="openai"; python rag.py "warranty on electronics?"
+   $env:RAG_GENERATE="1";    python rag.py "how are refunds issued?"
+   $env:EMBEDDINGS=""; $env:RAG_GENERATE=""      # clear them again
+   ```
+   <details><summary>macOS / Linux (bash)</summary>
+
    ```sh
    EMBEDDINGS=openai python rag.py "warranty on electronics?"
    RAG_GENERATE=1 python rag.py "how are refunds issued?"
    ```
+   </details>
    **The experiment worth running.** Ask a question that shares *no content words* with the
    policy, and compare the two embedders:
-   ```sh
+   ```powershell
    python rag.py "Can I send something back if I change my mind?" --show-scores
-   EMBEDDINGS=openai python rag.py "Can I send something back if I change my mind?" --show-scores
+   $env:EMBEDDINGS="openai"
+   python rag.py "Can I send something back if I change my mind?" --show-scores
+   $env:EMBEDDINGS=""
    ```
    Local ranks the damaged-goods chunk first (`[0.217]`) and buries the actual 30-day return
    policy **third** (`[0.051]`), below *shipping*. Hosted puts the return policy **first**

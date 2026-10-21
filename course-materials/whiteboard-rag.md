@@ -172,6 +172,10 @@ python rag.py "how many days do I have to return an item?" --show-scores
 
 ## Live terminal, if I want to show instead of draw
 
+**The VM terminal is PowerShell**, so for the keyed demos below set the var on its own line:
+`$env:EMBEDDINGS="openai"` / `$env:RAG_GENERATE="1"`, then run `python rag.py ...`, then clear it
+with `$env:EMBEDDINGS=""`. A bash `EMBEDDINGS=openai python rag.py` prefix is a parse error there.
+
 ```sh
 python rag.py "how many days do I have to return an item?" --show-scores   # step 4
 python rag.py "what is the capital of France?" --show-scores               # step 5

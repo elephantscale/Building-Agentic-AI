@@ -47,6 +47,11 @@ JSONL audit log are shared code — that is the whole lesson: **the agent patter
 ```
 
 ## Steps
+> **Shell note (class VM).** The VM terminal is **PowerShell**, so set an env var as
+> `$env:NAME="value"` on its own line or before a `;` — a bash-style `NAME=value python ...`
+> prefix is a parse error. Line continuation is a backtick `` ` ``, not `\`. Clear a var with
+> `$env:NAME=""`. The `CRM_BACKEND=...` forms shown below are bash; on the VM, set
+> `$env:CRM_BACKEND="LOCAL"` once and then just run `python bedrock_crm.py "..."`.
 
 1. Install and configure keys:
 
@@ -58,8 +63,9 @@ JSONL audit log are shared code — that is the whole lesson: **the agent patter
 
 2. **Run the local fallback first** (works without AWS):
 
-   ```sh
-   CRM_BACKEND=LOCAL python bedrock_crm.py "Who is account GLOBEX-207?"
+   ```powershell
+   # PowerShell (class VM): $env:NAME="value", not a NAME=value prefix
+   $env:CRM_BACKEND="LOCAL"; python bedrock_crm.py "Who is account GLOBEX-207?"
    ```
 
 3. **🔮 Predict, then run.** Of these three tasks, which will pause at the human gate, and which
@@ -67,16 +73,16 @@ JSONL audit log are shared code — that is the whole lesson: **the agent patter
    business." *(c)* "Change ACME-1042's `signup_date` to today." Commit to an answer, then run the
    write task and approve it at the gate:
 
-   ```sh
-   CRM_BACKEND=LOCAL python bedrock_crm.py \
-     "Look up ACME-1042, then set its plan to business."
+   ```powershell
+   $env:CRM_BACKEND="LOCAL"
+   python bedrock_crm.py "Look up ACME-1042, then set its plan to business."
    ```
 
 4. Run the **same command against Bedrock** (if you have AWS access):
 
-   ```sh
-   CRM_BACKEND=BEDROCK python bedrock_crm.py \
-     "Look up ACME-1042, then set its plan to business."
+   ```powershell
+   $env:CRM_BACKEND="BEDROCK"
+   python bedrock_crm.py "Look up ACME-1042, then set its plan to business."
    ```
 
 5. Inspect `run-log.jsonl` — every `tool_call`, `tool_result`, and `human_gate` is recorded.
