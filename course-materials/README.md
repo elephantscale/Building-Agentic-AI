@@ -11,6 +11,8 @@ your own project when you build an agent for real.
 | `agent-safety-checklist.md` | Review an agent before it touches real systems |
 | `audit-log-schema.md` | Log every plan, tool call, and result for governance |
 | `capstone-rubric.md` | Grade / self-assess the final capstone project |
+| `whiteboard-rag.md` | *Instructor notes* — drawing sequence for the Day 3 RAG opener, with Lab 06's real numbers |
+| `instructor-day-one.md` | *Instructor notes* — day-one VM startup choreography |
 
 All templates are framework-neutral — they apply whether the agent runs on OpenAI, LangGraph,
 Bedrock, DSPy, Claude, or a low-code platform.
