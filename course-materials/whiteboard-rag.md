@@ -153,6 +153,40 @@ Same retrieval, same passages, same citations. The only thing added is a model t
 That's the cleanest in-course argument for why RAG is retrieval **plus** generation, not
 retrieval alone.
 
+**The sharper point, and the one to make first.** Run it with `--show-scores` and read the four
+passages out loud:
+
+```text
+  [0.170] shipping.md#chunk0     <- the only one with any signal
+  [0.000] accounts.md#chunk0
+  [0.000] returns.md#chunk0
+  [0.000] returns.md#chunk1
+```
+
+Three of the four scored **exactly zero** — and came back anyway, and got pasted into the grounded
+answer. So:
+
+* **`top-k` is a count, not a relevance filter.** We asked the store for the four nearest vectors
+  and it returned four, because "nearest" is defined even when nothing is near.
+* **`MIN_SCORE` doesn't save us here**, because it only tests the **top** score. One passage
+  clearing 0.08 lets three zeros ride along behind it.
+* The wall of irrelevant text on screen is therefore not a bug and not a bad corpus — it is
+  exactly what a fixed-k nearest-neighbour search does, shown honestly.
+
+> The vector store always has an answer for you. Whether it should is your decision, not its.
+
+Two places to take it from there, depending on the room:
+
+* **A fix they can name themselves:** filter *per passage*, not just on the top one — a one-line
+  change in `retrieve` (drop hits below `MIN_SCORE` instead of only checking `hits[0]`). Good
+  "your turn" if there's slack.
+* **The generation hand-off:** the extractive path has no model to choose among the four, which is
+  the lead-in to `RAG_GENERATE=1` below.
+
+Mechanical note: make the terminal pane tall before this one. The useful sentence is at the *top*
+of the output and the zero-score chunk fills the view, so in a short pane the punchline scrolls
+above the fold.
+
 ## 6. Hand off to the lab
 
 Erase nothing. Leave the pipeline arrow and the two score tables on the board — they'll be
