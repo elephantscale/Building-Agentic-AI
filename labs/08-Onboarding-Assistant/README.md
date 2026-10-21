@@ -148,6 +148,18 @@ With `--approve`, `human_gate` reads `"decision": "approved"` and `packet/SENT.m
 (a simulated send). In LLM mode the email wording and possibly the plan order vary; the safety
 shape — draft, then gate, nothing auto-sent — does not.
 
+
+## Explore it interactively (VSCode)
+
+Take the agent apart one role at a time — open **`explore.ipynb`** (notebook, ships with saved
+outputs) or **`explore.py`** (VSCode `# %%` cells, Shift+Enter). Same code as
+`onboarding_agent.py`: the plan phase, one worker in isolation, the supervisor run that stops at
+the gate, the audit log, and then the same run approved. Runs **offline** (deterministic), or with
+a key for a real LLM planner and drafter. (Needs the Python + Jupyter extensions.)
+Work the three beats: **🔮 predict** the plan order and the default gate decision, **🛠️ your turn**
+attack it two ways (injection in the hire `note`, and a plan containing a tool the agent doesn't
+have), and **🗣️ explain** why the gate belongs to the supervisor rather than the worker.
+
 ## Deliverable
 
 - A completed **Agent Design Canvas** for the onboarding agent (the tool table + the human-gate
@@ -199,6 +211,42 @@ What to see:
   first; paths resolve relative to the script.
 
 ## Teacher's Playbook
+### Companion exercise — reference answers (`explore.ipynb` / `explore.py`)
+- **🔮 Predict (§2):** offline the plan is always `['propose_schedule', 'build_checklist',
+  'draft_welcome_email']` — the email is **last** because it summarizes the other two artifacts.
+  Order matters because a later sub-task consumes earlier ones; with a live planner the order can
+  vary, which is exactly why the supervisor holds shared state instead of the planner.
+- **🔮 Predict (§3):** item **counts are identical** (7 and 7) and so are the five HR-policy lines;
+  only the two role extras differ (Data Engineer gets warehouse/dev-cluster access and the data
+  platform intro; Software Engineer gets repo + CI and a first good-first-issue). The point: the
+  worker's `summary` ("built 7-item checklist...") can't tell you that — you have to read the
+  artifact. Summaries are for logs, not for verification.
+- **🔮 Predict (§4):** no `SENT.marker`, and the gate decision is **`denied`** — denial is the
+  *default*, not a reaction to anything. (The notebook deletes a stale marker first, because an
+  earlier `--approve` run leaves one behind and the agent never un-sends.)
+- **🔮 Predict (§6):** exactly one thing changes — the `human_gate` event's
+  `result.decision` flips `denied` → `approved` and a `SENT.marker` appears. The **email body is
+  byte-identical**. Drafting and sending are different actions, and only one of them is gated.
+- **🛠️ Your turn (§7a):** `_strip_injection` rewrites the note to `[redacted]`, and the draft reads
+  "A note from your manager: [redacted]". The injected instruction never reaches the drafter as an
+  instruction — hire-provided text is **data**.
+- **🛠️ Your turn (§7b):** `post_to_slack` and `wire_transfer` are **dropped** by the `KNOWN_TASKS`
+  filter; the supervisor runs only `['propose_schedule', 'build_checklist']`. Least privilege at
+  the *plan* level: a compromised or confused planner cannot invent a capability.
+- **🛠️ Follow-up (§7, last cell):** nothing breaks — and *that* is the lesson. Widening
+  `KNOWN_TASKS` gets the task past the **plan** filter, but the supervisor checks `name not in
+  TOOLS` ("defense in depth") and skips it, logging
+  `tool_result {"tool": "post_to_slack"} -> {"ok": false, "summary": "unknown task - skipped"}`.
+  Two independent layers had to agree before anything could run, and the refused attempt is **in
+  the audit log** rather than silently absent. Ask the room which layer they'd rather not have.
+  (Verified: the run completes with `done = ['propose_schedule', 'build_checklist',
+  'draft_welcome_email']`.)
+- **🗣️ Explain (§8):** the gate belongs to the **supervisor** because it is a policy decision about
+  the *run*, not a detail of one tool. If each worker self-certified, every new tool would need to
+  re-implement the policy and any worker could quietly decide it didn't need approval — the exact
+  thing least privilege is meant to prevent. The audit log then lets a reviewer *prove* the
+  sequence (plan → tool calls → gate → decision) months later; a code comment proves nothing about
+  what actually ran.
 
 ### Worked answer — the completed canvas (abridged)
 

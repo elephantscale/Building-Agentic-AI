@@ -1,4 +1,4 @@
-Reflection and Self-Critique in Agents (fictional grounding corpus for Lab 8)
+Reflection and Self-Critique in Agents (fictional grounding corpus for Lab 9)
 
 Reflection is the pattern where an agent evaluates its own output and revises it
 before returning a final answer. A first draft from an LLM is often plausible but

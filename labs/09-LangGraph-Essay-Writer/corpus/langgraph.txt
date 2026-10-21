@@ -1,4 +1,4 @@
-LangGraph — Stateful Agent Graphs (fictional grounding corpus for Lab 8)
+LangGraph — Stateful Agent Graphs (fictional grounding corpus for Lab 9)
 
 LangGraph is a library for building stateful, cyclic agent workflows. Instead of a
 hand-written while-loop, you declare a graph and let the runtime drive it. Four ideas

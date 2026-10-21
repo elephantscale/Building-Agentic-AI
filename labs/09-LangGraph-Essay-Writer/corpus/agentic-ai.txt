@@ -1,4 +1,4 @@
-Agentic AI — Overview (fictional grounding corpus for Lab 8)
+Agentic AI — Overview (fictional grounding corpus for Lab 9)
 
 An agent is an LLM in a loop that can use tools to pursue a goal. Unlike a chatbot
 that only answers, an agent acts: it plans, calls tools, observes the results, and

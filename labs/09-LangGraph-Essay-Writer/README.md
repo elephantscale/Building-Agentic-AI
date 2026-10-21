@@ -169,6 +169,18 @@ Note the **write -> critique -> write -> critique** cycle: the conditional edge 
 control back to `write` once, then stopped at the cap. With a live `TAVILY_API_KEY`
 the research line reads `source: Tavily (live search)` and `notes` cite live URLs.
 
+
+## Explore it interactively (VSCode)
+
+Build the graph up from its parts — open **`explore.ipynb`** (notebook, ships with saved outputs)
+or **`explore.py`** (VSCode `# %%` cells, Shift+Enter). Same code as `essay_writer.py`: the typed
+State and its reducer, each node called by hand, the router truth-table, the compiled graph's nodes
+and edges, then the streamed run and the checkpointer. Runs with **no key** (`ask()` returns a
+`[STUB]` string and the graph still drives end to end). (Needs the Python + Jupyter extensions.)
+Work the three beats: **🔮 predict** the reducer's effect and the write/critique count, **🛠️ your
+turn** let the critic end the loop early (§9 patches the router without editing the module), and
+**🗣️ explain** why the stop decision lives on the edge.
+
 ## Deliverable
 
 - A runnable LangGraph essay writer (`essay_writer.py`).
@@ -196,6 +208,31 @@ the research line reads `source: Tavily (live search)` and `notes` cite live URL
   you invoked with; State lives per thread in the checkpointer.
 
 ## Teacher's Playbook
+### Companion exercise — reference answers (`explore.ipynb` / `explore.py`)
+- **🔮 Predict (§2):** `notes` **appends** (it is `Annotated[list[str], operator.add]`), so two
+  nodes returning one note each leave **2** items. `draft` is **replaced**, so two writes leave
+  **1** draft. The reducer is the only reason research findings survive a second research pass.
+- **🔮 Predict (§4):** each local-corpus note is prefixed with its source file, e.g.
+  `[reflection.txt] ...`. The writer is told to cite that tag verbatim, so the tag is what turns a
+  fluent essay into a **checkable** one — it is the same grounding-and-citation contract as Lab 6,
+  carried into a graph.
+- **§5 router truth-table:** `revisions=0,1 -> revise -> write`; `revisions>=cap -> done -> END`.
+  Note the cap is the *only* stop condition in the shipped code — the critic has no vote. That is
+  what §9 changes.
+- **🔮 Predict (§7):** with `max_revisions=2`, **write fires twice and critique twice**, and the run
+  stops at the **cap** — not because the critic was satisfied. Students who predict "it stops when
+  the essay is good" have just discovered the missing feature they're about to build.
+- **🛠️ Your turn (§9):** with the `LGTM` clause added to `CRITIQUE_SYS` and the router returning
+  `done` on `LGTM`/no-bullets, a decent draft stops **before** the cap — in the shipped run it
+  stops after **2 revisions of a cap of 4**, with the last critique reading exactly `LGTM`. The
+  cap check stays first: the critic can end the loop early but can never extend it past the cap.
+  (Note §9 does this by reassigning `essay_writer.should_continue` and **rebuilding** the graph —
+  a compiled graph has already captured the old function, so patching without rebuilding does
+  nothing. That surprise is itself worth 30 seconds of discussion.)
+- **🗣️ Explain (§10):** keeping the decision on the edge means the loop is **declared, not
+  implemented**: you can print the graph, unit-test `should_continue` as a pure function over
+  State, and change the stopping policy without touching `critique_node`. Buried in the node, the
+  control flow becomes invisible to the graph — nothing to draw, and nothing to test in isolation.
 
 **Three-beat companion — reference answers (Steps 6, 10, 11).**
 - **🔮 Predict (§6):** at `--revisions 2` the loop runs **write ×2, critique ×2** —
