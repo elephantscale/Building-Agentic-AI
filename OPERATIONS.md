@@ -27,9 +27,24 @@ led delivery; extends the ES agentic/AI-applications catalog.
   README table exactly (base 7/8 → reflect 8/8 on `ambiguous-01`); **Lab 08** clean on all four
   paths (gate denied, `--approve`, role switch, `a2a_peer.py`); **Lab 06** matches its expected
   scores. New: `course-materials/whiteboard-rag.md`.
-- Known gap, not blocking: **Lab 08 has no `explore.py`/notebook** (03, 06, 07, 13 do), so Day 3
-  afternoon drops the predict/your-turn/explain rhythm. Labs 07/08 also carry `LAB6_OFFLINE` /
-  `LAB7_OFFLINE` env-var names left over from the RAG renumber.
+- ~~Lab 08 has no explore notebook~~ **DONE 2026-10-20.** Labs **08 and 09** now ship
+  `explore.py` + executed `explore.ipynb` (students reportedly took well to the notebooks), so all
+  four Day-3 labs have one. Companion labs are now 03, 06, 07, 08, 09, 13.
+- **Day 4 verified keyed 2026-10-20** on the course lockfile: Lab 10 (Zapier sim), 11 (NoCode CRM),
+  12 (Bedrock `CRM_BACKEND=LOCAL`), 14 (Claude `claude-sonnet-5` — the dangerous-write gate fires
+  and degrades gracefully) all run. **Lab 13 DSPy lift confirmed on dspy 3.1.3: 80% -> 100%
+  (+20 pts)** — this closes the risk item open since 2026-10-08.
+- Mid-delivery defects found by actually running the labs (all fixed + pushed 2026-10-20):
+  **Lab 07** reflection pass received no tool observations, so the critic stripped correct answers
+  and reflection scored *below* base on the keyed path; refusal rule also lost to the NO_RECORD
+  rule (`gpt-4o-mini` can't follow it, `gpt-4.1` can — `LAB7_MODEL` now overrides).
+  **Lab 09** rich parsed model text as markup and silently deleted `[source.txt]` citations.
+  **Lab 06** `rag.py` never called `load_dotenv`, so `EMBEDDINGS=openai` / `RAG_GENERATE=1`
+  were unreachable from `labs/.env` for every student.
+  **Labs 06 + 12** shipped bash-only `NAME=value python ...` commands, which are a parse error in
+  the VM's PowerShell.
+- Still carried: labs 07/08 use `LAB6_OFFLINE` / `LAB7_OFFLINE` env-var names left over from the
+  RAG renumber (internally consistent, just off-by-one against the lab number).
 
 ## Current status
 
@@ -122,7 +137,8 @@ led delivery; extends the ES agentic/AI-applications catalog.
 ## Risks
 
 - ~~Framework APIs move fast; lab code may need version pinning~~ **Mitigated 2026-10-08** by the
-  frozen lockfile (six-month-lag). Residual: Lab 13 DSPy *lift* still unverified on 3.x without a key.
+  frozen lockfile (six-month-lag). ~~Residual: Lab 13 DSPy lift unverified on 3.x~~ **Closed
+  2026-10-20: verified keyed, 80% -> 100% (+20 pts) on dspy 3.1.3.**
 - **Bank-of-America environment (now a managed assumption, not a blocker).** Per Mark, we assume
   ProTech/BofA will provision public LLM + GitHub access + keys as requested. Residual risk if
   they don't: 7 labs need live LLM egress (01-05, 13-DSPy, 14-Claude). Mitigation already in
