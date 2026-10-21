@@ -84,8 +84,25 @@ Then let it land:
 > one — because that's what cosine measures. The chunk boundary chose the winner.
 
 Save the fix for the lab: top-4 (not top-1) still carries `#chunk0` into the prompt, so the
-grounded answer is right anyway. That is *why* we retrieve k>1. And `EMBEDDINGS=openai` with
-real semantic embeddings reorders it — their step 5.
+grounded answer is right anyway. That is *why* we retrieve k>1.
+
+**Do not promise that a better embedder fixes the order — it doesn't.** I checked:
+`EMBEDDINGS=openai` returns the *same* ranking (`0.570` for `#chunk1` vs `0.485` for `#chunk0`),
+just a narrower gap. The short-chunk bias is **cosine's**, not the toy embedder's, and every
+embedder normalizes by length. The honest line:
+
+> A better embedder is not the fix. The fix is chunking — and retrieving more than one.
+
+**Show it rather than assert it** — one command, and the agent gives the wrong answer live:
+
+```sh
+python rag.py "how many days do I have to return an item?" --k 1
+```
+
+Top-1 only, so the prompt sees just `#chunk1`, and the grounded answer comes back as the **7-day**
+damaged-goods rule. The question asked about the return window; the answer is about damaged goods.
+Then re-run without `--k 1` and the 30-day policy is back. That contrast is the argument for k>1,
+and it takes 20 seconds.
 
 ## 5. The off-topic guard — abstain instead of guess
 
@@ -115,8 +132,23 @@ characters. Narrate that, don't apologize for it:
 
 > Retrieval's job is to put the right passage in front of the model. *Writing the answer from
 > that passage is the model's job* — and offline we have no model, so we show you the raw
-> evidence instead. Add a key (`EMBEDDINGS=openai` + an LLM answer, their step 5) and this
-> becomes one sentence with a citation.
+> evidence instead.
+
+And I can prove that in one command, because the VM has keys:
+
+```sh
+RAG_GENERATE=1 python rag.py "how are refunds issued?"
+```
+
+Verified output — one sentence, cited, instead of a wall of chunk:
+
+```text
+Refunds are issued back to the original payment method within 5 business days after Northwind
+receives the returned item. If the original card is closed, store credit is issued instead
+[returns.md#chunk0].
+```
+
+Same retrieval, same passages, same citations. The only thing added is a model that writes.
 
 That's the cleanest in-course argument for why RAG is retrieval **plus** generation, not
 retrieval alone.
@@ -156,5 +188,30 @@ python rag.py "do you ship to Europe?"                                     # gro
   `returns.md#chunk0`, which is the only reason it shares `item` at all.
 - **"Isn't this just keyword search?"** Yes — bag-of-words with cosine *is* lexical search
   wearing a vector coat. That's the honest framing: it teaches the whole pipeline offline, and
-  the one thing it cannot do is match meaning across different words ("refund window" vs
-  "return policy"). That gap is exactly what a learned embedder buys, and why step 5 exists.
+  the one thing it cannot do is match meaning across different words. If someone pushes on this,
+  run the demo below — it is the cleanest 30 seconds in the lab.
+
+## 5c. The one experiment that proves why learned embeddings exist (needs a key)
+
+Ask something that shares **no content words** with the policy:
+
+```sh
+python rag.py "Can I send something back if I change my mind?" --show-scores
+EMBEDDINGS=openai python rag.py "Can I send something back if I change my mind?" --show-scores
+```
+
+```text
+  local   returns.md#chunk1  0.217   shipping 0.072   returns.md#chunk0  0.051   <- real answer 3rd
+  hosted  returns.md#chunk0  0.443   returns.md#chunk1 0.427   shipping 0.232     <- real answer 1st
+```
+
+"Send something back", "change my mind" — not one of those words is in the return policy. Lexical
+retrieval buries the right passage below *shipping*; semantic retrieval puts it first. **That** is
+what the embedding model buys, and it is a different problem from the chunk-length bias in step 4.
+
+Mechanical note for the live run: `labs/.env` is now loaded by `rag.py`, so `EMBEDDINGS=openai`
+just works on a VM with keys (it used to fall back to local and print
+`EMBEDDINGS=openai but OPENAI_API_KEY not set`). Hosted cosine scores sit in a different range
+than local ones, so `MIN_SCORE=0.08` is embedder-specific — off-topic hosted scores ~0.038, which
+still abstains, but the threshold would need retuning for a different embedder. Worth saying out
+loud when someone asks where 0.08 came from.

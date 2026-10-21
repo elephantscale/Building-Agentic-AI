@@ -61,6 +61,17 @@ framework labs (LangGraph retrieval, agentic RAG).
    EMBEDDINGS=openai python rag.py "warranty on electronics?"
    RAG_GENERATE=1 python rag.py "how are refunds issued?"
    ```
+   **The experiment worth running.** Ask a question that shares *no content words* with the
+   policy, and compare the two embedders:
+   ```sh
+   python rag.py "Can I send something back if I change my mind?" --show-scores
+   EMBEDDINGS=openai python rag.py "Can I send something back if I change my mind?" --show-scores
+   ```
+   Local ranks the damaged-goods chunk first (`[0.217]`) and buries the actual 30-day return
+   policy **third** (`[0.051]`), below *shipping*. Hosted puts the return policy **first**
+   (`[0.443]`). That gap — matching meaning when the words differ — is what a learned embedder
+   buys you, and the one thing a bag-of-words embedder can never do.
+   Note what hosted embeddings *don't* fix: see Troubleshooting on chunk ranking.
 
 ## Starter Code
 
@@ -170,9 +181,14 @@ question where a bad chunk boundary hurts the answer.
 - **`ModuleNotFoundError: numpy`.** `pip install -r requirements.txt`.
 - **Everything scores 0.000.** Your query has only stopwords, or words that never appear in the
   corpus — that's the "not found" path working. Try words that are actually in the docs.
-- **The wrong chunk ranks first.** Expected sometimes with a bag-of-words embedder — it's the
-  teaching point. Shrink `max_chars` so chunks are more focused, or switch to `EMBEDDINGS=openai`
-  for semantic embeddings and compare.
+- **The wrong chunk ranks first.** Expected — and it's the teaching point. For *"how many days
+  do I have to return an item?"*, the short damaged-goods chunk (`#chunk1`, 17 content words)
+  outranks the chunk holding the real 30-day answer (`#chunk0`, 52 words) because cosine
+  **divides out length**: same shared vocabulary, smaller norm, bigger score.
+  **Hosted embeddings do not fix this** — verified: `EMBEDDINGS=openai` gives the same order
+  (`0.570` vs `0.485`), just a narrower gap. The short-chunk bias belongs to cosine, not to the
+  toy embedder. What *does* help: shrink `max_chars` so chunks are more focused, and keep `k>1`
+  so the right passage still reaches the prompt even when it ranks second.
 - **An off-topic question still gets answered.** Raise `MIN_SCORE`. Too many "not found"s? Lower
   it. There's no universal value — it's a precision/recall dial.
 - **`EMBEDDINGS=openai` says "using local".** No `OPENAI_API_KEY` in the environment; the lab

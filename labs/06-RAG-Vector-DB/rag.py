@@ -24,6 +24,16 @@ import numpy as np
 
 HERE = Path(__file__).parent
 CORPUS_DIR = HERE / "corpus"
+
+# Keys live in labs/.env (see labs/SETUP.md). Only the OPTIONAL paths need one
+# (EMBEDDINGS=openai, RAG_GENERATE=1), so a missing python-dotenv is not an error -
+# the offline path still runs with nothing installed but NumPy.
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(HERE.parent / ".env")
+except ImportError:
+    pass
 DIM = 512               # local embedding dimensionality
 MIN_SCORE = 0.08        # below this top score, we say "not in the corpus" instead of guessing
 
