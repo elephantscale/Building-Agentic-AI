@@ -28,6 +28,9 @@ running code.
 ├── README.md            # this file
 ├── requirements.txt
 ├── essay_writer.py      # the complete LangGraph program
+├── explore.py           # the companion notebook as a # %% cell script
+├── explore.ipynb        # same, with saved outputs - open it in VS Code
+├── graph.md             # the graph drawn, generated from the compiled object
 └── corpus/              # local fallback evidence for the research node
     ├── agentic-ai.txt
     ├── reflection.txt
