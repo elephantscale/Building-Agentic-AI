@@ -241,3 +241,6 @@ labs/13-DSPy-SelfImproving/optimized_program.json
 labs/14-Claude-Coding-Assistant/memory.json
 labs/15-Voice-Support-Agent/turn_log.jsonl
 labs/16-HR-Governance-Agent/findings.parquet
+
+# LibreOffice lock files (created whenever a deck is open in LO)
+.~lock.*#
