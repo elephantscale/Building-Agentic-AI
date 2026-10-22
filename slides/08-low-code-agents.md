@@ -168,6 +168,35 @@ GPT draft  ->  GPT critique ("is this grounded? complete? safe?")
 
 ---
 
+## Cloud-Free In The Classroom
+
+* No Zapier or ChatGPT account? You are **not** blocked
+
+* Lab 10 ships `zap_sim.py` — the same trigger -> GPT -> action -> review pipeline in Python
+
+* Lab 11 ships `crm_agent.py` — the CRM agent against a local SQLite DB
+
+> We simulate the SaaS locally so everyone builds the pattern, account or not.
+
+---
+
+## Lab 10 — Business Automation With ChatGPT + Zapier
+
+**Stop here and run Lab 10.**
+
+You will:
+
+1. Design a Custom GPT with an Action (OpenAPI) for ticket triage.
+2. Build a Zapier flow: trigger -> GPT step -> action -> review.
+3. Add memory, a reflection step, and a human-approval gate.
+4. Or run the local `zap_sim.py` over `support_tickets.csv` for the same result.
+
+**Deliverable:** a documented Custom GPT + Zap (or a simulator run) with a review queue.
+
+**Time:** 60 minutes
+
+---
+
 ## A No-Code CRM Agent
 
 * Inbound lead or ticket arrives
@@ -241,35 +270,6 @@ Run ID | Source | Category | Priority | Risk | Route | Draft | Status
 | Governance | Manual, in-UI | In code |
 
 > Start low-code to prove value. Move to code when the limits start to bite.
-
----
-
-## Cloud-Free In The Classroom
-
-* No Zapier or ChatGPT account? You are **not** blocked
-
-* Lab 10 ships `zap_sim.py` — the same trigger -> GPT -> action -> review pipeline in Python
-
-* Lab 11 ships `crm_agent.py` — the CRM agent against a local SQLite DB
-
-> We simulate the SaaS locally so everyone builds the pattern, account or not.
-
----
-
-## Lab 10 — Business Automation With ChatGPT + Zapier
-
-**Stop here and run Lab 10.**
-
-You will:
-
-1. Design a Custom GPT with an Action (OpenAPI) for ticket triage.
-2. Build a Zapier flow: trigger -> GPT step -> action -> review.
-3. Add memory, a reflection step, and a human-approval gate.
-4. Or run the local `zap_sim.py` over `support_tickets.csv` for the same result.
-
-**Deliverable:** a documented Custom GPT + Zap (or a simulator run) with a review queue.
-
-**Time:** 60 minutes
 
 ---
 
