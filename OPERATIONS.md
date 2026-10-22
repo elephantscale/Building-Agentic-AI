@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-10-20
+**Last updated:** 2026-10-21
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -43,6 +43,30 @@ led delivery; extends the ES agentic/AI-applications catalog.
   were unreachable from `labs/.env` for every student.
   **Labs 06 + 12** shipped bash-only `NAME=value python ...` commands, which are a parse error in
   the VM's PowerShell.
+- **Day 4 re-verified 2026-10-21** against the lockfile venv, every lab run from a scratch copy so
+  the repo stayed clean: Lab 10 `zap_sim.py` offline, Lab 11 both offline and keyed, Lab 12
+  `CRM_BACKEND=LOCAL` (gate fires, DENIED, graceful answer) including a cold start with no `crm.db`,
+  Lab 13 keyed **80% -> 100% (+20 pts)** reproduced, and Lab 13's no-key path fails with a clear
+  message rather than a traceback. Deck→lab mapping for Day 4 confirmed against each deck's own
+  hand-off slide (07→09, 08→10, 08→11, 09→12, 10→13).
+- Day 4 defects found and fixed 2026-10-21:
+  **Lab 11** `rich` parsed the `[safe]` / `[dangerous]` tag as a style tag and deleted it, so the
+  column the README promises printed blank — same bug class as Lab 09's citations (`markup=False`).
+  **Lab 11, more serious:** the lab's central beat (a dangerous proposal REFUSED without `--force`)
+  **does not fire on the keyed path at all** — `gpt-4.1` proposes `escalate` instead of
+  `issue_refund` for T-1003/T-1004, so every row is `safe` and the gate is never exercised. The
+  README claimed "a real key gives richer intents, same gating," which was wrong. Now documented:
+  demo on the rule-based stub, and the keyed result is a Playbook lesson ("a gate you never saw
+  refuse is a gate you have not tested").
+  **Repo hygiene:** Lab 12 shipped `crm.db` and `run-log.jsonl` as *tracked* files that every run
+  mutates (5 → 13 log lines on one run), so a student's first Lab 12 run would have blocked
+  `git pull` on the class VM mid-class. Both untracked (they regenerate from `crm_seed.sql`), and
+  `.gitignore` now covers the run artifacts of labs 02, 05, 07, 08, 11, 12, 13, 14, 15, 16 — which
+  also means `git status` on the VM is now a real signal instead of lab noise.
+- **Open Day 4 question (Mark's call, not a defect):** Labs **10, 11, 12 have no `explore.ipynb`**;
+  only Lab 13 does. Students took well to the notebooks on Day 3. Not built unprompted — the
+  Day-4 labs are CLI-driven by design (`crm_agent.py` subcommands, an approval gate), so a
+  notebook is a bigger rewrite there than it was for 08/09.
 - Still carried: labs 07/08 use `LAB6_OFFLINE` / `LAB7_OFFLINE` env-var names left over from the
   RAG renumber (internally consistent, just off-by-one against the lab number).
 
