@@ -109,7 +109,11 @@ cur.execute(
 
 ## What a correct run looks like
 
-`init` then `run` (rule-based stub; a real key gives richer intents, same gating):
+`init` then `run`. **This is the no-key, rule-based stub** — and it is the path to use
+for the guardrail demo, because the stub is the only one guaranteed to put a *dangerous*
+proposal in the queue. (With a key, `gpt-4.1` proposes `escalate` instead of
+`issue_refund` for the same tickets, so every row comes back `safe` and the refusal below
+never fires. See *Step 8* and Troubleshooting.)
 
 ```text
 $ python crm_agent.py init
@@ -173,9 +177,14 @@ performs a destructive write. `contacts` shows the appended, human-approved note
 - **`no such table: contacts`** — run `python crm_agent.py init` first.
 - **`FileNotFoundError` for the CSV** — run from inside `labs/11-NoCode-CRM-Agent/`; the
   script reads `../assets/support_tickets.csv`.
-- **Everything is classified `safe`** — with no API key the rule-based stub keys off
-  words like *refund*, *seat*, *patient*; that is expected. Add `OPENAI_API_KEY` for
-  nuanced intents.
+- **Everything is classified `safe` and nothing ever gets REFUSED** — you are running
+  *with* a key. Measured on 2026-10-21 with `gpt-4.1`: all six tickets come back
+  `add_note` or `escalate`, so the `dangerous` branch is empty and the gate is never
+  exercised. That is the model being cautious, not the gate being broken. Unset the key
+  (or run where `labs/.env` isn't found) to get `issue_refund [dangerous]` on T-1003 /
+  T-1004 from the rule-based stub. **Do the guardrail demo on the stub.**
+- **The stub's classes look crude** — they are: it keys off words like *refund*, *seat*,
+  *patient*. That is deliberate, so the branch is reproducible in class.
 - **A dangerous action committed without `--force`** — it shouldn't; if you edited the
   code, re-check the `safety_class == "dangerous" and not force` guard in `approve`.
 - **Re-running `run` duplicates queue rows** — expected; `run` appends. Re-`init` to
@@ -190,7 +199,10 @@ is about drawing that line in code so it cannot be crossed by accident — the s
 the safety checklist calls the approval gate."
 
 **Live-demo script (7 min).**
-1. `init` then `run` — narrate the safe/dangerous column.
+1. `init` then `run` — narrate the safe/dangerous column. **Run this one without a
+   key** (rename `labs/.env`, or demo from a directory where it isn't found) so T-1003 /
+   T-1004 land as `issue_refund [dangerous]`. With your key loaded the column is all
+   `safe` and step 2 has nothing to refuse.
 2. `approve` a safe row -> committed. `approve` a dangerous row -> **REFUSED**. Let that
    land. "This is the whole lab."
 3. `approve N --force` -> show the override is loud, logged, and *still* doesn't execute
@@ -201,6 +213,17 @@ the safety checklist calls the approval gate."
 `merge_contact`. T-1003 and T-1004 (refund/payment) are the classic traps — a naive
 auto-CRM would issue a refund from a customer's message alone. The safe path needs only
 a **note-write scope on the contact object**; nothing more.
+
+**The free lesson the key hands you (verified 2026-10-21).** Run it keyed and `gpt-4.1`
+proposes `escalate` for the refund tickets — never `issue_refund`. Every row is `safe`,
+the dangerous branch is empty, and **your gate never runs**. That is worth two minutes at
+the board, because it is the trap in production: the guardrail looked fine in testing only
+because the model happened to be cautious that day. A gate you never saw refuse anything
+is a gate you have not tested. The fix is the same one the eval lab taught — keep an
+adversarial fixture (here, the rule-based stub) whose whole job is to *force* the
+dangerous path, and run it on every change.
+
+> If your safety test depends on the model misbehaving, it isn't a test.
 
 **Common mistakes + fixes.**
 - *Trusting the model's `safety_class`.* Show that a prompt-injected ticket ("ignore

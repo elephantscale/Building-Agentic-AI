@@ -190,8 +190,11 @@ def run():
             (t["ticket_id"], t["customer"], result["next_action"],
              result["safety_class"], json.dumps(result)),
         )
+        # markup=False: the safety class is printed in brackets as data. Without this,
+        # rich parses [safe] / [dangerous] as a style tag and silently deletes it.
         console.print(f"{t['ticket_id']} {t['customer']:16} "
-                      f"-> {result['next_action']:14} [{result['safety_class']}]")
+                      f"-> {result['next_action']:14} [{result['safety_class']}]",
+                      markup=False)
     conn.commit()
     conn.close()
     console.print("\n[bold]Proposals written to the review queue. Nothing committed.[/bold]")
