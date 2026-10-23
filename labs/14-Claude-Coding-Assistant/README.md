@@ -51,8 +51,15 @@ it. Then it **remembers** the decision so the next session starts smarter.
    agent runs. Then give it the one-shot task and approve the write and the runs at the gate — did it
    find what you found?
 
-   Keep it on **one line** — a trailing `\` is a bash continuation and does nothing
-   in PowerShell, which would hand the agent an empty task:
+   If anyone has run this before, reset first — otherwise there is no bug left to
+   find, and `memory.json` hands the agent the answer before it reads anything:
+
+   ```powershell
+   git checkout workspace/; del memory.json -ErrorAction Ignore
+   ```
+
+   Then run it. Keep it on **one line** — a trailing `\` is a bash continuation and
+   does nothing in PowerShell, which would hand the agent an empty task:
 
    ```powershell
    python coding_assistant.py "The tests in test_mathutils.py fail. Read the code, run the tests, fix the bug, and re-run to prove it. Remember the fix."
@@ -82,7 +89,10 @@ it. Then it **remembers** the decision so the next session starts smarter.
      exercise** — a bug with no test slips straight through. This is the Lab 7 lesson in miniature:
      *your eval set is your safety net; grow it when you find a gap.*
 
-   Reset afterward: `git checkout workspace/` and delete `memory.json`.
+   Reset between attempts with the same one-liner:
+   `git checkout workspace/; del memory.json -ErrorAction Ignore`
+   (the `git checkout` is what restores the bug; deleting `memory.json` is only so the
+   agent rediscovers it instead of recalling it).
 
 8. **🗣️ Explain.** In one or two sentences: why does a good agent **run the tests to see the failure
    before editing**, instead of fixing straight from reading the code? What does the failing test give
