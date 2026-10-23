@@ -1,7 +1,12 @@
 # Capstone Starter Scaffold
 
-A minimal, runnable multi-agent skeleton so your team spends hour one on your
-problem, not on plumbing. **Extend it — don't start from a blank file.**
+A minimal, runnable multi-agent skeleton.
+
+> **For the capstone design review, this is reference reading — you are not
+> extending it today.** Use it for one thing: to check your design is
+> buildable. Find each box on your picture in the table below. Anything with no
+> home there is something you would have to build from scratch — worth saying
+> out loud in your presentation.
 
 ## What's here
 
@@ -22,7 +27,7 @@ a **communicator** sends a reply (dangerous tool → gated), and the
 
 ## How it maps to the six required capabilities
 
-| Capability | Where in the scaffold | Your job |
+| Capability | Where in the scaffold | What building it would take |
 |------------|-----------------------|----------|
 | Reasoning | `Worker.run` (one step) | Grow it into a **capped ReAct loop** |
 | Tool use | `ToolRegistry.register/call` | Add ≥ 2 real tools with validated args |
@@ -33,7 +38,8 @@ a **communicator** sends a reply (dangerous tool → gated), and the
 
 ## Extension points
 
-Search the code for `TODO`:
+The `TODO` markers are where a real build would pick up — read them as the
+distance between a skeleton and a system:
 
 - **Real routing** — the supervisor runs workers in a fixed order; make it
   choose based on the goal (a plan, a DAG, or an LLM router).

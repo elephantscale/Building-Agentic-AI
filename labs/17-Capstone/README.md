@@ -2,24 +2,34 @@
 
 ## Goal
 
-In a team, design, build, evaluate, and demo a **multi-agent system** in one
-domain — **Finance, HR, Real Estate, or Customer Support** — that shows **all
-six required capabilities** from `course-materials/capstone-rubric.md`:
-reasoning, tool use, reflection, multi-agent coordination, evaluation, and
-governance. This is the whole week in one project. Small scope done well beats
-big scope half-built.
+In a team, **design** a multi-agent system in one domain — **Finance, HR, Real
+Estate, or Customer Support** — and **defend that design** to the room. You
+produce a filled **Agent Design Canvas** and **one picture**, then present for
+ten minutes and take the room's pushback.
+
+This is a design review, not a build. It is also what you will actually be
+asked to do first at work: come back with something a stakeholder can approve
+or reject. The build gets handed to a team; the design is yours.
+
+Your design must show all **six required capabilities** from
+`course-materials/capstone-rubric.md`: reasoning, tool use, reflection,
+multi-agent coordination, evaluation, and governance.
+
+> You are not writing code today. A design you can defend beats a demo that
+> happens to run.
 
 ## Time
 
-One day (~6 working hours + demos). See the timeline below.
+One day (~5 working hours + presentations). See the run-of-show below.
 
 ## Tools
 
-- Everything you built this week, plus the `starter/` scaffold in this folder.
-- Course materials: Agent Design Canvas, audit-log schema, evaluation rubric,
-  safety checklist, capstone rubric.
-- Sample data in `labs/assets/`. Model IDs: `gpt-4.1` / `gpt-4o-mini`,
-  `claude-sonnet-5`. Keys in `labs/.env`.
+- `course-materials/agent-design-canvas.md` — **the deliverable.** Seven
+  sections, all design decisions, no code.
+- `course-materials/agent-safety-checklist.md`, `audit-log-schema.md`,
+  `agent-evaluation-rubric.md`, `capstone-rubric.md`.
+- `starter/agent_scaffold.py` — **read it, don't write it.** See below.
+- Sample data in `labs/assets/` if you want concrete inputs to point at.
 
 ## Files in this lab
 
@@ -27,9 +37,9 @@ One day (~6 working hours + demos). See the timeline below.
 17-Capstone/
   README.md                this run-of-show
   starter/
-    agent_scaffold.py      runnable supervisor + worker + tool-registry + audit log
+    agent_scaffold.py      what the build WOULD look like - reference reading
     requirements.txt       minimal deps (runs offline)
-    README.md              how to extend the scaffold
+    README.md              how the scaffold maps to the six capabilities
 ```
 
 ## The four domains + project ideas
@@ -48,7 +58,7 @@ Pick **one domain and one use case**. Two or three ideas each:
 - *Onboarding coordinator* — schedule, draft welcome emails, build a checklist
   (draft-only; a human sends).
 - *Pay-equity analyst* — query aggregates only (no raw PII), reflect on the
-  finding, gated report (reuse Lab 16's governance).
+  finding, gated report (the Lab 16 auditor is your governance story).
 - *Policy Q&A* — answer only from the handbook; escalate anything legal.
 
 **Real Estate**
@@ -58,163 +68,212 @@ Pick **one domain and one use case**. Two or three ideas each:
   (gated).
 - *Comps analyst* — pull comparables, compute a price range, cite each comp.
 
-**Customer Support** (fastest start — assets are ready)
+**Customer Support** (fastest start — you have seen the assets)
 - *Tier-1 resolver* — answer from `labs/assets/help_center.md`, escalate what it
   can't ground.
 - *Refund handler* — verify eligibility from the KB, then a **human gate** before
-  issuing (reuse Lab 15).
+  issuing (Lab 15 is the shape).
 - *Ticket-triage swarm* — a classifier agent + a drafting agent + a QA/reflection
   agent over `labs/assets/support_tickets.csv`.
 
-## Required capabilities checklist
+## Deliverable 1 — the canvas
 
-Tick every box at least once (full detail in `capstone-rubric.md`):
+Fill every section of `course-materials/agent-design-canvas.md`. Copy it into
+your own file; don't edit the template.
 
-- [ ] **Reasoning** — an explicit plan / ReAct loop, not a single prompt.
-- [ ] **Tool use** — ≥ 2 real tools with validated schemas.
-- [ ] **Reflection** — the system self-checks or revises ≥ 1 output.
-- [ ] **Multi-agent** — ≥ 2 cooperating roles/agents.
-- [ ] **Evaluation** — a small **frozen** eval set + before/after scores.
-- [ ] **Governance** — an audit log + a human-in-the-loop gate on dangerous acts.
-      Write it in `audit-log-schema.md` form and you can **prove** it: run Lab 16's
-      auditor over your own log —
-      `python ../16-HR-Governance-Agent/hr_governance_agent.py --log starter/audit-log.jsonl`.
-      Zero `critical` findings is a demo slide.
+The most valuable line on the page is **"out of scope"** in section 1. Strong
+teams have a longer out-of-scope list than feature list — that is a sign you
+know what you are building, not a sign you aimed low.
 
-## Timeline (run-of-show)
+Two sections carry the most weight:
+
+- **Section 3, Tools.** Every tool gets a **safety class**. If nothing in your
+  table is `dangerous`, your scope is too timid — add a real action.
+- **Section 5, Evaluation.** Name **5–8 concrete test cases**: happy path,
+  missing data, ambiguous input, and at least one **unsafe request**. You will
+  not run them. Naming them is the exercise, because a case you cannot name is
+  a case you cannot test.
+
+## Deliverable 2 — the picture
+
+One diagram, and it has to carry all six capabilities. Six things must be
+visible on it:
+
+| On the picture | Shows |
+|----------------|-------|
+| **Boxes** — who does what | multi-agent: ≥ 2 roles doing *different* jobs |
+| **Labelled arrows** — what triggers what | reasoning: the flow of one request |
+| **Tool calls**, each marked safe / dangerous | tool use + least privilege |
+| **A loop-back arrow** | reflection: what sends work round again, and on what check |
+| **★ on the dangerous action + the gate in front of it** | governance: who approves, and what they see |
+| **A note of what is logged, and at which steps** | observability |
+
+If a capability is not visible on the picture, you have not designed it yet.
+That is a better test than whether code ran.
+
+**Draw it as text** so it lives inside your canvas — nothing to attach, nothing
+to install. Either form is fine:
+
+**ASCII** (works everywhere, no tools):
 
 ```text
-09:30  Form teams · pick domain + ONE use case
-10:00  DESIGN    fill agent-design-canvas.md · agree a 5-8 case eval set
-10:45  BUILD     thin end-to-end thread: supervisor + 1 worker + 1 tool + log
+   [trigger]
+       |
+       v
+  ┌──────────┐      ┌──────────┐
+  │ ROLE 1   │ ---> │ ROLE 2   │ ---> (output)
+  │ what     │      │ what     │
+  └──────────┘      └──────────┘
+       |                  ^
+       | tool: safe       | reflection: send back if <check fails>
+       v                  |
+   ( data source )  ------+
+
+  ★ DANGEROUS: <action>   -->  [HUMAN GATE: who approves, what they see]
+  LOG at: <which steps>, to <where>
+```
+
+**Mermaid** — the same text-becomes-picture trick as
+`labs/09-LangGraph-Essay-Writer/graph.md`. Paste it into <https://mermaid.live>
+and share your screen:
+
+```text
+flowchart TD
+    trigger[New claim] --> triage[Triage agent]
+    triage --> review[Policy reviewer]
+    review -->|fails check| triage
+    review --> gate{HUMAN GATE}
+    gate -->|approved| pay[issue_payment]
+    gate -->|denied| stop[Logged, no action]
+```
+
+## Run-of-show
+
+```text
+09:30  TEAMS      form teams of 3-4 · pick domain + ONE use case
+10:00  DESIGN     canvas 1-3: goal, out of scope, inputs, tools + safety classes
+11:00  DRAW       the picture: boxes, arrows, loop-back, the star and the gate, the log
 12:30  lunch
-13:15  BUILD     add 2nd agent · reflection · human gate on the dangerous action
-15:00  EVALUATE  run the frozen eval set · record before/after · fix top failure
-16:00  POLISH    rehearse the 10-min demo · pick your edge case + gate moment
-16:30  DEMOS     ~10 min per team
+13:15  HARDEN     canvas 4-7: memory, reflection, test cases, guardrails, logging
+14:15  PRESSURE   swap designs with another team - each finds 3 holes in the other's
+15:00  REVISE     fix what the other team found · rehearse the 10 minutes
+16:00  PRESENT    ~10 min per team
 ```
 
-> Hit "end-to-end but ugly" by lunch. Everything after lunch makes it *good*,
-> not makes it *work*.
+**The 14:15 swap is not optional.** You hand your canvas and picture to another
+team, they hand you theirs, and each side comes back with **three specific
+holes** — not "looks good". Everyone presents having already been attacked once,
+so at 16:00 you are defending a design rather than reading one out.
 
-## Phases in detail
+Three questions that find holes fast — use them on the other team:
 
-**1. Design (before any code).** Fill `course-materials/agent-design-canvas.md`.
-The most valuable line is **"out of scope"**. Decide your agents' roles, your
-tools and their safety classes, your loop cap and budget, and what a human must
-approve. Freeze your eval set now: 5–8 cases covering happy path, missing data,
-ambiguous input, and one **unsafe request**.
+1. *What is the dangerous action, and what exactly does the approver see?* A
+   gate where the human has no basis to decide is theatre.
+2. *What does this agent refuse to do?* If "out of scope" is thin, the scope is
+   vague.
+3. *Which of your test cases would fail today?* A team that cannot name one has
+   not thought about failure.
 
-**2. Build.** Start from `starter/agent_scaffold.py` — it already gives you a
-supervisor, a worker, a tool registry with an automatic human gate, and an audit
-log. Get one thin thread running first, then add the second agent, reflection,
-and your real tools. Cap the loop (max steps + cost) on line one. Fake slow or
-expensive integrations with local stubs.
-
-**3. Evaluate.** Score runs with `course-materials/agent-evaluation-rubric.md`
-(0–3 on five dimensions; pilot-ready needs Safety = 3 and total ≥ 12/15). Run
-the frozen set, record a **before/after** table around one change you make. Read
-the **audit log**, not just the final answer — grade the process.
-
-**4. Demo.** Rehearse. Pick the one edge case and the one human-gate moment
-you'll show live.
-
-## Starter scaffolding guidance
-
-```sh
-cd starter && pip install -r requirements.txt && python agent_scaffold.py
-```
-
-It runs offline and writes `audit-log.jsonl`. Map your project onto its pieces
-(`starter/README.md` has the table) and grow the `TODO` markers into real
-routing, a capped worker loop, a real approver, and real reflection. Reuse the
-audit-log schema it already emits, and the course templates for canvas, eval,
-and safety sign-off.
-
-## Deliverables
-
-- Repo with runnable code (or a documented low-code flow) + `requirements.txt`.
-- Completed `agent-design-canvas.md` **and** `agent-safety-checklist.md`.
-- Eval set + a results table (before/after one change).
-- A sample **audit log (JSONL)** from a real run.
+## Presentation format (per team, 10 min)
 
 ```text
-capstone-<team>/
-  README.md                what it does + how to run
-  agents/  tools/          the system
-  eval/    eval_set.jsonl  results.md
-  audit/   run-log.jsonl
-  agent-design-canvas.md   agent-safety-checklist.md
+3 min  the problem, your domain, and the ONE use case you scoped to
+4 min  walk your picture - follow a single request from trigger to output
+2 min  "here is where it breaks, and here is what we would watch"
+1 min  the room pushes back
 ```
 
-## Demo format (per team, 10 min)
-
-```text
-2 min  problem, domain, and the design canvas
-5 min  LIVE demo — include ONE edge case and ONE human-gate moment
-2 min  evaluation results + what you'd fix next
-1 min  Q&A
-```
-
-Show the audit log live. A handled edge case earns more than a flawless happy
-path.
+The **2-minute "here is where it breaks"** slot is required. Naming your own
+failure modes is the strongest signal that you understand the system — stronger
+than any happy path.
 
 ## Grading (100 pts, from `capstone-rubric.md`)
 
-| Dimension | Weight |
-|-----------|-------:|
-| Problem & design | 15 |
-| Reasoning & planning | 15 |
-| Tools & integration | 15 |
-| Reflection & quality | 10 |
-| Multi-agent coordination | 15 |
-| Evaluation | 15 |
-| Governance & safety | 10 |
-| Demo & communication | 5 |
+| Dimension | Wt | Full marks |
+|-----------|---:|-----------|
+| Problem & design | 15 | Clear goal, sane scope, completed canvas, real out-of-scope list |
+| Reasoning & planning | 15 | A loop you can trace on the picture; says how it recovers |
+| Tools & integration | 15 | Well-specified tools, safety classes, least privilege |
+| Reflection & quality | 10 | A named check, and what happens when it fails |
+| Multi-agent coordination | 15 | ≥ 2 roles doing genuinely distinct jobs that cooperate |
+| Evaluation | 15 | 5-8 named cases incl. one unsafe request; says what it measures |
+| Governance & safety | 10 | Gate on the picture, approver named, logging per step |
+| Communication | 5 | Defends the design under pushback |
 
-A passing project shows **every** required capability at least once.
+Reasoning, tools, multi-agent and evaluation are **60 of 100**. Depth beats
+feature count — one request traced properly through two agents scores higher
+than five boxes nobody can explain.
+
+A passing design shows **every** required capability at least once.
+
+## The scaffold — reference reading, not an assignment
+
+`starter/agent_scaffold.py` is what the build of your design would look like:
+an `AuditLog`, a `ToolRegistry` that gates dangerous tools automatically, a
+`Worker`, and a `Supervisor` that reflects before finishing.
+
+You are not extending it today. Read it for one reason: **to check your design
+is buildable.** Open `starter/README.md` and find each of your picture's boxes
+in its table. If something on your picture has no home in that table, say so in
+your presentation — "this part we would have to build from scratch" is a
+legitimate and impressive thing to know about your own design.
+
+If you want to see it run once, `cd starter && python agent_scaffold.py` works
+offline and writes `audit-log.jsonl` — the log format your governance section
+should describe.
 
 ## Teacher's Playbook
 
-**Before the day.** Have teams of 3–4 pre-picked or pick fast. Pin the four
-domains and this timeline where everyone can see them. Make sure everyone can run
-`starter/agent_scaffold.py` (a green run = environment is ready). Print the
-capstone rubric per team.
+**Before the day.** Teams of 3-4, pre-picked or picked fast. Pin the four
+domains, the picture checklist, and the run-of-show where everyone can see
+them. Print the capstone rubric per team. Decide in advance whether
+<https://mermaid.live> is reachable from the class environment; if not, ASCII
+is the answer and it costs nothing.
+
+**Framing it so nobody feels short-changed.** Say it straight at 09:30: *"You'd
+ship a demo this afternoon, and demos lie. You're doing the thing you'd actually
+be asked for first — a design someone can approve or reject."* In their jobs the
+design review *is* the deliverable; the build gets handed on. Nobody in a bank
+has ever been asked to ship a governed multi-agent system by 4 p.m.
 
 **Coaching teams (the moves that save the day).**
-- *At 10:45, no canvas yet?* Stop them. Ten minutes on the canvas saves two
-  hours of thrashing. The "out of scope" line is where you cut ruthlessly.
-- *Scope too big?* Force one use case, one dangerous action, one eval set of
-  5 cases. "Finance" is not a project; "invoice anomaly flag with a pay gate" is.
-- *Chasing a flaky API at 2 p.m.?* Tell them to stub it. Graders reward the
-  *loop, the eval, and the gate* — not a live integration.
-- *"It's multi-agent" but it's one giant prompt?* Make the roles do genuinely
-  different jobs (e.g., a drafter and a separate QA/reflection agent that can
-  reject the draft).
-- *Governance being left for last?* It's the cheapest 10 points on the board and
-  the scaffold gives it for free — insist the audit log and gate are in the
-  thin thread, not bolted on at 4 p.m.
+- *At 10:45, no canvas yet?* Stop them — the team is arguing about features. Put
+  them on section 1, goal and out of scope, until it is written down.
+- *Scope too big?* Force one use case, one dangerous action, two roles.
+  "Finance" is not a project; "invoice anomaly flag with a pay gate" is.
+- *Nothing dangerous in the tools table?* Then there is no gate, no governance,
+  and 10 points are gone. Make them add a real action with consequences.
+- *"It's multi-agent" but it's one box labelled "the agent"?* Ask who could be
+  fired for the other one's mistake. Distinct jobs, distinct roles.
+- *Picture is boxes with unlabelled arrows?* An unlabelled arrow means "related
+  somehow". Make them write what travels along it.
+- *Governance left for last?* It is the cheapest 10 points on the board, and it
+  is one star and one box on a drawing they have already made.
 
-**Time-boxing.** Call the phase transitions out loud (DESIGN → BUILD → EVALUATE
-→ POLISH). Give a hard 15-minutes-to-demo warning. Freeze code at demo time.
+**Running the 14:15 swap.** Pair the teams yourself and keep it strict: three
+specific holes, written down, handed back. Use the three questions above as the
+prompt if a pair goes quiet. This is the highest-value hour of the day — it
+turns six serial presentations into one conversation, and teams fix their own
+worst problem before you ever see it.
 
-**Keeping scope sane.** One domain, one use case, two agents, two tools, one
-dangerous action, one frozen eval set. Anything beyond that is a bonus, not a
-requirement.
+**Judging presentations.** Score live against the grid. Require the
+"where it breaks" slot — a team that skips it has not finished thinking. Ask
+every team the same closing question: *"what is the single thing you would build
+first, and which of your test cases would prove it worked?"* A team that answers
+that well understands agents, whether or not they ever wrote the code.
 
-**Judging demos.** Score live against the rubric grid; the weights put 60/100 on
-reasoning + tools + multi-agent + evaluation, so reward depth over feature count.
-Require the live edge case and the gate moment — no slideware. Ask each team the
-same closing question: *"what's the single thing you'd fix next, and how would
-your eval set prove it worked?"* A team that answers that well understands agents.
+**What good looks like.** A scoped problem with a real out-of-scope list; two
+roles doing genuinely different jobs; one picture where you can follow a single
+request from trigger to output and point at the gate; 5-8 named test cases
+including an unsafe one; an honest account of what breaks first — and a team
+that gets sharper, not defensive, when the room pushes back.
 
-**What good looks like.** A scoped problem, a completed canvas, two agents doing
-distinct jobs, a capped loop that recovers from one surprise, an honest
-before/after eval table, a clean audit log, and one dangerous action caught by a
-human gate — demoed live, edge case and all.
-
-**Debrief (10 min after demos).** Pull one pattern from across the teams for each
-capability. Close on the through-line: they started the week hand-building a
-ReAct loop and ended it shipping a governed multi-agent system.
+**Debrief (10 min after presentations).** Pull one pattern from across the teams
+for each capability. Then close on the through-line: Monday they hand-built a
+ReAct loop with two read-only tools and a regex; today they designed a governed
+multi-agent system and defended it. The loop never changed. What changed is that
+they now know where to put the gate.
 
 ---
+
+*Capstone — Building Agentic AI, Elephant Scale.*
