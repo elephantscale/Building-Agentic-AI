@@ -51,9 +51,11 @@ it. Then it **remembers** the decision so the next session starts smarter.
    agent runs. Then give it the one-shot task and approve the write and the runs at the gate — did it
    find what you found?
 
-   ```sh
-   python coding_assistant.py \
-     "The tests in test_mathutils.py fail. Read the code, run the tests, fix the bug, and re-run to prove it. Remember the fix."
+   Keep it on **one line** — a trailing `\` is a bash continuation and does nothing
+   in PowerShell, which would hand the agent an empty task:
+
+   ```powershell
+   python coding_assistant.py "The tests in test_mathutils.py fail. Read the code, run the tests, fix the bug, and re-run to prove it. Remember the fix."
    ```
 
 3. Watch the loop: `read_file` -> `run_python` (fails) -> proposes fix -> **[GATE]** on
