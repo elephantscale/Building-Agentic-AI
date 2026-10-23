@@ -96,6 +96,45 @@ led delivery; extends the ES agentic/AI-applications catalog.
   script does not emit. Both synced verbatim to real runs and the key/no-key difference called out.
   **Repo hygiene:** `.gitignore` was missing `compliance_report.md` (Lab 16) and the capstone's
   `audit-log.jsonl`, both rewritten on every run.
+- **Capstone recast as a DESIGN REVIEW (Mark's decision, 2026-10-22).** Teams no longer build;
+  they fill the Agent Design Canvas, draw **one picture** carrying all six capabilities, swap
+  designs with another team at 14:15 to find three holes each, and defend the design for ten
+  minutes. Rationale: in their jobs the design review *is* the first deliverable, and a half-built
+  demo teaches less than a design they can defend. `labs/17-Capstone/README.md` rewritten,
+  `starter/` demoted to reference reading ("read it, don't write it"), and `slides/14-capstone.md`
+  rewritten to match: 14 slides -> 16, adding **Deliverable 2 — The Picture** and **The Pressure
+  Test (14:15)**; Demo Format -> The Presentation, Deliverables off "runnable code", 5 grading
+  rows reworded. `check-slides.sh 14` OK. **The PPTX still needs Mark's rebuild.**
+  Picture medium: text, so it lives inside the canvas — ASCII, or Mermaid at mermaid.live.
+  **Unverified: whether mermaid.live is reachable from the class VM** — ASCII is the fallback.
+- **Day 5 defect found live on the VM, fixed 2026-10-22:** Lab 14's Session-1 command used a bash
+  line continuation (`\`), which PowerShell treats as the *argument* — the agent received the task
+  `"\"`, answered politely, and the quoted task line was then echoed as its own command. Third
+  bash-only line to reach the VM this week (after Labs 06/12 and Lab 15). Now one line, labelled
+  `powershell`. A repo-wide sweep found no others. **Post-delivery TODO: a PowerShell-syntax pass
+  over every lab README** — running the labs from bash on Ubuntu does not exercise what students type.
+- **Lab 14 reset is now at point of use** (step 2, not buried in step 7):
+  `git checkout workspace/; del memory.json -ErrorAction Ignore`. The `git checkout` is the required
+  half; deleting `memory.json` only decides whether the agent rediscovers the bug or recalls it.
+- **Lab 16 step 8 rewritten around a real finding (verified 2026-10-22).** The auditor reads any
+  JSONL log, so it now audits the students' own week. **Lab 08** (Day 3, offline) -> 10 events,
+  **2 findings**, both `pii_in_log`. **Lab 12** (Day 4) -> 11 events, **0 findings — and that zero
+  is false.** Lab 12 writes the right event names and even a `safety_class`, but **flat**: no
+  `step`, no `actor`, and `tool`/`safety_class` at top level instead of nested in `detail`. Every
+  policy check reads `detail`, finds nothing, reports nothing. *"Lab 12 passed the audit because it
+  does not record enough to fail it."* Contrast with Lab 15's log — also 0 findings, genuinely clean.
+  **Real defect, deliberately NOT fixed mid-delivery:** Lab 12's README lists `audit-log-schema.md`
+  under Tools while its log does not follow it. **Post-delivery TODO:** nest Lab 12's fields *and*
+  keep a deliberately non-conformant sample log, because this is the strongest governance beat on Day 5.
+- **Anonymous end-of-course feedback form added** (`course-materials/create-feedback-form.gs`, same
+  Apps Script pattern as the intro form, `setCollectEmail(false)` for the locked-down VMs).
+  **Share it right after Lab 14 on Day 5 morning, not at 16:30** (Mark's call): Day 5 runs past
+  16:00 and Zoom attendance collapses after the last capstone presentation, whereas after Lab 14 the
+  room is full and has just watched an agent be refused at a gate. Cost: it cannot ask about the
+  capstone — ask that out loud at the end instead. **ProTech's own evaluation does not reach Mark**,
+  so this is the only cohort feedback he will see. Nine questions; three are decision-grade:
+  why the least-useful lab was least useful, notebooks vs scripts (6 of 16 labs ship a notebook),
+  and whiteboard/live segments vs slides (tests a bet he has run on all week).
 - **Lab 14 behaviour worth knowing live:** in 3 keyed runs of the Step-2 task, 2 reproduced the
   failing test before editing and **1 went straight from reading to `write_file`**. The README's
   §8 question and the Playbook's "editing before reproducing" mistake are about exactly this, so
