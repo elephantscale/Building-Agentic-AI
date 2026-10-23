@@ -6,6 +6,8 @@
 
 ## Course Description
 
+Demo connect through repositories.
+
 A five-day, hands-on course for developers, data scientists, team leads, and project managers.
 You learn how AI agents plan, reason, reflect, and act — starting from a hand-built agent loop
 and the ReAct pattern, then adding tools, reflection, evaluation, and multi-agent coordination.
