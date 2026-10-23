@@ -1,4 +1,4 @@
-# Lab 15 - HR Governance Agent (audit agent activity)
+# Lab 16 - HR Governance Agent (audit agent activity)
 pandas>=2.2
 pyarrow>=16.0          # writes findings.parquet (the "Delta-style" table)
 python-dotenv>=1.0

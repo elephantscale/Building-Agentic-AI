@@ -51,6 +51,19 @@ deliverables.
    script and re-run — watch findings change. Governance thresholds are policy.
 7. *(Optional)* `python hr_governance_agent.py --narrate` to add an LLM summary
    for a non-technical reviewer (needs `OPENAI_API_KEY`).
+8. **Point it at a log you produced yourself.** `--log` takes any file in the
+   schema, and Labs 15 and 17 both emit one:
+
+   ```sh
+   python hr_governance_agent.py --log ../15-Voice-Support-Agent/turn_log.jsonl
+   python hr_governance_agent.py --log ../17-Capstone/starter/audit-log.jsonl
+   ```
+
+   Lab 15's `turn_log.jsonl` comes back **0 findings** — genuinely clean. The
+   capstone scaffold's log comes back **0 critical but 4 `pii_in_log`**: its gates
+   were honoured, and it still writes email addresses into the log payload. That is
+   the lab's point arriving unannounced — a clean gate record is not a clean log, and
+   the auditor does not care who wrote the code.
 
 ## Starter Code
 
@@ -113,10 +126,14 @@ Wrote findings.parquet and compliance_report.md
 Top findings:
   [critical] run-1002 step 3: dangerous tool 'email_report' ran with no approved human_gate
   [critical] run-1004 step 4: dangerous tool 'delete_records' ran AFTER its human_gate was denied
-  [high]     run-1002 step 2: raw PII in log payload: ssn (value redacted)
-  [high]     run-1003 step 14: run reached 14 steps (cap 12)
-  [medium]   run-1003 step 14: run cost $2.34 exceeds cap $1.00
+  [high] run-1002 step 3: raw PII in log payload: email (value redacted)
+  [high] run-1002 step 2: raw PII in log payload: ssn (value redacted)
+  [high] run-1003 step 14: run reached 14 steps (cap 12)
 ```
+
+`Top findings` prints the five highest-severity rows; the remaining three
+(a `runaway_loop` repeat, a run `cost_spike`, and a per-event `cost_spike`) are in
+the report. Full severity split: **critical 2, high 3, medium 2, low 1**.
 
 `compliance_report.md` (excerpt):
 

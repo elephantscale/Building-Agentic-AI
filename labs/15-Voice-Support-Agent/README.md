@@ -92,8 +92,9 @@ def handle(self, text):
         self.log.log("human_gate", {"tool": danger["action"],
                      "args": danger["args"], "safety_class": "dangerous",
                      "state": "awaiting_approval"})
-        return (f"To confirm, you want me to {danger['readback']} - "
-                f"say 'yes' to proceed or 'no' to stop.")
+        return (f"I can do that. To confirm, you want me to "
+                f"{danger['readback']} - is that right? Please say "
+                f"'yes' to proceed or 'no' to stop.")
     kb = search_help_center(text)         # otherwise answer from the KB
     ...
 ```
@@ -136,7 +137,7 @@ support_agent = Agent(
     tools=[search_help_center],                  # same function, unchanged
 )
 
-runner = Runner(agent=support_agent, app_name="lab14",
+runner = Runner(agent=support_agent, app_name="lab15",
                 session_service=InMemorySessionService())
 
 # Stream audio in/out. run_live yields events: partial transcript, tool_call,
@@ -147,31 +148,48 @@ async def call(session, audio_in):
         ...
 ```
 
-Set the backend and run: `VOICE_BACKEND=adk python voice_agent_local.py`
+Set the backend and run:
+
+```powershell
+$env:VOICE_BACKEND="adk"; python voice_agent_local.py    # PowerShell (class VM)
+```
+
+```sh
+VOICE_BACKEND=adk python voice_agent_local.py               # bash / zsh
+```
+
 (if `google-adk` is not importable it prints a note and falls back to Path B —
 nobody is blocked).
 
 ## What a correct run looks like
 
+With **no key** — the deterministic responder reads the KB bullet back verbatim:
+
 ```text
 $ python voice_agent_local.py --script demo_call.txt
-────────── Voice support (local text) — run 33b17b2c ──────────
-agent 🔊 Thanks for calling Northwind support. How can I help?
+────────── Voice support (local text) — run 31a4f17c ──────────
+agent 🔊 Thanks for calling Northwind support. How can I help? (type 'bye' to hang up)
 caller transcript: what is the refund window on an annual plan?
 agent 🔊 Annual plans: full refund within **14 days** of purchase; pro-rated after that.
 caller transcript: how long is a password reset link valid?
 agent 🔊 Password reset links expire after **60 minutes**; request a new one from the login page.
 caller transcript: please issue a refund for order 8842
-agent 🔊 I can do that. To confirm, you want me to issue a refund for 8842 -
-         say 'yes' to proceed or 'no' to stop.
+agent 🔊 I can do that. To confirm, you want me to issue a refund for 8842 - is that right? Please say 'yes' to proceed or 'no' to stop.
 caller transcript: no
 agent 🔊 No problem - I have NOT made any change. Anything else?
 caller transcript: actually just cancel my account
-agent 🔊 I can do that. To confirm, you want me to cancel your account -
-         say 'yes' to proceed or 'no' to stop.
+agent 🔊 I can do that. To confirm, you want me to cancel your account - is that right? Please say 'yes' to proceed or 'no' to stop.
 caller transcript: yes
 agent 🔊 Done - subscription cancelled for your account. You'll get a confirmation email.
+agent 🔊 Thanks for calling. Goodbye!
+─ Call ended — turn log: .../turn_log.jsonl ─
 ```
+
+**With `OPENAI_API_KEY` in `labs/.env` the two answers are reworded by `gpt-4.1`** —
+e.g. *"You can get a full refund within 14 days of purchasing an annual plan; after
+that, refunds are pro-rated."* Same retrieval, same grounding, same gates; only the
+phrasing changes. If your `labs/.env` has a key you will see this version, not the one
+above — that is correct, not a failure.
 
 And in `turn_log.jsonl` (one JSON object per line, per `audit-log-schema.md`):
 
@@ -179,6 +197,7 @@ And in `turn_log.jsonl` (one JSON object per line, per `audit-log-schema.md`):
 {"event":"tool_call","detail":{"tool":"search_help_center","args":{"query":"..."},"safety_class":"safe"},"result":{"ok":true,"summary":"Refunds"}}
 {"event":"human_gate","detail":{"tool":"issue_refund","args":{"order":"8842"},"safety_class":"dangerous","state":"awaiting_approval"}}
 {"event":"human_gate","detail":{"tool":"issue_refund","args":{"order":"8842"},"safety_class":"dangerous","state":"denied"}}
+{"event":"human_gate","detail":{"tool":"cancel_subscription","args":{"account":"your account"},"safety_class":"dangerous","state":"awaiting_approval"}}
 {"event":"human_gate","detail":{"tool":"cancel_subscription","args":{"account":"your account"},"safety_class":"dangerous","state":"approved"},"result":{"ok":true,"summary":"subscription cancelled..."}}
 ```
 

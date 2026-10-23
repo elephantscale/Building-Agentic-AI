@@ -220,6 +220,13 @@ Memory saved -> memory.json
   from inspection alone risks "fixing" the wrong thing or introducing a new break with nothing to
   catch it (the "editing before reproducing" mistake below).
 
+**It sometimes skips the reproduce step — use it.** In three keyed runs of the Step-2 task
+(2026-10-22, `claude-sonnet-5`), two went `read -> read -> run (fail) -> write -> run (pass)` as
+above; **one went straight from reading to `write_file`** without ever running the failing test.
+If that happens live, stop and point at it: the §8 question is on the board in front of them, and
+the model just made the mistake the Playbook names below. Ask what the skipped run cost it — it
+had no proof the bug was the one it read, and no proof the fix was what made the test pass.
+
 **The one big idea.** A coding agent is the most dangerous kind — it edits files and runs code.
 The value of this lab is watching capability and control grow together: four tools, but two of
 them stop for a human, code runs in a sandbox with a timeout, and the loop is capped. Capability

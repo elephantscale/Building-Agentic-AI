@@ -76,6 +76,10 @@ Tick every box at least once (full detail in `capstone-rubric.md`):
 - [ ] **Multi-agent** — ≥ 2 cooperating roles/agents.
 - [ ] **Evaluation** — a small **frozen** eval set + before/after scores.
 - [ ] **Governance** — an audit log + a human-in-the-loop gate on dangerous acts.
+      Write it in `audit-log-schema.md` form and you can **prove** it: run Lab 16's
+      auditor over your own log —
+      `python ../16-HR-Governance-Agent/hr_governance_agent.py --log starter/audit-log.jsonl`.
+      Zero `critical` findings is a demo slide.
 
 ## Timeline (run-of-show)
 

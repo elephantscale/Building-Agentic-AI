@@ -1,4 +1,4 @@
-# Lab 12 — Self-Improving Agent with DSPy + Delta Analytics
+# Lab 13 — Self-Improving Agent with DSPy + Delta Analytics
 dspy-ai>=2.5
 openai>=1.40
 anthropic>=0.40

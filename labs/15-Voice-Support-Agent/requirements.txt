@@ -1,4 +1,4 @@
-# Lab 14 - Live Voice Support Agent (ADK + OpenAI)
+# Lab 15 - Live Voice Support Agent (ADK + OpenAI)
 # The LOCAL fallback (voice_agent_local.py) runs with just these:
 python-dotenv>=1.0
 rich>=13.7
