@@ -73,8 +73,9 @@ Notes:
   a log note ....... what is written, at which steps
 ```
 
-* Draw it **as text** so it lives inside your canvas — ASCII, or Mermaid pasted
-  into `mermaid.live`. Same text-becomes-picture trick as Lab 9's `graph.md`.
+* Draw it **as text** — **boxes and arrows, ASCII** — so it lives inside your canvas
+* Pen and paper held up to the camera is also fine. The drawing is not the deliverable; the
+  decisions on it are.
 
 > If a capability is not visible on the picture, you have not designed it yet.
 
@@ -173,7 +174,7 @@ Notes:
 ```text
 your-team/
   agent-design-canvas.md   all seven sections filled
-  the picture              ASCII inside the canvas, or a Mermaid block
+  the picture              ASCII boxes and arrows, inside the canvas
   test cases               5-8, one of them unsafe
 ```
 

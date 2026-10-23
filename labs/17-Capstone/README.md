@@ -133,9 +133,13 @@ to install. Either form is fine:
   LOG at: <which steps>, to <where>
 ```
 
-**Mermaid** — the same text-becomes-picture trick as
-`labs/09-LangGraph-Essay-Writer/graph.md`. Paste it into <https://mermaid.live>
-and share your screen:
+Pen and paper held up to the camera is equally fine. **The drawing is not the
+deliverable — the decisions on it are**, and nobody is graded on neatness.
+
+If you already know **Mermaid**, use it and paste it into <https://mermaid.live>.
+One correction to avoid a wrong impression: Lab 9's `graph.md` was **printed by
+the program** (`get_graph().draw_mermaid()`), not typed by anyone. Hand-writing
+Mermaid is a different job, and today it buys you nothing that ASCII doesn't:
 
 ```text
 flowchart TD
@@ -226,9 +230,10 @@ should describe.
 
 **Before the day.** Teams of 3-4, pre-picked or picked fast. Pin the four
 domains, the picture checklist, and the run-of-show where everyone can see
-them. Print the capstone rubric per team. Decide in advance whether
-<https://mermaid.live> is reachable from the class environment; if not, ASCII
-is the answer and it costs nothing.
+them. Print the capstone rubric per team. **ASCII (or paper) is the default** —
+do not send a room of fourteen off to learn Mermaid syntax at 11:00. Mermaid is
+for the one or two who already use it; note that Lab 9's `graph.md` was emitted
+by `draw_mermaid()`, so seeing it that day taught nobody the syntax.
 
 **Framing it so nobody feels short-changed.** Say it straight at 09:30: *"You'd
 ship a demo this afternoon, and demos lie. You're doing the thing you'd actually
