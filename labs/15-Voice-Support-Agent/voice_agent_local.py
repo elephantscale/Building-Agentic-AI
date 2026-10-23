@@ -204,6 +204,11 @@ YES_RE = re.compile(r"\b(yes|yeah|yep|confirm|do it|go ahead|proceed)\b", re.I)
 NO_RE = re.compile(r"\b(no|nope|stop|cancel that|don'?t|never mind)\b", re.I)
 
 
+# Questions about the CALL itself - answered from the transcript, not the KB.
+RECAP_RE = re.compile(
+    r"\b(what did (we|i) (talk about|say|ask|discuss)|what have we (talked|covered)|"
+    r"recap|remind me what|so far|earlier in (this|the) call)\b", re.I)
+
 QUESTION_RE = re.compile(
     r"^(what|how|when|why|where|who|can|could|does|do|is|are|will|would)\b", re.I)
 REQUEST_RE = re.compile(
@@ -244,21 +249,31 @@ def detect_dangerous(text: str) -> dict | None:
 class VoiceSupportAgent:
     """One instance = one call/session.
 
-    The only state carried across turns is `self.pending` - an open
-    confirmation gate. There is no conversation history: each turn retrieves
-    and answers on its own text.
+    Two things survive a turn: `self.pending`, an open confirmation gate, and
+    `self.history`, the transcript of the call. The gate is the safety-critical
+    one - a "yes" a turn later means nothing without it. The transcript is what
+    lets the agent recap the call and resolve a short follow-up.
     """
 
     def __init__(self, logger: TurnLogger):
         self.log = logger
         self.pending = None          # a dangerous action awaiting confirmation
+        self.history = []            # [(caller_text, agent_reply)] for this call
 
     def handle(self, text: str) -> str:
+        """Answer one caller turn, then remember it."""
+        reply = self._handle(text)
+        self.history.append((text, reply))
+        return reply
+
+    def _handle(self, text: str) -> str:
         # 1) Resolve an open confirmation gate first.
         if self.pending:
             return self._resolve_gate(text)
 
         # 2) Is this a dangerous request? Gate it - do NOT act yet.
+        #    This stays ahead of memory on purpose: no phrasing should be able
+        #    to route a dangerous request away from the gate.
         danger = detect_dangerous(text)
         if danger:
             self.pending = danger
@@ -269,16 +284,43 @@ class VoiceSupportAgent:
                     f"{danger['readback']} - is that right? Please say "
                     f"'yes' to proceed or 'no' to stop.")
 
-        # 3) Otherwise answer from the knowledge base (safe tool).
-        kb = search_help_center(text)
+        # 3) Asking about the call itself? That lives in memory, not the KB.
+        if RECAP_RE.search(text):
+            return self._recap()
+
+        # 4) Otherwise answer from the knowledge base (safe tool).
+        #    A short follow-up ("and how long does that take?") carries no
+        #    searchable words of its own, so hand the retriever the previous
+        #    caller turn as well. Query rewriting: the cheapest kind of memory.
+        query = text
+        if self.history and len(text.split()) <= 8:
+            query = f"{self.history[-1][0]} {text}"
+        kb = search_help_center(query)
         self.log.log("tool_call",
-                     {"tool": "search_help_center", "args": {"query": text},
+                     {"tool": "search_help_center",
+                      "args": {"query": query, "caller_turn": text},
                       "safety_class": "safe"},
                      {"ok": kb["ok"], "summary": kb.get("section", kb.get("summary"))})
         answer = compose_answer(text, kb)
         source = kb.get("source", "not-grounded")
         self.log.log("final_reply", {"reply": answer, "source": source})
         return answer
+
+    def _recap(self) -> str:
+        """Read the call back to the caller, from `self.history`."""
+        # Bare yes/no turns and earlier recap requests are not "what we covered".
+        asked = [q for q, _ in self.history
+                 if not RECAP_RE.search(q)
+                 and not (len(q.split()) <= 3
+                          and (YES_RE.search(q) or NO_RE.search(q)))]
+        self.log.log("memory_recall", {"turns_in_call": len(self.history),
+                                       "turns_recalled": len(asked)})
+        if not asked:
+            return "We haven't covered anything yet - this is the start of the call."
+        if len(asked) == 1:
+            return f"So far you asked about one thing: {asked[0]}"
+        items = "; then ".join(asked)
+        return f"So far you asked about {len(asked)} things: {items}"
 
     def _resolve_gate(self, text: str) -> str:
         action = self.pending["action"]

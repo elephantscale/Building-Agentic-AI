@@ -249,11 +249,12 @@ a clean yes, and log the gate. A request is not consent.
   demonstrate `how do I cancel my account?` (answers) vs `just cancel it` (gates).
 - *"It made up a policy."* → replies are grounded in the retrieved section only;
   ask something not in the KB and watch it escalate instead of guessing.
-- *"It forgot what I just said."* → correct, and worth saying out loud: no
-  conversation history (see the session question below). A follow-up like "and
-  how long does that take?" retrieves on those words alone, so it can land on an
-  unrelated KB section. Adding history is a two-line change to `handle` — ask
-  the room what it would cost in a *dangerous* turn.
+- *"It forgot what I just said."* → it no longer does, and the two mechanisms
+  are different. *"What did we talk about?"* is answered from `self.history` —
+  memory, no retrieval. *"And how long does that take?"* is **query rewriting**:
+  a turn of ≤ 8 words gets the previous caller turn glued onto the search query
+  before retrieval, because "how long does that take" has no searchable words of
+  its own. Show both, and show that neither runs before `detect_dangerous`.
 - *"Latency in real audio."* → discuss streaming: partial transcript, streamed
   tokens, first-clause TTS, and a spoken filler while a tool runs.
 
@@ -262,15 +263,16 @@ a clean yes, and log the gate. A request is not consent.
   new partial transcript and re-plan. The agent logic is unchanged.
 - *What must be redacted before logging a call?* Card numbers, health details,
   anything PII — bound and redact tool results (ties to Lab 16).
-- *How is this a "session"?* One agent instance per call carries `self.pending`
-  — the open confirmation gate — and nothing else. There is **no conversation
-  history**: every turn runs a fresh `search_help_center(text)` and, with a key,
-  a fresh two-message call. Ask "and how long does that take?" and it is
-  searched as if it were the first thing you said. That is deliberate — the one
-  piece of state that *must* survive a turn is the safety-critical one. Compare:
-  Lab 1 resent the whole message list every turn, Lab 14 persisted memory across
-  *sessions* in `memory.json`, Lab 15 keeps only the gate. Three labs, three
-  answers to "what does the agent remember?" — pick per agent, not by habit.
+- *How is this a "session"?* Two things live on the agent instance, in this
+  order of importance: `self.pending` (the open confirmation gate — a "yes" one
+  turn later is meaningless without it), `self.history` (the call transcript),
+  and nothing else. Nothing survives hanging up. Compare: Lab 1 resent the whole
+  message list every turn; Lab 14 persisted across *sessions* in `memory.json`;
+  Lab 15 forgets the call the moment it ends — which for a support line is the
+  right default, and a retention decision someone has to make on purpose.
+- *Why is memory checked after `detect_dangerous`?* So no phrasing can route a
+  dangerous request away from the gate. Order is a safety property; read
+  `_handle` top to bottom and say the reason for each step.
 
 **Time-box.** 10 min replay + read the log · 20 min live experiments (questions
 vs requests, yes/no paths) · 15 min optional LLM key or Path A · 15 min debrief.
