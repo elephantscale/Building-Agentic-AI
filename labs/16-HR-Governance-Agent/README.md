@@ -51,19 +51,62 @@ deliverables.
    script and re-run — watch findings change. Governance thresholds are policy.
 7. *(Optional)* `python hr_governance_agent.py --narrate` to add an LLM summary
    for a non-technical reviewer (needs `OPENAI_API_KEY`).
-8. **Point it at a log you produced yourself.** `--log` takes any file in the
-   schema, and Labs 15 and 17 both emit one:
+8. **Turn it on your own week.** `--log` takes any JSONL activity log, and you
+   have been writing them since Day 3. Audit two of them — one that works, and one
+   that does not:
 
-   ```sh
-   python hr_governance_agent.py --log ../15-Voice-Support-Agent/turn_log.jsonl
-   python hr_governance_agent.py --log ../17-Capstone/starter/audit-log.jsonl
+   ```powershell
+   python hr_governance_agent.py --log ..\08-Onboarding-Assistant\audit-log.jsonl
+   python hr_governance_agent.py --log ..\12-Bedrock-CRM-Assistant\run-log.jsonl
    ```
 
-   Lab 15's `turn_log.jsonl` comes back **0 findings** — genuinely clean. The
-   capstone scaffold's log comes back **0 critical but 4 `pii_in_log`**: its gates
-   were honoured, and it still writes email addresses into the log payload. That is
-   the lab's point arriving unannounced — a clean gate record is not a clean log, and
-   the auditor does not care who wrote the code.
+   <details><summary>macOS / Linux (bash)</summary>
+
+   ```sh
+   python hr_governance_agent.py --log ../08-Onboarding-Assistant/audit-log.jsonl
+   python hr_governance_agent.py --log ../12-Bedrock-CRM-Assistant/run-log.jsonl
+   ```
+   </details>
+
+   No Lab 08 log any more? Regenerate it in a second — that lab runs offline:
+   `cd ..\08-Onboarding-Assistant; $env:LAB7_OFFLINE="1"; python onboarding_agent.py`
+
+   **Lab 08 — 10 events, 1 run, 2 findings.** Both `pii_in_log`: the onboarding
+   agent wrote the new hire's email address straight into the log payload. Nobody
+   designed that. It is just what happens when you log a whole result object.
+
+   **Lab 12 — 11 events, 2 runs, 0 findings.** That zero is **not** a clean bill of
+   health. Open the log and compare one line against
+   `course-materials/audit-log-schema.md`:
+
+   ```text
+   Lab 12 writes:    {"run_id": "...", "event": "tool_call",
+                      "tool": "crm_lookup", "safety_class": "safe", "backend": "LOCAL"}
+
+   the schema wants: {"run_id": "...", "step": 3, "actor": "user:bob",
+                      "event": "tool_call",
+                      "detail": {"tool": "crm_lookup", "safety_class": "safe"}}
+   ```
+
+   The event *names* are right — `run_start`, `plan`, `tool_call`, `human_gate`,
+   `tool_result`, `run_end` — and there is even a `safety_class` in there. But the
+   fields are **flat**, with no `step` and no `actor`. Every policy check reads
+   `detail`, finds nothing, and so has nothing to report.
+
+   > **Lab 12 passed the audit because it does not record enough to fail it.**
+
+   An auditor returning zero findings has told you one of two things and you cannot
+   tell which from the result alone: the run was clean, or the log was useless.
+   Compare `..\15-Voice-Support-Agent\turn_log.jsonl` — also **0 findings**, but
+   that one is genuinely clean, because every field the checks need is actually
+   there.
+
+   Before you trust an audit, confirm the log can fail it.
+
+9. *(If the capstone scaffold has been run)* `python hr_governance_agent.py --log
+   ..\17-Capstone\starter\audit-log.jsonl` → **0 critical, 4 `pii_in_log`**. Its
+   gates were honoured and it still leaks email addresses into the payload. A clean
+   gate record is not a clean log, and the auditor does not care who wrote the code.
 
 ## Starter Code
 
