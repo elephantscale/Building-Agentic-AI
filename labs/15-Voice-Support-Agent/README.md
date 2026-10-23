@@ -249,6 +249,11 @@ a clean yes, and log the gate. A request is not consent.
   demonstrate `how do I cancel my account?` (answers) vs `just cancel it` (gates).
 - *"It made up a policy."* → replies are grounded in the retrieved section only;
   ask something not in the KB and watch it escalate instead of guessing.
+- *"It forgot what I just said."* → correct, and worth saying out loud: no
+  conversation history (see the session question below). A follow-up like "and
+  how long does that take?" retrieves on those words alone, so it can land on an
+  unrelated KB section. Adding history is a two-line change to `handle` — ask
+  the room what it would cost in a *dangerous* turn.
 - *"Latency in real audio."* → discuss streaming: partial transcript, streamed
   tokens, first-clause TTS, and a spoken filler while a tool runs.
 
@@ -258,7 +263,14 @@ a clean yes, and log the gate. A request is not consent.
 - *What must be redacted before logging a call?* Card numbers, health details,
   anything PII — bound and redact tool results (ties to Lab 16).
 - *How is this a "session"?* One agent instance per call carries `self.pending`
-  and context across turns — that is context continuity.
+  — the open confirmation gate — and nothing else. There is **no conversation
+  history**: every turn runs a fresh `search_help_center(text)` and, with a key,
+  a fresh two-message call. Ask "and how long does that take?" and it is
+  searched as if it were the first thing you said. That is deliberate — the one
+  piece of state that *must* survive a turn is the safety-critical one. Compare:
+  Lab 1 resent the whole message list every turn, Lab 14 persisted memory across
+  *sessions* in `memory.json`, Lab 15 keeps only the gate. Three labs, three
+  answers to "what does the agent remember?" — pick per agent, not by habit.
 
 **Time-box.** 10 min replay + read the log · 20 min live experiments (questions
 vs requests, yes/no paths) · 15 min optional LLM key or Path A · 15 min debrief.

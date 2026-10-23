@@ -242,7 +242,12 @@ def detect_dangerous(text: str) -> dict | None:
 # --- The agent ---------------------------------------------------------------
 
 class VoiceSupportAgent:
-    """One instance = one call/session. Carries context + a pending gate."""
+    """One instance = one call/session.
+
+    The only state carried across turns is `self.pending` - an open
+    confirmation gate. There is no conversation history: each turn retrieves
+    and answers on its own text.
+    """
 
     def __init__(self, logger: TurnLogger):
         self.log = logger
