@@ -1,6 +1,6 @@
 # Project Operations
 
-**Last updated:** 2026-10-21
+**Last updated:** 2026-10-22
 **Owner:** Mark Kerzner
 **Status:** Green
 
@@ -67,6 +67,39 @@ led delivery; extends the ES agentic/AI-applications catalog.
   only Lab 13 does. Students took well to the notebooks on Day 3. Not built unprompted — the
   Day-4 labs are CLI-driven by design (`crm_agent.py` subcommands, an approval gate), so a
   notebook is a bigger rewrite there than it was for 08/09.
+- **Day 5 verified 2026-10-22** against the lockfile venv, every lab run from a scratch copy:
+  **Lab 14** (Claude, keyed `claude-sonnet-5`) — session 1 fixes the bug through both gates to
+  `ALL TESTS PASSED`, session 2 recalls it from `memory.json`, and the **denied** path leaves
+  `mathutils.py` byte-identical while the agent prints the fix for manual application.
+  **Lab 15** both paths, properly isolated: no-key deterministic responder *and* keyed `gpt-4.1`
+  (they differ in wording only, as the README claims), gate denied on the refund and approved on
+  the cancel, `VOICE_BACKEND=adk` falling back cleanly with `google-adk` absent.
+  **Lab 16** 30 events / 4 runs -> **8 findings (2 critical)**, `--narrate` adds the reviewer
+  summary. **Lab 17** scaffold runs offline, 11 events, gates honoured.
+  Deck→lab mapping for Day 5 confirmed against each deck's hand-off slide (11→14, 12→15, 13→16,
+  14→Capstone).
+- **New Day 5 closing beat, verified end to end:** Lab 16's auditor reads any log in
+  `audit-log-schema.md` form, so it audits the students' *own* output. Lab 15's `turn_log.jsonl`
+  -> **0 findings** (clean); the capstone scaffold's `audit-log.jsonl` -> **0 critical but 4
+  `pii_in_log`** (it writes email addresses into the log payload). A clean gate record is not a
+  clean log. Added as Lab 16 step 8 and as the way to *prove* the capstone's governance box.
+- Day 5 defects found and fixed 2026-10-22:
+  **Capstone scaffold's closing line pointed at `labs/16-Capstone/README.md`** — a directory that
+  does not exist (RAG-renumber leftover). Every student hits that dead path on the last day.
+  **`requirements.txt` headers off by one** in labs 12-16 (`Lab 11` on lab 12, ... `Lab 15` on
+  lab 16) — comment-only, but it is the first line a student reads in the file.
+  **Lab 15 README shipped a bash-only `VOICE_BACKEND=adk python ...`** — a parse error in the
+  VM's PowerShell, the same class as the Labs 06/12 fix on Day 4. Both shell forms now given.
+  **Expected-output drift:** Lab 15's "correct run" block predated the current gate string and
+  was silently the *no-key* wording (students with a key in `labs/.env` see `gpt-4.1` phrasing);
+  Lab 16's "Top findings" omitted one of the five printed rows and showed column padding the
+  script does not emit. Both synced verbatim to real runs and the key/no-key difference called out.
+  **Repo hygiene:** `.gitignore` was missing `compliance_report.md` (Lab 16) and the capstone's
+  `audit-log.jsonl`, both rewritten on every run.
+- **Lab 14 behaviour worth knowing live:** in 3 keyed runs of the Step-2 task, 2 reproduced the
+  failing test before editing and **1 went straight from reading to `write_file`**. The README's
+  §8 question and the Playbook's "editing before reproducing" mistake are about exactly this, so
+  the skip is a teaching moment, not a defect — now noted in the Playbook.
 - Still carried: labs 07/08 use `LAB6_OFFLINE` / `LAB7_OFFLINE` env-var names left over from the
   RAG renumber (internally consistent, just off-by-one against the lab number).
 

@@ -27,6 +27,9 @@ Run:
     python crm_agent.py approve 4 --force     # required for a dangerous write
     python crm_agent.py contacts              # show the CRM after approvals
 
+    LAB11_OFFLINE=1 python crm_agent.py run   # force the stub: guarantees a
+                                              # dangerous proposal to refuse
+
 Keys are read from labs/.env (see labs/SETUP.md). With no OPENAI_API_KEY the
 agent uses a deterministic rule-based stub, so it always runs.
 """
@@ -49,6 +52,12 @@ console = Console()
 
 ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(ENV_PATH)
+
+# Treat OFFLINE as true when there is no key, or when forced via env. Forcing it is
+# how you get a DANGEROUS proposal into the queue: a frontier model proposes 'escalate'
+# for the refund tickets, which is a SAFE action, so the approval gate never fires and
+# the lab's whole point goes unseen. The rule-based stub always proposes issue_refund.
+OFFLINE = os.getenv("LAB11_OFFLINE") == "1" or not os.getenv("OPENAI_API_KEY")
 
 DB_PATH = Path(__file__).resolve().parent / "crm.db"
 TICKETS_CSV = Path(__file__).resolve().parents[1] / "assets" / "support_tickets.csv"
@@ -149,7 +158,7 @@ def _mk(intent, priority, action, note, safety):
 
 
 def classify(message: str) -> dict:
-    if not os.getenv("OPENAI_API_KEY"):
+    if OFFLINE:
         return _rule_based(message)
     from openai import OpenAI
     client = OpenAI()
@@ -174,8 +183,13 @@ def run():
     if not DB_PATH.exists():
         console.print("[yellow]No crm.db yet - running init first.[/yellow]")
         init_db()
-    if not os.getenv("OPENAI_API_KEY"):
-        console.print("[yellow]OPENAI_API_KEY not set - using rule-based stub.[/yellow]\n")
+    if OFFLINE:
+        console.print("[yellow]\\[mode: offline] rule-based stub - proposes a DANGEROUS "
+                      "action, so the approval gate is exercised.[/yellow]\n")
+    else:
+        console.print(f"[cyan]\\[mode: llm] {MODEL} - note it may propose only SAFE actions, "
+                      "in which case nothing gets REFUSED below.[/cyan]\n"
+                      "[dim]  Set LAB11_OFFLINE=1 to force the dangerous path.[/dim]\n")
 
     with open(TICKETS_CSV, newline="", encoding="utf-8") as f:
         tickets = list(csv.DictReader(f))

@@ -1,4 +1,4 @@
-# Lab 11 — CRM Assistant on AWS Bedrock
+# Lab 12 — CRM Assistant on AWS Bedrock
 # Cloud path uses boto3 (Bedrock Converse). Local fallback uses anthropic or openai.
 boto3>=1.34
 anthropic>=0.40

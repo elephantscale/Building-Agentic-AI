@@ -224,7 +224,7 @@ def main():
     print(f"Verdict: {out['verdict']}")
     print(f"Audit log written to {AUDIT_PATH.name} "
           f"({sum(1 for _ in AUDIT_PATH.open())} events)")
-    print("\nNow make it yours: see the TODOs and labs/16-Capstone/README.md")
+    print("\nNow make it yours: see the TODOs and labs/17-Capstone/README.md")
 
 
 if __name__ == "__main__":
